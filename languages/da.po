@@ -1,0 +1,7510 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: WpRentals\n"
+"POT-Creation-Date: 2022-01-16 14:44+0200\n"
+"PO-Revision-Date: 2022-04-06 12:19+0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: da\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: 404.php:13
+msgid "Page not found"
+msgstr "Siden blev ikke fundet"
+
+#: 404.php:15
+msgid ""
+"We're sorry. Your page could not be found, but you can check our latest "
+"listings & articles below. "
+msgstr ""
+"Vi er kede af det. Din side kunne ikke findes, men du kan tjekke vores "
+"seneste lister og artikler nedenfor "
+
+#: 404.php:19
+msgid "Latest Listings"
+msgstr "Nyeste Annonceopslag"
+
+#: 404.php:38
+msgid "Latest Articles"
+msgstr "Seneste artikler"
+
+#: archive.php:27
+#, php-format
+msgid "Category Archives: %s"
+msgstr "Kategori arkiver: %s"
+
+#: archive.php:29
+#, php-format
+msgid "Daily Archives: %s"
+msgstr "Daglige arkiver: %s"
+
+#: archive.php:31
+#, php-format
+msgid "Monthly Archives: %s"
+msgstr "Månedlige arkiver: %s"
+
+#: archive.php:31
+msgctxt "monthly archives date format"
+msgid "F Y"
+msgstr "F Å"
+
+#: archive.php:33
+#, php-format
+msgid "Yearly Archives: %s"
+msgstr "Årlige arkiver: %s"
+
+#: archive.php:33
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr "Y"
+
+#: archive.php:35
+msgid "Blog Archives"
+msgstr "Blog arkiv"
+
+#: classes/rentalsSearch.php:171 dashboard/templates/property-list-search.php:9
+#: dashboard/templates/search_booking_list.php:8
+#: dashboard/templates/search_rezervation_list.php:8 search.php:37
+#: searchform.php:3
+msgid "Search"
+msgstr "Søg efter"
+
+#: classes/rentalsSearch.php:254 libs/search_functions.php:292
+msgid "More Search Options"
+msgstr "Flere søge muligheder"
+
+#: classes/rentalsSearch.php:307 classes/rentalsSearch.php:311
+msgid "Make a Reservation"
+msgstr "Gör en reservation"
+
+#: classes/rentalsSearch.php:453 libs/css_js_include.php:545
+msgid "SEARCH"
+msgstr "Søg"
+
+#: classes/rentalsSearch.php:968 classes/search_settings.php:20
+#: classes/search_settings.php:51 classes/search_settings.php:106
+#: classes/search_settings.php:126 classes/search_settings.php:163
+#: libs/search_functions.php:665
+msgid "Where do you want to go ?"
+msgstr ""
+
+#: classes/search_settings.php:21 classes/search_settings.php:52
+#: classes/search_settings.php:83 classes/search_settings.php:110
+#: classes/search_settings.php:130 classes/search_settings.php:164
+#: libs/ajax_functions.php:2225 libs/help_functions.php:6056
+#: templates/submit_templates/property_calendar.php:148
+msgid "Check-In"
+msgstr ""
+
+#: classes/search_settings.php:22 classes/search_settings.php:53
+#: classes/search_settings.php:84 classes/search_settings.php:114
+#: classes/search_settings.php:134 classes/search_settings.php:165
+#: libs/ajax_functions.php:2229 libs/help_functions.php:6668
+#: templates/submit_templates/property_calendar.php:151
+msgid "Check-Out"
+msgstr ""
+
+#: classes/search_settings.php:23 classes/search_settings.php:54
+#: classes/search_settings.php:85 classes/search_settings.php:118
+#: classes/search_settings.php:138 classes/search_settings.php:166
+#: libs/ajax_functions.php:1086 libs/ajax_functions.php:2236
+#: libs/ajax_functions_booking.php:780 libs/ajax_functions_booking.php:2338
+#: libs/css_js_include.php:625 libs/help_functions.php:196
+#: libs/help_functions.php:650 libs/help_functions.php:908
+#: libs/listing_functions.php:370 libs/search_functions.php:109
+msgid "Guests"
+msgstr "Gæster"
+
+#: classes/search_settings.php:82 libs/search_functions2.php:119 search.php:36
+msgid "Type Keyword"
+msgstr "Skriv nøgleord"
+
+#: classes/search_settings.php:145
+msgid "Type 3"
+msgstr "Type 3"
+
+#: classes/search_settings.php:146
+msgid "Type 4"
+msgstr "Type 4"
+
+#: classes/search_settings.php:147
+msgid "Type 5"
+msgstr "Type 5"
+
+#: classes/search_settings.php:167 libs/listing_functions.php:1575
+#: templates/submit_templates/property_details.php:87
+msgid "Rooms"
+msgstr "Værelser"
+
+#: classes/search_settings.php:168 libs/ajax_functions.php:2311
+#: libs/help_functions.php:1999 templates/property_list_filters.php:38
+msgid "All Types"
+msgstr "Alle typer"
+
+#: classes/search_settings.php:169 libs/ajax_functions.php:2326
+#: libs/help_functions.php:2011 templates/property_list_filters.php:31
+msgid "All Sizes"
+msgstr ""
+
+#: classes/search_settings.php:170 libs/listing_functions.php:378
+#: libs/listing_functions.php:1578
+#: templates/submit_templates/property_details.php:99
+msgid "Bedrooms"
+msgstr "Soveværelser"
+
+#: classes/search_settings.php:171
+msgid "Baths"
+msgstr "Badeværelser"
+
+#: classes/search_settings.php:172
+msgid "Price Range"
+msgstr "Prisklasse"
+
+#: comments.php:4
+msgid ""
+"This post is password protected. Enter the password to view any comments."
+msgstr "Dette indlæg er kode beskyttet. Indtast koden for at se kommentarer."
+
+#: comments.php:15
+#, php-format
+msgid "One thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] "En tanke om &ldquo;%2$s&rdquo;"
+msgstr[1] "%1$s har kommenteret på &ldquo;%2$s&rdquo;"
+
+#: comments.php:30
+msgid "Comment navigation"
+msgstr "Kommentar navigation"
+
+#: comments.php:31
+msgid "&laquo; Older Comments"
+msgstr "&laquo; Ældre Kommentarer"
+
+#: comments.php:32
+msgid "Newer Comments &raquo;"
+msgstr "Nyere Kommentarer &raquo;"
+
+#: comments.php:37
+msgid "Comments are closed."
+msgstr "Der er lukket for kommentarer."
+
+#: comments.php:52
+msgid "Leave a Reply"
+msgstr "Skriv en kommentar"
+
+#: comments.php:53
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr "Skriv en kommentar til %s"
+
+#: comments.php:54
+msgid "Cancel Reply"
+msgstr "Annuller svar"
+
+#: comments.php:55
+msgid "Post Comment"
+msgstr "Skriv kommentar"
+
+#: comments.php:58
+msgid "Your email address will not be published.  "
+msgstr ""
+
+#: comments.php:63
+msgid "Comment"
+msgstr "Kommenter"
+
+#: comments.php:70
+msgid "Name"
+msgstr "Navn"
+
+#: comments.php:76 contact_page.php:127 dashboard/templates/user_profile.php:68
+#: libs/ajax_functions_booking.php:1995 libs/help_functions.php:259
+#: templates/mobile_menu.php:117 templates/mobile_menu.php:122
+msgid "Email"
+msgstr "E-mail"
+
+#: comments.php:81 contact_page.php:131
+#: dashboard/templates/user_profile.php:107
+msgid "Website"
+msgstr "Hjemmeside"
+
+#: contact_page.php:123
+msgid "Full Name"
+msgstr "Fulde Navn"
+
+#: contact_page.php:135 libs/css_js_include.php:555 libs/css_js_include.php:562
+#: libs/css_js_include.php:682 libs/css_js_include.php:686
+msgid "Your Message"
+msgstr "Din Besked"
+
+#: contact_page.php:141 libs/ajax_functions.php:2254
+#: libs/css_js_include.php:563 libs/css_js_include.php:623
+#: libs/css_js_include.php:687 libs/css_js_include.php:714
+#: libs/css_js_include.php:817
+msgid "Send Message"
+msgstr "Send Besked"
+
+#: dashboard/dashboard-functions.php:87
+msgid "Bookings - last 30 days"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:95
+msgid "Bookings value"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:236
+msgid "Account History (last 7 days)"
+msgstr "Kontohistorik (seneste 7 dage)"
+
+#: dashboard/dashboard-functions.php:246
+msgid "There has been no activity registered for the past 7 days. "
+msgstr ""
+
+#: dashboard/dashboard-functions.php:269
+msgid "Edited"
+msgstr "Redigeret"
+
+#: dashboard/dashboard-functions.php:271
+msgid "Added"
+msgstr "Tilføjet"
+
+#: dashboard/dashboard-functions.php:273
+msgid "Deleted"
+msgstr "Slettet"
+
+#: dashboard/dashboard-functions.php:278
+#, php-format
+msgid "%s  %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:281
+#, php-format
+msgid "%s property %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:284
+#, php-format
+msgid "%s agent %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:287
+#, php-format
+msgid "%s agency %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:290
+#, php-format
+msgid "%s developer %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:293
+#, php-format
+msgid "Generated Invoice %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:295
+#, php-format
+msgid "Deleted Invoice %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:299
+#, php-format
+msgid "Write Message  %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:301
+#, php-format
+msgid "Deleted Message  %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:305
+#, php-format
+msgid "Saved Search  %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:307
+#, php-format
+msgid "Deleted Search  %s"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:394 dashboard/dashboard-functions.php:454
+msgid "You don't have any listings or enough data!"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:406
+msgid "Your most booked listings"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:450
+msgid "Views"
+msgstr "Visninger"
+
+#: dashboard/dashboard-functions.php:466
+msgid "Your most visited listings"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:490
+msgid "Total Properties"
+msgstr "Total antal ejendomme"
+
+#: dashboard/dashboard-functions.php:491
+msgid "Published Properties"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:498
+msgid "Favorite Properties"
+msgstr "Foretrukne"
+
+#: dashboard/dashboard-functions.php:503
+msgid "Account Summary"
+msgstr "KontoOversigt"
+
+#: dashboard/dashboard-functions.php:556 libs/ajax_functions_booking.php:806
+#: libs/ajax_functions_booking.php:1979 libs/ajax_functions_edit.php:1241
+msgid "on"
+msgstr "på"
+
+#: dashboard/dashboard-functions.php:556
+#: dashboard/templates/unit-templates/booking_period.php:4
+#: dashboard/templates/unit-templates/reservation_period.php:2
+#: libs/ajax_functions_booking.php:778 libs/ajax_functions_booking.php:1955
+#: libs/ajax_functions_booking.php:2623 libs/ajax_functions_edit.php:1217
+#: libs/css_js_include.php:582 libs/general-settings.php:154
+#: libs/general-settings.php:156 libs/general-settings.php:164
+#: libs/general-settings.php:166 libs/help_functions.php:192
+#: templates/advanced_search_map_list.php:32
+#: templates/advanced_search_map_list.php:34
+msgid "to"
+msgstr "til"
+
+#: dashboard/dashboard-functions.php:560
+msgid "You don't have any upcoming bookings"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:568
+msgid "Next Bookings"
+msgstr ""
+
+#: dashboard/dashboard-functions.php:644
+msgid "Front page"
+msgstr "Forside"
+
+#: dashboard/templates/book-listing-unit.php:71 libs/css_js_include.php:1011
+msgid "View Details"
+msgstr "Vis detaljer"
+
+#: dashboard/templates/book-listing-unit.php:72
+msgid "Cancel booking"
+msgstr "Annuller reservation"
+
+#: dashboard/templates/book-listing-unit.php:74
+msgid "Cancel my own booking"
+msgstr "Annuller min booking"
+
+#: dashboard/templates/book-listing-unit.php:78 libs/css_js_include.php:978
+msgid "Delete Invoice"
+msgstr "Slet faktura"
+
+#: dashboard/templates/book-listing-unit.php:79
+#: dashboard/templates/book-listing-unit.php:82
+msgid "Reject Booking Request"
+msgstr "Afvis bookinganmodning"
+
+#: dashboard/templates/book-listing-unit.php:81 libs/css_js_include.php:981
+#: libs/css_js_include.php:1014
+msgid "Issue invoice"
+msgstr ""
+
+#: dashboard/templates/book-listing-unit.php:87
+msgid "Send reminder email!"
+msgstr ""
+
+#: dashboard/templates/book-listing-user-unit.php:85
+#: libs/css_js_include.php:1013
+msgid "Pay Invoice in Full"
+msgstr ""
+
+#: dashboard/templates/book-listing-user-unit.php:89
+msgid "Invoice Details"
+msgstr "Faktura detaljer"
+
+#: dashboard/templates/book-listing-user-unit.php:90
+#: libs/css_js_include.php:1015
+msgid "Trip Details"
+msgstr ""
+
+#: dashboard/templates/book-listing-user-unit.php:94
+#: libs/ajax_functions_booking.php:3075
+msgid "Post Review"
+msgstr "Post Review"
+
+#: dashboard/templates/book-listing-user-unit.php:96
+msgid "You already reviewed this property!"
+msgstr "Du har allerede anmeldt denne ejendom"
+
+#: dashboard/templates/book-listing-user-unit.php:99
+msgid "You can post the review after the trip!"
+msgstr "Du kan anmelde opholdet efter endt udlejning"
+
+#: dashboard/templates/book-listing-user-unit.php:103
+#: libs/css_js_include.php:1012
+msgid "Invoice Created - Check & Pay"
+msgstr ""
+
+#: dashboard/templates/book-listing-user-unit.php:104
+#: dashboard/templates/book-listing-user-unit.php:106
+msgid "Cancel Booking Request"
+msgstr ""
+
+#: dashboard/templates/book-listing-user-unit.php:108
+#: libs/help_functions.php:940 templates/owner_area.php:112
+#: templates/owner_area.php:138 templates/owner_details_header.php:174
+msgid "Contact Owner"
+msgstr "Kontakt ejer"
+
+#: dashboard/templates/change_password.php:2
+msgid "Change Password"
+msgstr "Skift adgangskode"
+
+#: dashboard/templates/change_password.php:5
+msgid "*After you change the password you will have to login again."
+msgstr ""
+
+#: dashboard/templates/change_password.php:9
+msgid "Old Password"
+msgstr "Gamle adgangskode"
+
+#: dashboard/templates/change_password.php:14
+msgid "New Password "
+msgstr "Ny adgangskode"
+
+#: dashboard/templates/change_password.php:18
+msgid "Confirm New Password"
+msgstr "Bekræft nyt password"
+
+#: dashboard/templates/change_password.php:24
+#: templates/login_modal_form.php:181 templates/mobile_menu.php:169
+#: templates/mobile_menu.php:177
+msgid "Reset Password"
+msgstr "Nulstil Kodeord"
+
+#: dashboard/templates/dashboard_listing_unit.php:41
+#: libs/css_js_include.php:697 templates/property_unit.php:71
+#: templates/property_unit_3.php:61 templates/property_unit_full_row.php:27
+#: templates/property_unit_wide.php:56 templates/property_unit_widget.php:67
+msgid "add to favorites"
+msgstr "Tilføj til favorit"
+
+#: dashboard/templates/dashboard_listing_unit.php:45
+#: libs/css_js_include.php:696 templates/property_unit.php:75
+#: templates/property_unit_3.php:65 templates/property_unit_full_row.php:31
+#: templates/property_unit_wide.php:60 templates/property_unit_widget.php:71
+msgid "remove from favorites"
+msgstr "fjern fra favoritter"
+
+#: dashboard/templates/dashboard_pack_unit.php:31
+msgid "Time Period: "
+msgstr ""
+
+#: dashboard/templates/dashboard_pack_unit.php:36
+msgid "Unlimited"
+msgstr "Ubegrænset"
+
+#: dashboard/templates/dashboard_pack_unit.php:36
+msgid "listings "
+msgstr ""
+
+#: dashboard/templates/dashboard_pack_unit.php:38 templates/places_unit.php:82
+#: templates/places_unit_1.php:53 templates/places_unit_1.php:60
+msgid "Listings"
+msgstr "Annoncer"
+
+#: dashboard/templates/dashboard_pack_unit.php:43
+msgid "Featured"
+msgstr "Fremhævet"
+
+#: dashboard/templates/dashboard_unit_widget_popular.php:16
+msgid "No of bookings"
+msgstr ""
+
+#: dashboard/templates/dashboard_unit_widget_popular.php:19
+msgid "Total price"
+msgstr "Pris i alt"
+
+#: dashboard/templates/invoice_filters.php:3
+msgid "from date"
+msgstr ""
+
+#: dashboard/templates/invoice_filters.php:7
+msgid "to date"
+msgstr "til dato"
+
+#: dashboard/templates/invoice_filters.php:13 libs/ajax_functions.php:1142
+#: libs/help_functions.php:4214 user_dashboard_invoices.php:26
+msgid "Upgrade to Featured"
+msgstr "Opgradér til fremhævet"
+
+#: dashboard/templates/invoice_filters.php:14 libs/ajax_functions.php:1143
+#: user_dashboard_invoices.php:27
+msgid "Publish Listing with Featured"
+msgstr "Annoncér som fremhævet"
+
+#: dashboard/templates/invoice_filters.php:15 libs/ajax_functions.php:1144
+#: libs/ajax_functions_booking.php:3009 user_dashboard_invoices.php:28
+msgid "Package"
+msgstr "Pakke"
+
+#: dashboard/templates/invoice_filters.php:16 libs/ajax_functions.php:1145
+#: user_dashboard_invoices.php:29
+msgid "Listing"
+msgstr "Annonce"
+
+#: dashboard/templates/invoice_filters.php:17 libs/ajax_functions.php:1146
+#: libs/ajax_functions.php:1218 libs/ajax_functions_booking.php:1351
+#: libs/ajax_functions_booking.php:1688 libs/ajax_functions_edit.php:1066
+#: user_dashboard_invoices.php:30 user_dashboard_invoices.php:57
+#: user_dashboard_invoices.php:82
+msgid "Reservation fee"
+msgstr ""
+
+#: dashboard/templates/invoice_filters.php:23
+msgid "Any"
+msgstr "Vilkårlig"
+
+#: dashboard/templates/invoice_filters.php:24
+#: dashboard/templates/invoice_listing_unit.php:38
+#: dashboard/templates/invoice_listing_unit.php:50
+msgid "confirmed"
+msgstr "bekræftet"
+
+#: dashboard/templates/invoice_filters.php:25
+#: dashboard/templates/invoice_listing_unit.php:48
+msgid "issued"
+msgstr "udstedt"
+
+#: dashboard/templates/invoice_filters.php:32
+msgid "Reservation fees filter applies only to the invoices issued by you!"
+msgstr ""
+
+#: dashboard/templates/invoice_filters.php:36
+msgid "Total Invoices Confirmed: "
+msgstr ""
+
+#: dashboard/templates/invoice_filters.php:44
+msgid "Total Invoices Issued: "
+msgstr ""
+
+#: dashboard/templates/invoice_listing_unit.php:36
+msgid "canceled"
+msgstr "annulleret"
+
+#: dashboard/templates/invoice_listing_unit.php:38
+msgid "fully paid"
+msgstr ""
+
+#: dashboard/templates/invoice_listing_unit.php:40
+msgid "deposit paid"
+msgstr ""
+
+#: dashboard/templates/invoice_listing_unit.php:40
+msgid "waiting for full payment"
+msgstr ""
+
+#: dashboard/templates/invoice_listing_unit.php:42
+msgid "refunded"
+msgstr "refunderet"
+
+#: dashboard/templates/invoice_listing_unit.php:44
+msgid "pending"
+msgstr "afventer"
+
+#: dashboard/templates/invoice_listing_unit.php:46
+msgid "waiting"
+msgstr ""
+
+#: dashboard/templates/invoice_listing_unit.php:52
+msgid "confirmed/ booking canceled by user"
+msgstr ""
+
+#: dashboard/templates/property-list-search.php:6
+#: dashboard/templates/search_booking_list.php:5
+#: dashboard/templates/search_rezervation_list.php:5
+msgid "Search by listing name."
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:8
+msgid " Validate your Mobile Phone Number to receive SMS Notifications"
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:12
+msgid ""
+"1. Add your Mobile no in Your Details section. Make sure you add it with "
+"country code."
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:13
+msgid "2. Click on the button \"Send me validation code\"."
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:14
+msgid "3. You will get a 4 digit code number via sms at"
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:15
+msgid ""
+"4. Add the 4 digit code in the form below and click \"Validate Mobile Phone "
+"Number\""
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:19
+msgid "Send me validation code"
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:20
+msgid "Validate Mobile Phone Number"
+msgstr ""
+
+#: dashboard/templates/sms_validation.php:21
+msgid ""
+"*** If you don't receive the SMS, please check that your mobile phone number "
+"has the proper format (use the country code ex: +1 3232 232)"
+msgstr ""
+
+#: dashboard/templates/unit-templates/balance_display.php:3
+msgid "Balance: "
+msgstr ""
+
+#: dashboard/templates/unit-templates/balance_display.php:3
+msgid "to be paid until "
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_image.php:4
+#: dashboard/templates/unit-templates/booking_image.php:9
+#: dashboard/templates/unit-templates/property-unit-image.php:13
+#: dashboard/templates/unit-templates/property-unit-image.php:17
+#: dashboard/templates/unit-templates/reservation_image.php:3
+#: dashboard/templates/unit-templates/reservation_image.php:9
+#: libs/help_functions.php:174 libs/help_functions.php:1170
+#: templates/agent_unit.php:11 templates/agentdetails.php:32
+#: templates/agentdetails.php:37 templates/property_unit_widget.php:109
+#: templates/property_unit_widget.php:113
+msgid "image"
+msgstr "billede"
+
+#: dashboard/templates/unit-templates/booking_status.php:5
+msgid "Confirmed & Fully Paid"
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_status.php:7
+msgid "Confirmed / Not Fully Paid"
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_status.php:10
+msgid "Invoice Issued "
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_status.php:12
+msgid "Pending"
+msgstr "Afventer"
+
+#: dashboard/templates/unit-templates/booking_title_section.php:21
+#: dashboard/templates/unit-templates/reservation_title_section.php:18
+msgid "Booking request"
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_title_section.php:22
+#: dashboard/templates/unit-templates/reservation_title_section.php:19
+msgid "for"
+msgstr "til"
+
+#: dashboard/templates/unit-templates/booking_title_section.php:29
+#: dashboard/templates/unit-templates/reservation_title_section.php:24
+#: libs/ajax_functions_booking.php:2627
+msgid "Invoice No: "
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_title_section.php:33
+msgid "Pay Amount: "
+msgstr "At betale:"
+
+#: dashboard/templates/unit-templates/booking_title_section.php:37
+#: dashboard/templates/unit-templates/reservation_title_section.php:29
+msgid "Guests: "
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_title_section.php:46
+msgid "Reservation made by owner"
+msgstr ""
+
+#: dashboard/templates/unit-templates/booking_title_section.php:47
+msgid "Comments: "
+msgstr "Kommentarer: "
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:16
+msgid "Not Registered - DO NOT REPLY"
+msgstr ""
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:52
+msgid "From: "
+msgstr "Fra: "
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:71
+msgid "new message"
+msgstr "ny besked"
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:75
+msgid "Conversation started by you "
+msgstr ""
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:77
+#: libs/ajax_functions.php:1084 libs/listing_functions.php:899
+#: libs/listing_functions.php:1156
+msgid "From"
+msgstr "Fra"
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:84
+msgid "Subject"
+msgstr "Emne"
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:92
+msgid "reply to message"
+msgstr ""
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:96
+msgid "delete message"
+msgstr ""
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:139
+#: functions.php:505
+msgid "Reply"
+msgstr "Svar"
+
+#: dashboard/templates/unit-templates/message-listing-unit.php:145
+#: libs/css_js_include.php:983
+msgid "Send Reply"
+msgstr "Send Svar"
+
+#: dashboard/templates/unit-templates/property-status.php:7
+msgid "Expired"
+msgstr "Udløbet"
+
+#: dashboard/templates/unit-templates/property-status.php:10
+msgid "Published"
+msgstr "Udgivet"
+
+#: dashboard/templates/unit-templates/property-status.php:13
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+#: dashboard/templates/unit-templates/property-status.php:16
+msgid "Waiting for approval"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-status.php:25
+msgid "Paid"
+msgstr "Betalt"
+
+#: dashboard/templates/unit-templates/property-status.php:28
+msgid "Not Paid"
+msgstr "Ikke betalt"
+
+#: dashboard/templates/unit-templates/property-status.php:39
+msgid "Expires on"
+msgstr "Udløber den"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:9
+msgid "Edit property"
+msgstr "Rediger ejendom"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:10
+msgid "Delete property"
+msgstr "Slet konto"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:10
+msgid "Are you sure you wish to delete "
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:13
+msgid "Resend for approval"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:22
+msgid "Publish or Upgrade"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:27
+msgid "Disable Listing"
+msgstr "Deaktiver annonce"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:29
+msgid "Enable Listing"
+msgstr "Aktivér annonce"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:34
+msgid "Set as featured"
+msgstr "Fremhæv"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:60
+msgid "Submission Fee"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:70
+#: libs/ajax_functions_booking.php:931 libs/ajax_functions_edit.php:1424
+#: user_dashboard_packs.php:66
+msgid "Pay with Paypal"
+msgstr "Betal med PayPal"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:78
+#: libs/ajax_functions_booking.php:936
+msgid "Wire Transfer"
+msgstr "Bankoverførsel"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:90
+#: libs/css_js_include.php:692
+msgid "Property is featured"
+msgstr "Ejedommen er fremhævet"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:94
+msgid "Featured Fee"
+msgstr "Fremhævede gebyr"
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:103
+msgid "Set as Featured"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-actions.php:109
+msgid "Set as Featured - Wire"
+msgstr ""
+
+#: dashboard/templates/unit-templates/property-unit-image.php:9
+#: templates/property_unit.php:118 templates/property_unit_3.php:125
+#: templates/property_unit_featured.php:71 templates/property_unit_wide.php:106
+msgid "featured"
+msgstr "udvalgte"
+
+#: dashboard/templates/unit-templates/property-unit-reviews.php:5
+msgid "No Reviews"
+msgstr "Ingen anmeldelser"
+
+#: dashboard/templates/unit-templates/property-unit-title.php:15
+#: libs/help_functions.php:177
+msgid "Listed in"
+msgstr "Vist i"
+
+#: dashboard/templates/unit-templates/property-unit-title.php:18
+#: libs/help_functions.php:180
+msgid "and"
+msgstr "og"
+
+#: dashboard/templates/unit-templates/property-unit-title.php:25
+#: libs/listing_functions.php:1450 libs/listing_functions.php:1491
+#: templates/search_unit.php:35
+#: templates/submit_templates/property_description_first.php:245
+msgid "City"
+msgstr "Poststed"
+
+#: dashboard/templates/unit-templates/property-unit-title.php:27
+#: libs/listing_functions.php:1453 libs/listing_functions.php:1494
+#: templates/search_unit.php:43
+msgid "Area"
+msgstr "Areal"
+
+#: dashboard/templates/unit-templates/reservation_status.php:5
+msgid "Confirmed & Paid"
+msgstr ""
+
+#: dashboard/templates/unit-templates/reservation_status.php:7
+#: libs/ajax_functions_booking.php:2637 libs/css_js_include.php:980
+msgid "Confirmed"
+msgstr "Bekræftet"
+
+#: dashboard/templates/unit-templates/reservation_status.php:10
+msgid "Waiting"
+msgstr "Afventer"
+
+#: dashboard/templates/unit-templates/reservation_status.php:12
+msgid "Request Pending"
+msgstr "Afventede anmodninger"
+
+#: dashboard/templates/user_profile.php:54
+msgid "Your details"
+msgstr "Dine oplysninger"
+
+#: dashboard/templates/user_profile.php:58
+msgid "First Name"
+msgstr "Fornavn"
+
+#: dashboard/templates/user_profile.php:63
+msgid "Last Name"
+msgstr "Efternavn"
+
+#: dashboard/templates/user_profile.php:73
+msgid "About Me"
+msgstr "Om mig"
+
+#: dashboard/templates/user_profile.php:78
+msgid "I live in"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:83
+msgid "I speak"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:87
+msgid "Payment Info/Hidden Field"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:92
+msgid "Email for receiving Paypal Payments (booking fees, refund fees, etc)"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:99 libs/ajax_functions_booking.php:1996
+#: libs/help_functions.php:245
+msgid "Phone"
+msgstr "Telefon"
+
+#: dashboard/templates/user_profile.php:103
+msgid "Mobile (*Add the country code format Ex :+1 232 3232)"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:111 libs/help_functions.php:266
+msgid "Skype"
+msgstr "Skype"
+
+#: dashboard/templates/user_profile.php:116
+msgid "Facebook Url"
+msgstr "Facebook URL"
+
+#: dashboard/templates/user_profile.php:121
+msgid "Twitter Url"
+msgstr "Twitter URL"
+
+#: dashboard/templates/user_profile.php:126
+msgid "Linkedin Url"
+msgstr "LinkedIn URL"
+
+#: dashboard/templates/user_profile.php:131
+msgid "Pinterest Url"
+msgstr "Pinterest URL"
+
+#: dashboard/templates/user_profile.php:135
+msgid "Instagram Url"
+msgstr "Instagram URL"
+
+#: dashboard/templates/user_profile.php:140
+msgid "YouTube Url"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:147
+msgid "Update profile"
+msgstr "Opdater profil"
+
+#: dashboard/templates/user_profile.php:158
+msgid "View public profile"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:161
+msgid "Delete account"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:171
+#: dashboard/templates/user_profile.php:194
+#: libs/ajax_functions_booking.php:2610
+#: templates/submit_templates/property_images.php:39
+#: templates/submit_templates/property_images.php:50
+#: templates/submit_templates/property_images.php:55
+msgid "thumb"
+msgstr "tommelfinger"
+
+#: dashboard/templates/user_profile.php:176
+msgid "Upload Image"
+msgstr "Upload billede"
+
+#: dashboard/templates/user_profile.php:182
+#: dashboard/templates/user_profile.php:205
+msgid "* recommended size: minimum 550px "
+msgstr ""
+
+#: dashboard/templates/user_profile.php:199
+msgid "Upload an Id Scan"
+msgstr ""
+
+#: dashboard/templates/user_profile.php:207
+msgid "You have been verified"
+msgstr ""
+
+#: functions.php:91
+msgid ""
+"For better speed results, the theme offers a built-in caching system for "
+"properties and categories.Because of that, properties or categories may not "
+"appear immediately on your site. Use the Clear Wp Rentals Cache button from "
+"the admin bar to see the changes made instantly. Automatic updates happen "
+"every 4 hours."
+msgstr ""
+
+#: functions.php:100
+msgid "Google Maps will NOT WORK without a correct Api Key. Get one from "
+msgstr ""
+
+#: functions.php:100
+msgid "here"
+msgstr "her"
+
+#: functions.php:111
+msgid "Wordpress Memory Limit is set to "
+msgstr "WordPress Memory Limit er indstillet til"
+
+#: functions.php:111
+msgid "Recommended memory limit should be at least 96MB. Please refer to : "
+msgstr ""
+"Anbefalet hukommelse grænse bør være mindst 96MB. Venligst referer til:"
+
+#: functions.php:111
+msgid "Increasing memory allocated to PHP"
+msgstr "Forøg hukommelse allokeret til PHP"
+
+#: functions.php:128
+msgid "Your PHP version is "
+msgstr ""
+
+#: functions.php:139
+msgid ""
+"MbString extension not detected. Please contact your hosting provider in "
+"order to enable it."
+msgstr ""
+
+#: functions.php:154
+msgid ""
+"Half Map Template - make sure your page has the \"media header type\" set as "
+"google map "
+msgstr ""
+"Half Map Template - kontroller at siden har “media header type” indstillet "
+"som ‘google map’"
+
+#: functions.php:171
+msgid "Do NOT edit booking details from admin!"
+msgstr ""
+
+#: functions.php:188
+msgid ""
+"Please do not manually change the slugs when adding new terms. If you need "
+"to edit a term name copy the new name in the slug field also."
+msgstr ""
+
+#: functions.php:202
+msgid ""
+"Please add properties from front end interface using a user account with "
+"subscriber level registered in front end."
+msgstr ""
+
+#: functions.php:215
+msgid ""
+"You need to create a page with the template ICAL FEED (if you want to use "
+"icalendar export/import feature)"
+msgstr ""
+
+#: functions.php:228
+msgid ""
+"You need to create a page with the template All in one calendar (if you want "
+"to use all in one calendar feature)"
+msgstr ""
+
+#: functions.php:241
+msgid ""
+"It looks like you may have a problem with the server date.timezone settings "
+"and may encounter errors like the one described here:"
+msgstr ""
+
+#: functions.php:241
+msgid "Please resolve these issues with your hosting provider."
+msgstr ""
+
+#: functions.php:447
+msgid "Post navigation"
+msgstr "Indlæg navigation"
+
+#: functions.php:448
+msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+msgstr "<span class=\"meta-nav\">&larr;</span> Ældre indlæg"
+
+#: functions.php:449
+msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Nyere indlæg <span class=\"meta-nav\">&rarr;</span>"
+
+#: functions.php:470
+msgid "Pingback:"
+msgstr "Pingback:"
+
+#: functions.php:470 functions.php:486
+msgid "Edit"
+msgstr "Rediger"
+
+#: functions.php:491
+msgid " on "
+msgstr " På "
+
+#: functions.php:496
+msgid "Your comment is awaiting moderation."
+msgstr "Din kommentar afventer godkendelse."
+
+#: functions.php:535 functions.php:539
+msgid "Please edit your profile page from site interface."
+msgstr "Rediger venligst din profil fra sidens interface."
+
+#: functions.php:610
+msgid "A new password was sent via email!"
+msgstr "Nyt password er sendt via email."
+
+#: functions.php:616
+msgid "We have just sent you a new password. Please check your email!"
+msgstr "Vi har lige sendt dig en ny adgangskode. Tjek venligst din email."
+
+#: libs/3rdparty.php:217 libs/3rdparty.php:222
+msgid " package on "
+msgstr "pakke på"
+
+#: libs/3rdparty.php:353 libs/3rdparty.php:354
+msgid "PayPal payment agreement"
+msgstr ""
+
+#: libs/ajax_functions.php:79
+msgid "We sent a sms with a validation code."
+msgstr ""
+
+#: libs/ajax_functions.php:81
+msgid "Please add your mobile phone number!"
+msgstr ""
+
+#: libs/ajax_functions.php:111
+msgid "Mobile phone number is validated."
+msgstr ""
+
+#: libs/ajax_functions.php:114
+msgid ""
+"The entered code is not correct. The mobile phone number is not validated."
+msgstr ""
+
+#: libs/ajax_functions.php:154
+msgid ""
+"Please validate your purchase code in order to use the theme! See this <a "
+"href=\"https://help.wprentals.org/article/where-is-my-purchase-code/\" "
+"target=\"_blank\">link</a> if you don't know how to get your license key. "
+"Thank you!"
+msgstr ""
+
+#: libs/ajax_functions.php:537
+msgid "Hi there,"
+msgstr "Hey,"
+
+#: libs/ajax_functions.php:961 libs/ajax_functions.php:2445
+#: libs/ajax_functions.php:2591 libs/search_functions4.php:389
+#: templates/google_maps_base.php:83
+msgid "We didn't find any results"
+msgstr ""
+
+#: libs/ajax_functions.php:967 libs/search_functions4.php:395
+msgid " Results found!"
+msgstr ""
+
+#: libs/ajax_functions.php:1083
+#: templates/submit_templates/property_calendar.php:400
+#: user_dashboard_allinone.php:444
+msgid "Booking id"
+msgstr ""
+
+#: libs/ajax_functions.php:1084
+msgid "To "
+msgstr "Til "
+
+#: libs/ajax_functions.php:1088
+msgid "Invoice"
+msgstr "Faktura"
+
+#: libs/ajax_functions.php:1304 templates/mobile_menu.php:57
+#: templates/top_user_menu.php:66 templates/user_menu.php:171
+msgid "My Profile"
+msgstr "Min profil"
+
+#: libs/ajax_functions.php:1308 templates/agent_listings.php:33
+#: templates/mobile_menu.php:64 templates/top_user_menu.php:72
+#: templates/user_menu.php:177
+msgid "My Listings"
+msgstr "Mine aktiviteter"
+
+#: libs/ajax_functions.php:1312 templates/mobile_menu.php:65
+#: templates/top_user_menu.php:78 templates/user_menu.php:182
+msgid "Add New Listing"
+msgstr "Tilføj"
+
+#: libs/ajax_functions.php:1316 templates/mobile_menu.php:67
+#: templates/top_user_menu.php:84 templates/user_menu.php:223
+msgid "Favorites"
+msgstr "Favoritter"
+
+#: libs/ajax_functions.php:1321 templates/mobile_menu.php:77
+#: templates/top_user_menu.php:109 templates/user_menu.php:242
+msgid "Log Out"
+msgstr "Log Ud"
+
+#: libs/ajax_functions.php:1397 libs/ajax_functions.php:1413
+msgid "Please confirm you are not a robot!"
+msgstr "Bekræft venligs, at du ikke er en robot!"
+
+#: libs/ajax_functions.php:1424
+msgid "Invalid username (do not use special characters or spaces)!"
+msgstr "Ugyldigt brugernavn (Benyt ikke specialtegn eller mellemrum)!"
+
+#: libs/ajax_functions.php:1430 libs/ajax_functions_booking.php:2671
+msgid "Username and/or Email field is empty!"
+msgstr "Brugernavn og / eller e-mailfelt er tomt!"
+
+#: libs/ajax_functions.php:1435
+msgid "The email doesn't look right!"
+msgstr ""
+
+#: libs/ajax_functions.php:1441
+msgid "The email's domain doesn't look right!"
+msgstr ""
+
+#: libs/ajax_functions.php:1448
+msgid "Username already exists.  Please choose a new one.!"
+msgstr ""
+
+#: libs/ajax_functions.php:1458
+msgid "One of the password field is empty!"
+msgstr ""
+
+#: libs/ajax_functions.php:1463
+msgid "Passwords do not match!"
+msgstr ""
+
+#: libs/ajax_functions.php:1488
+msgid "The account was created. You can login now."
+msgstr ""
+
+#: libs/ajax_functions.php:1490
+msgid "An email with the generated password was sent"
+msgstr ""
+
+#: libs/ajax_functions.php:1500
+msgid "Email already exists.  Please choose a new one!"
+msgstr ""
+
+#: libs/ajax_functions.php:1570 libs/ajax_functions.php:1629
+msgid "You are already logged in! redirecting..."
+msgstr ""
+
+#: libs/ajax_functions.php:1580 libs/ajax_functions.php:1644
+msgid "Username and/or Password field is empty!"
+msgstr ""
+
+#: libs/ajax_functions.php:1601 libs/ajax_functions.php:1656
+msgid "Wrong username or password!"
+msgstr "Forket brugernavn eller password!"
+
+#: libs/ajax_functions.php:1608 libs/ajax_functions.php:1673
+msgid "Login successful, redirecting..."
+msgstr "Log ind lykkedes"
+
+#: libs/ajax_functions.php:1705
+msgid "Email field is empty!"
+msgstr ""
+
+#: libs/ajax_functions.php:1715
+msgid "Invalid E-mail address!"
+msgstr ""
+
+#: libs/ajax_functions.php:1721
+msgid "Invalid Username!"
+msgstr ""
+
+#: libs/ajax_functions.php:1746
+msgid "We have just sent you an email with Password reset instructions."
+msgstr ""
+"Vi har sendt dig en email med oplysning om hvordan du nulstiller dit "
+"password. "
+
+#: libs/ajax_functions.php:1854
+msgid "The email was not saved because it is used by another user. "
+msgstr ""
+
+#: libs/ajax_functions.php:1856
+msgid "The email field cannot be blank. "
+msgstr ""
+
+#: libs/ajax_functions.php:1858 libs/ajax_functions_booking.php:2676
+msgid "The email doesn't look right !"
+msgstr ""
+
+#: libs/ajax_functions.php:1870
+msgid "Profile updated"
+msgstr "Profil opdateret"
+
+#: libs/ajax_functions.php:2070
+msgid "The new password is blank"
+msgstr ""
+
+#: libs/ajax_functions.php:2075
+msgid "Passwords do not match"
+msgstr "Adgangskoder matcher ikke"
+
+#: libs/ajax_functions.php:2083
+msgid "Password Updated - You will need to logout and login again "
+msgstr ""
+
+#: libs/ajax_functions.php:2085
+msgid "Old Password is not correct"
+msgstr ""
+
+#: libs/ajax_functions.php:2123 libs/ajax_functions.php:2129
+msgid "addded"
+msgstr ""
+
+#: libs/ajax_functions.php:2136
+msgid "removed"
+msgstr "fjernet "
+
+#: libs/ajax_functions.php:2179
+msgid "Contact the owner"
+msgstr ""
+
+#: libs/ajax_functions.php:2180
+msgid "Please complete the form below to contact owner."
+msgstr ""
+
+#: libs/ajax_functions.php:2215 libs/css_js_include.php:552
+#: libs/css_js_include.php:559 libs/css_js_include.php:679
+#: libs/css_js_include.php:683
+msgid "Your Name"
+msgstr "Dit navn"
+
+#: libs/ajax_functions.php:2219 libs/css_js_include.php:553
+#: libs/css_js_include.php:560 libs/css_js_include.php:680
+#: libs/css_js_include.php:684
+msgid "Your Email"
+msgstr "Din e-mail"
+
+#: libs/ajax_functions.php:2234 libs/css_js_include.php:624
+#: libs/listing_functions.php:368
+msgid "Guest"
+msgstr "Gæst"
+
+#: libs/ajax_functions.php:2247
+msgid "Your message"
+msgstr "Din besked"
+
+#: libs/ajax_functions.php:2341 libs/help_functions.php:5283
+#: libs/search_functions.php:70 libs/search_functions.php:411
+#: libs/search_functions3.php:745 libs/search_functions3.php:838
+#: property_list.php:98 property_list_half.php:92
+#: templates/property_list_filters.php:44
+msgid "All Cities"
+msgstr "Alle byer"
+
+#: libs/ajax_functions.php:2355 libs/help_functions.php:5322
+#: libs/help_functions.php:5359 libs/search_functions.php:84
+#: libs/search_functions.php:413 libs/search_functions3.php:753
+#: libs/search_functions3.php:840 property_list.php:120
+#: property_list_half.php:110 templates/property_list_filters.php:46
+msgid "All Areas"
+msgstr "Alle områder"
+
+#: libs/ajax_functions.php:2678
+msgid "Deposit for Booking on "
+msgstr "Depositum for booking"
+
+#: libs/ajax_functions.php:2722
+msgid "Deposit for Booking Id"
+msgstr ""
+
+#: libs/ajax_functions.php:2722
+msgid "Invoice Id "
+msgstr ""
+
+#: libs/ajax_functions.php:2810
+msgid "Listing payment on "
+msgstr "Annonce betaling på"
+
+#: libs/ajax_functions.php:2822
+msgid "Upgrade to featured listing on "
+msgstr "Opgrader til udvalgt ejendom"
+
+#: libs/ajax_functions.php:2866
+msgid "Upgrade to Featured Listing"
+msgstr "Opgrader til Udvalgte ejendomme"
+
+#: libs/ajax_functions.php:2875
+msgid "Listing Payment"
+msgstr "Betal for ejendom"
+
+#: libs/ajax_functions.php:2884
+msgid "Listing Payment with Featured option"
+msgstr "Betaling for fremhævet annonce"
+
+#: libs/ajax_functions.php:2980
+msgid "Published!"
+msgstr ""
+
+#: libs/ajax_functions.php:2982
+msgid "Sent for approval"
+msgstr ""
+
+#: libs/ajax_functions.php:2992
+msgid "no listings available"
+msgstr "Ingen tilgængelige annoncer"
+
+#: libs/ajax_functions.php:3080
+msgid "membership payment on "
+msgstr "Betaling af medlemskab på"
+
+#: libs/ajax_functions.php:3087 libs/ajax_functions.php:3090
+msgid "Membership Payment"
+msgstr "Betaling af medlemskab"
+
+#: libs/ajax_functions_booking.php:767 libs/ajax_functions_booking.php:2948
+#: libs/ajax_functions_booking.php:2967 libs/ajax_functions_booking.php:2987
+#: libs/ajax_functions_booking.php:3007 libs/ajax_functions_edit.php:1213
+msgid "Invoice INV"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:778 libs/ajax_functions_booking.php:1955
+#: libs/ajax_functions_booking.php:3011 libs/listing_functions.php:820
+#: libs/listing_functions.php:1156 user_dashboard_my_bookings.php:52
+#: user_dashboard_my_reservations.php:82
+msgid "Period"
+msgstr "Periode"
+
+#: libs/ajax_functions_booking.php:782 libs/ajax_functions_booking.php:1960
+#: libs/ajax_functions_edit.php:1222
+msgid "Price per Guest"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:790 libs/ajax_functions_booking.php:1968
+#: libs/ajax_functions_edit.php:1230
+msgid "has custom price"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:795 libs/ajax_functions_booking.php:842
+#: libs/ajax_functions_booking.php:1972 libs/ajax_functions_booking.php:2015
+#: libs/ajax_functions_edit.php:1233 libs/ajax_functions_edit.php:1265
+msgid "has weekend price of"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:803 libs/ajax_functions_booking.php:1976
+#: libs/ajax_functions_edit.php:1238
+msgid "Price details:"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:806 libs/ajax_functions_booking.php:1979
+#: libs/ajax_functions_edit.php:1241
+msgid "price is"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:816 libs/ajax_functions_booking.php:2002
+#: libs/ajax_functions_edit.php:1251
+msgid "Cost"
+msgstr "Omkostning"
+
+#: libs/ajax_functions_booking.php:817 libs/ajax_functions_booking.php:2003
+#: libs/ajax_functions_booking.php:2951 libs/ajax_functions_booking.php:2970
+#: libs/ajax_functions_booking.php:2990 libs/ajax_functions_booking.php:3010
+#: libs/ajax_functions_edit.php:1252 templates/property_menu.php:4
+#: templates/property_menu_hidden.php:4 templates/user_menu.php:204
+#: user_dashboard.php:103 user_dashboard_favorite.php:46
+#: user_dashboard_invoices.php:126
+msgid "Price"
+msgstr "Pris"
+
+#: libs/ajax_functions_booking.php:818 libs/ajax_functions_booking.php:2004
+#: libs/ajax_functions_edit.php:1253
+msgid "Detail"
+msgstr "Detalje"
+
+#: libs/ajax_functions_booking.php:827 libs/ajax_functions_booking.php:2109
+#: libs/ajax_functions_edit.php:1051 libs/ajax_functions_edit.php:1352
+#: libs/help_functions.php:6328 libs/help_functions.php:6450
+#: libs/help_functions.php:6535
+#: templates/submit_templates/property_price.php:609
+msgid "Security Deposit"
+msgstr "Depositum"
+
+#: libs/ajax_functions_booking.php:827
+msgid "Security Depozit"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:828 libs/ajax_functions_booking.php:2111
+#: libs/ajax_functions_edit.php:1354
+msgid "*refundable"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:830 libs/ajax_functions_booking.php:2007
+#: libs/ajax_functions_edit.php:1025 libs/ajax_functions_edit.php:1258
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: libs/ajax_functions_booking.php:832 libs/ajax_functions_booking.php:2011
+#: libs/ajax_functions_booking.php:2428 libs/ajax_functions_edit.php:1262
+#: libs/css_js_include.php:804 libs/help_functions.php:648
+#: libs/help_functions.php:4473 libs/search_functions.php:107
+msgid "guests"
+msgstr "gæster"
+
+#: libs/ajax_functions_booking.php:835
+msgid "period with custom price per guest"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:845 libs/ajax_functions_booking.php:2018
+#: libs/ajax_functions_edit.php:1268
+msgid "custom price"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:856 libs/ajax_functions_booking.php:2046
+#: libs/ajax_functions_edit.php:1062 libs/ajax_functions_edit.php:1295
+msgid "Extra Guests"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:857 libs/ajax_functions_booking.php:2048
+#: libs/ajax_functions_booking.php:2459 libs/ajax_functions_edit.php:1297
+msgid "extra guests"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:859
+msgid " , period with custom price per guest"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:875 libs/ajax_functions_edit.php:1375
+#: libs/help_functions.php:6050
+msgid "Total"
+msgstr "Total"
+
+#: libs/ajax_functions_booking.php:878 libs/ajax_functions_booking.php:2132
+#: libs/ajax_functions_edit.php:1378
+msgid "Reservation Fee Required"
+msgstr "Reservationsgebyr påkrævet"
+
+#: libs/ajax_functions_booking.php:879
+msgid "Balance owed"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:889
+msgid "You are paying only the deposit required to confirm the booking:"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:890
+msgid ""
+"You will need to pay the remaining balance before the first day of your "
+"booked period!"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:898
+msgid "You are paying the remaining balance of your invoice:"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:903 libs/ajax_functions_booking.php:925
+#: libs/ajax_functions_edit.php:1405
+msgid "Pay Deposit & Confirm Reservation"
+msgstr "Betal depositum & bekræft reservationen"
+
+#: libs/ajax_functions_booking.php:1077
+msgid "Request Cancelled"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1078
+msgid "User "
+msgstr "Bruger "
+
+#: libs/ajax_functions_booking.php:1078
+msgid " cancelled his booking request"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1082
+msgid "Request Denied"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1083
+msgid "Your booking request was denied."
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1192
+msgid "Your reservation was canceled"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1193
+msgid "Your reservation was canceled by property owner"
+msgstr "Din reservation blev aflyst af udlejer"
+
+#: libs/ajax_functions_booking.php:1352 libs/ajax_functions_booking.php:1579
+#: libs/ajax_functions_booking.php:1689 libs/ajax_functions_edit.php:1067
+#: processor.php:92 processor.php:116 processor.php:119
+msgid "One Time"
+msgstr "En gang"
+
+#: libs/ajax_functions_booking.php:1523 libs/ajax_functions_booking.php:1602
+#: libs/ajax_functions_edit.php:1120
+msgid "New Invoice"
+msgstr "Ny Faktura"
+
+#: libs/ajax_functions_booking.php:1524 libs/ajax_functions_booking.php:1603
+#: libs/ajax_functions_edit.php:1121
+msgid "A new invoice was generated for your booking request"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1545 libs/ajax_functions_booking.php:1754
+#: libs/help_functions.php:2495
+msgid "Booking Confirmation"
+msgstr "Reservations bekræftelse"
+
+#: libs/ajax_functions_booking.php:1546 libs/ajax_functions_booking.php:1550
+#: libs/ajax_functions_booking.php:1755 libs/ajax_functions_booking.php:1759
+#: libs/help_functions.php:2496
+msgid "A booking was confirmed"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1549 libs/ajax_functions_booking.php:1758
+msgid "Booking Confirmed"
+msgstr "Aftale bekræftet"
+
+#: libs/ajax_functions_booking.php:1950
+msgid "Create Invoice"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1957 libs/ajax_functions_edit.php:1219
+msgid "No of guests"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1966
+msgid "default price:"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:1993 libs/ajax_functions_edit.php:1245
+#: user_dashboard.php:101 user_dashboard_favorite.php:44
+#: user_dashboard_my_bookings.php:50 user_dashboard_my_reservations.php:80
+msgid "Property"
+msgstr "Ejendom"
+
+#: libs/ajax_functions_booking.php:1994
+msgid "Rented by"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2034 libs/ajax_functions_booking.php:2051
+#: libs/ajax_functions_booking.php:2431 libs/ajax_functions_edit.php:1285
+msgid " period with custom price per guest"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2062 libs/ajax_functions_edit.php:1046
+#: libs/ajax_functions_edit.php:1307
+msgid "Cleaning fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2070 libs/ajax_functions_edit.php:1047
+#: libs/ajax_functions_edit.php:1317
+msgid "City fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2085 libs/ajax_functions_edit.php:1029
+#: libs/css_js_include.php:1000 libs/help_functions.php:3558
+#: libs/listing_functions.php:651 templates/property_unit_3.php:153
+#: templates/property_unit_wide.php:183
+#: templates/submit_templates/property_price.php:56
+msgid "Single Fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2087 libs/ajax_functions_edit.php:1031
+#: libs/css_js_include.php:1002 libs/help_functions.php:3560
+#: libs/listing_functions.php:653 templates/property_unit_3.php:155
+#: templates/property_unit_wide.php:185
+#: templates/submit_templates/property_price.php:58
+msgid "Per Guest"
+msgstr "Pr. gæst"
+
+#: libs/ajax_functions_booking.php:2088 libs/ajax_functions_edit.php:1032
+#: libs/help_functions.php:3561 libs/listing_functions.php:654
+#: templates/submit_templates/property_price.php:59
+msgid "per Guest"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2119 libs/ajax_functions_booking.php:2496
+#: libs/ajax_functions_edit.php:1056 libs/ajax_functions_edit.php:1364
+#: libs/help_functions.php:6329 libs/listing_functions.php:698
+msgid "Early Bird Discount"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2129
+msgid "Guest Pays"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2134 libs/ajax_functions_edit.php:1379
+msgid "Balance Owed"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2143
+msgid "You Earn"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2147
+msgid ""
+"we deduct security deposit, city fees, cleaning fees and website service fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2150
+msgid "Service Fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2155
+msgid "Taxes"
+msgstr "Moms"
+
+#: libs/ajax_functions_booking.php:2159
+msgid ""
+"*taxes are included in your earnings and you are responsible for paying "
+"these taxes"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2169
+msgid "Send Invoice"
+msgstr "Send Faktura "
+
+#: libs/ajax_functions_booking.php:2172
+msgid "Confirm Booking - No Reservation Fee Required"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2184
+msgid "Add extra expense"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2185
+msgid "type expense name"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2186
+msgid "type expense value"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2187 libs/ajax_functions_booking.php:2191
+msgid "add"
+msgstr "tilføj"
+
+#: libs/ajax_functions_booking.php:2189
+msgid "Add discount"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2190
+msgid "type discount value"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2262 libs/ajax_functions_booking.php:2269
+#: libs/ajax_functions_booking.php:2306 libs/ajax_functions_booking.php:2320
+msgid "Message from "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2334
+msgid " Sent for property: "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2334
+msgid "with the link:"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2337
+msgid "Selected dates"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2337
+msgid " to "
+msgstr " til "
+
+#: libs/ajax_functions_booking.php:2339
+msgid "Content"
+msgstr "Indhold"
+
+#: libs/ajax_functions_booking.php:2342
+msgid "Sent by unregistered user with name: "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2342
+msgid " and email: "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2350
+msgid ""
+"Your message was sent! You will be notified by email when a reply is "
+"received."
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2459
+msgid "Costs for "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2469 libs/help_functions.php:6325
+#: libs/help_functions.php:6447 libs/help_functions.php:6532
+#: libs/listing_functions.php:658
+msgid "Cleaning Fee"
+msgstr "Rengøring"
+
+#: libs/ajax_functions_booking.php:2478 libs/help_functions.php:6326
+#: libs/help_functions.php:6448 libs/help_functions.php:6533
+msgid "City Fee"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2488
+msgid "Security Deposit (*refundable)"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2504
+msgid "TOTAL"
+msgstr "TOTAL"
+
+#: libs/ajax_functions_booking.php:2515
+msgid "Deposit for instant booking"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2527
+msgid "Balance remaining"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2564 libs/ajax_functions_edit.php:672
+#: libs/ajax_functions_edit.php:887
+msgid "Booking Request"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2619
+msgid "Request by "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2623
+msgid "Period: "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2631
+msgid "Pay Ammount: "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2666
+msgid "Invalid username( *do not use special characters or spaces ) "
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2682
+msgid "The email's domain doesn't look right."
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2688
+msgid "Username already exists.  Please choose a new one."
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2701
+msgid "An email with the generated password was sent!"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2712
+msgid "Email already exists.  Please choose a new one."
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2790
+msgid "Proceed to payment."
+msgstr "Gå videre til betaling"
+
+#: libs/ajax_functions_booking.php:2798
+msgid "Pay with Credit Card"
+msgstr "Betal med kreditkort"
+
+#: libs/ajax_functions_booking.php:2800
+msgid "reservation payment"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2949 libs/ajax_functions_booking.php:2968
+#: libs/ajax_functions_booking.php:2988 libs/ajax_functions_booking.php:3008
+#: libs/plugins/class-tgm-plugin-activation.php:2634
+msgid "Type"
+msgstr "Type"
+
+#: libs/ajax_functions_booking.php:2950 libs/ajax_functions_booking.php:2969
+#: libs/ajax_functions_booking.php:2989
+msgid "Listing Id"
+msgstr ""
+
+#: libs/ajax_functions_booking.php:2952 libs/ajax_functions_booking.php:2971
+#: libs/ajax_functions_booking.php:2991 libs/ajax_functions_booking.php:3013
+#: user_dashboard_invoices.php:110
+msgid "Date"
+msgstr "Dato"
+
+#: libs/ajax_functions_booking.php:3079
+msgid "Submit Review"
+msgstr "Indsend anmeldelse"
+
+#: libs/ajax_functions_edit.php:729
+msgid "You reserved a period"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:730
+msgid "You have reserverd a period on your own listing"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:750
+msgid "New Booking Request from "
+msgstr ""
+
+#: libs/ajax_functions_edit.php:751
+#, php-format
+msgid ""
+"Dear %s, You have received a new booking request from %s. Message sent to %s "
+"and %s"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1217
+msgid "Period "
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1396
+msgid "Confirm Booking - No Deposit Needed"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1415
+msgid "Pay & Confirm Reservation"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1524 libs/ajax_functions_edit.php:1583
+#: libs/ajax_functions_edit.php:1651 libs/ajax_functions_edit.php:1783
+#: libs/ajax_functions_edit.php:1915 libs/ajax_functions_edit.php:2067
+#: libs/ajax_functions_edit.php:2216
+msgid "you don't have the right to edit this"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1544 libs/ajax_functions_edit.php:1608
+#: libs/ajax_functions_edit.php:1875 libs/ajax_functions_edit.php:2018
+#: libs/ajax_functions_edit.php:2148 libs/ajax_functions_edit.php:2447
+msgid ""
+"Your listing is pending. Please complete all the mandatory fields for it to "
+"be published!"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:1546 libs/ajax_functions_edit.php:1610
+#: libs/ajax_functions_edit.php:1671 libs/ajax_functions_edit.php:1877
+#: libs/ajax_functions_edit.php:2020 libs/ajax_functions_edit.php:2150
+#: libs/ajax_functions_edit.php:2449
+msgid "Changes are saved!"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2313 user_dashboard_add_step1.php:125
+msgid "Please submit a title for your listing"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2319
+msgid "Please submit a category for your property"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2326
+msgid "Please submit a  the second category for your property"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2334
+msgid "Please submit a city for your listing"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2341
+msgid "Please submit an affiliate link"
+msgstr ""
+
+#: libs/ajax_functions_edit.php:2348
+msgid "Please submit an maximum extra guests above capacity number"
+msgstr ""
+
+#: libs/css_js_include.php:84
+msgid "payment failed"
+msgstr ""
+
+#: libs/css_js_include.php:396
+msgid " in "
+msgstr ""
+
+#: libs/css_js_include.php:403
+msgid "The browser couldn't detect your position!"
+msgstr ""
+
+#: libs/css_js_include.php:404
+msgid "Geolocation is not supported by this browser."
+msgstr ""
+
+#: libs/css_js_include.php:405
+msgid "m radius"
+msgstr ""
+
+#: libs/css_js_include.php:412 libs/css_js_include.php:571
+msgid "close map"
+msgstr "Luk kort"
+
+#: libs/css_js_include.php:502
+#: templates/submit_templates/property_description.php:111
+#: templates/submit_templates/property_description.php:134
+#: templates/submit_templates/property_description_first.php:116
+#: templates/submit_templates/property_description_first.php:141
+msgid "None"
+msgstr "Ingen"
+
+#: libs/css_js_include.php:503 libs/listing_functions.php:586
+#: libs/listing_functions.php:733 libs/listing_functions.php:1075
+#: templates/submit_templates/property_price.php:34
+#: user_dashboard_allinone.php:27
+msgid "Monday"
+msgstr "Mandag"
+
+#: libs/css_js_include.php:504 libs/listing_functions.php:587
+#: libs/listing_functions.php:734 libs/listing_functions.php:1076
+#: templates/submit_templates/property_price.php:35
+#: user_dashboard_allinone.php:28
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+#: libs/css_js_include.php:505 libs/listing_functions.php:588
+#: libs/listing_functions.php:735 libs/listing_functions.php:1077
+#: templates/submit_templates/property_price.php:36
+#: user_dashboard_allinone.php:29
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: libs/css_js_include.php:506 libs/listing_functions.php:589
+#: libs/listing_functions.php:736 libs/listing_functions.php:1078
+#: templates/submit_templates/property_price.php:37
+#: user_dashboard_allinone.php:30
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: libs/css_js_include.php:507 libs/listing_functions.php:590
+#: libs/listing_functions.php:737 libs/listing_functions.php:1079
+#: templates/submit_templates/property_price.php:38
+#: user_dashboard_allinone.php:31
+msgid "Friday"
+msgstr "Fredag"
+
+#: libs/css_js_include.php:508 libs/listing_functions.php:591
+#: libs/listing_functions.php:738 libs/listing_functions.php:1080
+#: templates/submit_templates/property_price.php:39
+#: user_dashboard_allinone.php:32
+msgid "Saturday"
+msgstr "Lørdag"
+
+#: libs/css_js_include.php:509 libs/listing_functions.php:592
+#: libs/listing_functions.php:739 libs/listing_functions.php:1081
+#: templates/submit_templates/property_price.php:40
+#: user_dashboard_allinone.php:33
+msgid "Sunday"
+msgstr "Søndag"
+
+#: libs/css_js_include.php:546 libs/css_js_include.php:972
+msgid "Search here..."
+msgstr ""
+
+#: libs/css_js_include.php:548
+msgid "Type Bedrooms No."
+msgstr "Skriv antal værelser"
+
+#: libs/css_js_include.php:549
+msgid "Type Bathrooms No."
+msgstr "Skriv antal badeværelser"
+
+#: libs/css_js_include.php:550
+msgid "Type Min. Price"
+msgstr "Skriv min. pris"
+
+#: libs/css_js_include.php:551
+msgid "Type Max. Price"
+msgstr "Skriv max. pris"
+
+#: libs/css_js_include.php:554 libs/css_js_include.php:561
+#: libs/css_js_include.php:681 libs/css_js_include.php:685
+msgid "Your Phone"
+msgstr "Dit telefonnr"
+
+#: libs/css_js_include.php:556
+msgid "Your Address"
+msgstr "Your Address"
+
+#: libs/css_js_include.php:557
+msgid "Your City"
+msgstr "Din by"
+
+#: libs/css_js_include.php:558
+msgid "Your State Code (ex CA)"
+msgstr ""
+
+#: libs/css_js_include.php:566 libs/css_js_include.php:690
+msgid "Sending user info, please wait..."
+msgstr "Sender brugerinfo, vent venligst…"
+
+#: libs/css_js_include.php:567
+msgid "Street View"
+msgstr "Street View"
+
+#: libs/css_js_include.php:568
+msgid "Close Street View"
+msgstr ""
+
+#: libs/css_js_include.php:572 templates/google_maps_base.php:91
+#: templates/google_maps_base.php:95
+msgid "open map"
+msgstr ""
+
+#: libs/css_js_include.php:573
+msgid "Fullscreen"
+msgstr "Fuld skærm:"
+
+#: libs/css_js_include.php:574 templates/property_list_filters.php:74
+msgid "Default"
+msgstr "Standard"
+
+#: libs/css_js_include.php:575
+msgid "Please wait while we are processing your submission!"
+msgstr "Vent venligst mens vi behandler din tilmelding"
+
+#: libs/css_js_include.php:576
+msgid "Are you sure you wish to delete?"
+msgstr "Er du sikker på, at du vil slette?"
+
+#: libs/css_js_include.php:577
+msgid "You must to agree with terms and conditions!"
+msgstr ""
+
+#: libs/css_js_include.php:580
+msgid "Booking request sent. Please wait for owner's confirmation!"
+msgstr ""
+
+#: libs/css_js_include.php:581
+msgid "The selected period is already booked. Please choose a new one!"
+msgstr ""
+
+#: libs/css_js_include.php:590
+msgid "The selected period is shorter than the minimum required period!"
+msgstr ""
+
+#: libs/css_js_include.php:592
+msgid "Check-in date is not correct"
+msgstr ""
+
+#: libs/css_js_include.php:593
+msgid "Check-in/Check-out dates are not correct"
+msgstr ""
+
+#: libs/css_js_include.php:594
+msgid "from"
+msgstr "fra"
+
+#: libs/css_js_include.php:598
+msgid "Unavailable/Only Check Out"
+msgstr ""
+
+#: libs/css_js_include.php:599
+msgid "Unavailable"
+msgstr "Utilgængelig"
+
+#: libs/css_js_include.php:601
+msgid "To be paid"
+msgstr "Til betaling"
+
+#: libs/css_js_include.php:602
+msgid "Send me the invoice"
+msgstr ""
+
+#: libs/css_js_include.php:604
+msgid "Direct payment instructions"
+msgstr ""
+
+#: libs/css_js_include.php:605
+msgid "Thank you. Please check your email for payment instructions."
+msgstr "Tak. Tjek din email for betalingsinstruktioner."
+
+#: libs/css_js_include.php:606 libs/help_functions.php:4458
+#: libs/help_functions.php:4485 libs/help_functions.php:4499
+#: libs/help_functions.php:4513 libs/search_functions2.php:388
+msgid "any"
+msgstr "og"
+
+#: libs/css_js_include.php:608
+msgid "processing, please wait..."
+msgstr ""
+
+#: libs/css_js_include.php:619
+msgid "Pay"
+msgstr "Betal"
+
+#: libs/css_js_include.php:620
+msgid "Payment for package"
+msgstr ""
+
+#: libs/css_js_include.php:622 libs/css_js_include.php:713
+#: libs/css_js_include.php:810
+msgid "You must agree to GDPR Terms"
+msgstr ""
+
+#: libs/css_js_include.php:626
+msgid "Infant"
+msgstr ""
+
+#: libs/css_js_include.php:627 libs/help_functions.php:8071
+msgid "Infants"
+msgstr ""
+
+#: libs/css_js_include.php:628
+msgid "Child"
+msgstr "Barn"
+
+#: libs/css_js_include.php:629 libs/help_functions.php:8067
+msgid "Children"
+msgstr "Børn"
+
+#: libs/css_js_include.php:630
+msgid "Guests Maximum"
+msgstr ""
+
+#: libs/css_js_include.php:693
+msgid "You have used all the \"Featured\" listings in your package."
+msgstr "Du har brugt alle \"Fremhævede\" annoncer i din pakke."
+
+#: libs/css_js_include.php:694 libs/help_functions.php:1082
+#: single-estate_property.php:123
+msgid "Favorite"
+msgstr "Foretrukken"
+
+#: libs/css_js_include.php:695 libs/help_functions.php:1076
+#: single-estate_property.php:78
+msgid "Add to Favorites"
+msgstr "Føj til favoritter"
+
+#: libs/css_js_include.php:698
+msgid "saving.."
+msgstr "Gemmer"
+
+#: libs/css_js_include.php:699
+msgid "sending message.."
+msgstr "sender besked"
+
+#: libs/css_js_include.php:700
+msgid "Reserve Period"
+msgstr "Reservationsperiode"
+
+#: libs/css_js_include.php:701
+msgid "Connecting to Paypal! Please wait..."
+msgstr "Tilslutter til PayPal! Vent venligst."
+
+#: libs/css_js_include.php:702
+msgid "subscription will be cancelled at the end of the current period"
+msgstr ""
+
+#: libs/css_js_include.php:704 libs/css_js_include.php:1010
+#: libs/css_js_include.php:1065
+msgid "processing.."
+msgstr ""
+
+#: libs/css_js_include.php:706
+msgid ""
+"Confirm your ACCOUNT DELETION request! Clicking the button below will result "
+"your account data will be deleted. This means you will no longer be able to "
+"login to your account and access your account information: My Profile, My "
+"Reservations, My bookings, Invoices. This operation CAN NOT BE REVERSED!"
+msgstr ""
+
+#: libs/css_js_include.php:729 libs/css_js_include.php:1141
+msgid "Geolocation was not successful for the following reason:"
+msgstr ""
+
+#: libs/css_js_include.php:766
+msgid "Please complete these fields"
+msgstr ""
+
+#: libs/css_js_include.php:795
+msgid "Please fill all the forms!"
+msgstr ""
+
+#: libs/css_js_include.php:796
+msgid "Sending Request..."
+msgstr ""
+
+#: libs/css_js_include.php:798
+msgid "You need to log in order to book a listing!"
+msgstr ""
+
+#: libs/css_js_include.php:799
+msgid "View less"
+msgstr ""
+
+#: libs/css_js_include.php:800 libs/theme-slider.php:167
+#: templates/listing_page_1.php:159 templates/property_header2.php:62
+msgid "View more"
+msgstr "Se mere"
+
+#: libs/css_js_include.php:801
+msgid "Check-in date cannot be bigger than Check-out date"
+msgstr ""
+
+#: libs/css_js_include.php:802
+msgid "Please select the number of guests"
+msgstr ""
+
+#: libs/css_js_include.php:803
+msgid "The number of guests is greater than the property capacity - "
+msgstr ""
+
+#: libs/css_js_include.php:808 libs/css_js_include.php:1003
+msgid "reserved"
+msgstr ""
+
+#: libs/css_js_include.php:812 libs/help_functions.php:6704
+msgid "hours"
+msgstr "timer"
+
+#: libs/css_js_include.php:813
+msgid "click and drag to select the hours"
+msgstr ""
+
+#: libs/css_js_include.php:814
+msgid "Processing.."
+msgstr "Behandler..."
+
+#: libs/css_js_include.php:815 libs/help_functions.php:862
+#: libs/help_functions.php:1044 libs/help_functions.php:1048
+msgid "Book Now"
+msgstr "Book nu"
+
+#: libs/css_js_include.php:816 libs/help_functions.php:1039
+msgid "Instant Booking"
+msgstr ""
+
+#: libs/css_js_include.php:856
+msgid "Allowed Files"
+msgstr "Tilladte filer"
+
+#: libs/css_js_include.php:880
+msgid "Image needs to be at least 500px height  x 500px wide!"
+msgstr ""
+
+#: libs/css_js_include.php:882
+msgid "You cannot upload more than"
+msgstr ""
+
+#: libs/css_js_include.php:882
+msgid "images"
+msgstr "billeder"
+
+#: libs/css_js_include.php:884 libs/css_js_include.php:1005
+msgid "Are you sure you want to delete this?"
+msgstr "Er du sikker på du vil slette dette?"
+
+#: libs/css_js_include.php:971
+msgid "deleting..."
+msgstr ""
+
+#: libs/css_js_include.php:977
+msgid "Discount"
+msgstr "Rabat"
+
+#: libs/css_js_include.php:979
+msgid "Invoice Issued"
+msgstr ""
+
+#: libs/css_js_include.php:982
+msgid "sending message..."
+msgstr ""
+
+#: libs/css_js_include.php:984
+msgid "Please fill in all the fields"
+msgstr ""
+
+#: libs/css_js_include.php:985
+msgid "Dates are already booked. Please check the calendar for free days!"
+msgstr ""
+
+#: libs/css_js_include.php:986
+msgid "You cannot select a date in the past! "
+msgstr ""
+
+#: libs/css_js_include.php:987
+msgid "Start date cannot be greater than end date !"
+msgstr ""
+
+#: libs/css_js_include.php:988
+msgid "Please select a property !"
+msgstr ""
+
+#: libs/css_js_include.php:989
+msgid "Please submit a title !"
+msgstr ""
+
+#: libs/css_js_include.php:990
+msgid "Please pick a category !"
+msgstr ""
+
+#: libs/css_js_include.php:991
+msgid "Please pick a typr !"
+msgstr ""
+
+#: libs/css_js_include.php:992
+msgid "Please select the guest no !"
+msgstr ""
+
+#: libs/css_js_include.php:993
+msgid "Please pick a city !"
+msgstr ""
+
+#: libs/css_js_include.php:994
+msgid "sending..."
+msgstr "afsender..."
+
+#: libs/css_js_include.php:995
+msgid "This period is already booked"
+msgstr ""
+
+#: libs/css_js_include.php:996
+msgid "Delete imported dates"
+msgstr ""
+
+#: libs/css_js_include.php:997
+msgid "done"
+msgstr "bekræft"
+
+#: libs/css_js_include.php:1001
+msgid "Per H/Day/Night"
+msgstr ""
+
+#: libs/css_js_include.php:1008 libs/listing_functions.php:376
+#: libs/listing_functions.php:1350
+msgid "Bedroom"
+msgstr "Soveværelse"
+
+#: libs/css_js_include.php:1009
+msgid "Are you sure you want to cancel?"
+msgstr "Er du sikker på, at du vil annullere?"
+
+#: libs/css_js_include.php:1157
+msgid "Warning !"
+msgstr ""
+
+#: libs/dashboard_widgets.php:10
+msgid "Your Current Logo"
+msgstr ""
+
+#: libs/dashboard_widgets.php:12 libs/dashboard_widgets.php:14
+#: libs/footer_filter_functions.php:112 libs/footer_filter_functions.php:114
+#: templates/mobile_menu_header.php:11 templates/mobile_menu_header.php:13
+#: word_remove.php:9
+msgid "logo"
+msgstr "Logo"
+
+#: libs/dashboard_widgets.php:16
+msgid "Upload New Logo"
+msgstr ""
+
+#: libs/dashboard_widgets.php:21
+msgid "Your Current Colors"
+msgstr ""
+
+#: libs/dashboard_widgets.php:51
+msgid "Change Colors"
+msgstr "Ændre farver"
+
+#: libs/dashboard_widgets.php:71
+#, php-format
+msgid "You have  %1$d listings published:"
+msgstr "Du har udgivet  %1$d ejendomme:"
+
+#: libs/dashboard_widgets.php:82 word_remove.php:444
+msgid "Add New Property"
+msgstr "Tilføj ny ejendom"
+
+#: libs/dashboard_widgets.php:98
+#, php-format
+msgid "You have  %1$d pages published."
+msgstr ""
+
+#: libs/dashboard_widgets.php:115
+msgid "Page Title"
+msgstr "Side titel"
+
+#: libs/dashboard_widgets.php:120
+msgid "Page Template"
+msgstr ""
+
+#: libs/dashboard_widgets.php:125
+msgid "See All Your Pages"
+msgstr ""
+
+#: libs/dashboard_widgets.php:127 word_remove.php:442
+msgid "Add New Page"
+msgstr "Tilføj ny side"
+
+#: libs/dashboard_widgets.php:340
+msgid "Your Payment system is in SANDBOX mode."
+msgstr "Dit betalingssystem er i sandbox-tilstand."
+
+#: libs/dashboard_widgets.php:342
+msgid "Your Payment system is in LIVE mode."
+msgstr ""
+
+#: libs/dashboard_widgets.php:352
+#, php-format
+msgid "Payments will be procesed in %1$s. Prices are displayed in %2$s"
+msgstr ""
+
+#: libs/dashboard_widgets.php:360
+msgid ""
+"You did not add your <strong>Paypal Details</strong>. No Paypal payment will "
+"be processed"
+msgstr ""
+
+#: libs/dashboard_widgets.php:362
+msgid "Paypal Api Keys are added.Payments will be processed."
+msgstr ""
+
+#: libs/dashboard_widgets.php:369
+msgid ""
+"You did not add your <strong>Stripe Details</strong>. No Stripe payment will "
+"be processed"
+msgstr ""
+
+#: libs/dashboard_widgets.php:371
+msgid "Stripe Api Keys are added.Payments will be processed."
+msgstr ""
+
+#: libs/dashboard_widgets.php:375
+msgid "Edit Payment Details"
+msgstr ""
+
+#: libs/events.php:11
+msgid "Once Weekly"
+msgstr "En gang ugenligt"
+
+#: libs/events.php:16
+msgid "Every 3 hours"
+msgstr ""
+
+#: libs/footer_filter_functions.php:33 libs/help_functions.php:972
+msgid "Confirm your booking"
+msgstr "Bekræft din reservation"
+
+#: libs/footer_filter_functions.php:34 libs/help_functions.php:973
+msgid "Review the dates and confirm your booking"
+msgstr ""
+
+#: libs/general-settings.php:202
+msgid "Primary Menu"
+msgstr "Primær Menu"
+
+#: libs/general-settings.php:203
+msgid "Mobile Menu"
+msgstr "Mobil menu"
+
+#: libs/general-settings.php:204
+msgid "Footer Menu"
+msgstr "Sidefod Menu"
+
+#: libs/general-settings.php:207
+msgid "Primary Widget Area"
+msgstr "Primær Widgetområde"
+
+#: libs/general-settings.php:209
+msgid "The primary widget area"
+msgstr "Det primære widget-område"
+
+#: libs/general-settings.php:218
+msgid "Secondary Widget Area"
+msgstr "Sekundær Widget område"
+
+#: libs/general-settings.php:220
+msgid "The secondary widget area"
+msgstr "Det sekundære widget område"
+
+#: libs/general-settings.php:229
+msgid "First Footer Widget Area"
+msgstr "Første sidefod widget område"
+
+#: libs/general-settings.php:231
+msgid "The first footer widget area"
+msgstr "Første sidefod widget område"
+
+#: libs/general-settings.php:240
+msgid "Second Footer Widget Area"
+msgstr "Anden Sidefod widget område"
+
+#: libs/general-settings.php:242
+msgid "The second footer widget area"
+msgstr "Anden sidefod widget område"
+
+#: libs/general-settings.php:251
+msgid "Third Footer Widget Area"
+msgstr "Tredje sidefod widget område"
+
+#: libs/general-settings.php:253
+msgid "The third footer widget area"
+msgstr "Tredje sidefod widget område"
+
+#: libs/general-settings.php:261
+msgid "Top Bar Left Widget Area"
+msgstr "Top bjælke venstre widget område"
+
+#: libs/general-settings.php:263
+msgid "The top bar left widget area"
+msgstr "Top bjælke venstre widget område"
+
+#: libs/general-settings.php:271
+msgid "Top Bar Right Widget Area"
+msgstr "Top bjælke højre widget område"
+
+#: libs/general-settings.php:273
+msgid "The top bar right widget area"
+msgstr "Top bjælke højre widget område"
+
+#: libs/general-settings.php:281
+msgid "Owner Page"
+msgstr ""
+
+#: libs/general-settings.php:283
+msgid "Owner page widget area"
+msgstr ""
+
+#: libs/general-settings.php:291
+msgid "Splash Page Bottom Right Widget Area"
+msgstr "Splash Side nederst til højre Widget Område"
+
+#: libs/general-settings.php:293
+msgid "Splash Page - Bottom right area"
+msgstr "Splash Page - Nederst til højre område"
+
+#: libs/general-settings.php:301
+msgid "Splash Page Bottom Left Widget Area"
+msgstr "Splash Side nederst til venstre Widget Område"
+
+#: libs/general-settings.php:303
+msgid "Splash Page - Bottom left area"
+msgstr "Splash Page - Nederst til venstre område"
+
+#: libs/help_functions.php:140 libs/help_functions.php:2482
+msgid "Your Trip Details"
+msgstr ""
+
+#: libs/help_functions.php:141
+#, php-format
+msgid "Hi %s"
+msgstr "Hej %s"
+
+#: libs/help_functions.php:143
+msgid "Here's your itinerary, including the address and check-in details."
+msgstr ""
+
+#: libs/help_functions.php:186
+msgid "Dates"
+msgstr "Datoer"
+
+#: libs/help_functions.php:192
+msgid "from "
+msgstr "Fra "
+
+#: libs/help_functions.php:197 libs/help_functions.php:701
+#: libs/help_functions.php:706 libs/help_functions.php:1116
+#: libs/listing_functions.php:702
+#, php-format
+msgid "%s Guest"
+msgid_plural "%s Guests"
+msgstr[0] "%s Gæst"
+msgstr[1] "%s Gæster"
+
+#: libs/help_functions.php:212 libs/listing_functions.php:1441
+#: libs/listing_functions.php:1488
+#: templates/submit_templates/property_location.php:41
+msgid "Address"
+msgstr "Adresse"
+
+#: libs/help_functions.php:229
+msgid "Your Host"
+msgstr ""
+
+#: libs/help_functions.php:252
+msgid "Mobile"
+msgstr "Mobil"
+
+#: libs/help_functions.php:276
+msgid " House Rules"
+msgstr ""
+
+#: libs/help_functions.php:280 libs/help_functions.php:6343
+#: libs/listing_functions.php:1406
+#: templates/submit_templates/property_details.php:219
+msgid "Cancellation Policy"
+msgstr ""
+
+#: libs/help_functions.php:286 libs/help_functions.php:6344
+#: libs/listing_functions.php:1382
+#: templates/submit_templates/property_details.php:244
+msgid "Smoking Allowed"
+msgstr ""
+
+#: libs/help_functions.php:292 libs/help_functions.php:6345
+#: libs/listing_functions.php:1383
+#: templates/submit_templates/property_details.php:274
+msgid "Pets Allowed"
+msgstr "Husdyr tilladt"
+
+#: libs/help_functions.php:298 libs/help_functions.php:6346
+#: libs/listing_functions.php:1384
+#: templates/submit_templates/property_details.php:301
+msgid "Party Allowed"
+msgstr ""
+
+#: libs/help_functions.php:304 libs/help_functions.php:6347
+#: libs/listing_functions.php:1385
+#: templates/submit_templates/property_details.php:329
+msgid "Children Allowed"
+msgstr ""
+
+#: libs/help_functions.php:311 libs/help_functions.php:6348
+#: libs/listing_functions.php:1410
+#: templates/submit_templates/property_details.php:346
+msgid "Other Rules"
+msgstr ""
+
+#: libs/help_functions.php:351 templates/owner_area.php:27
+msgid "No agent"
+msgstr ""
+
+#: libs/help_functions.php:518 templates/listing_page_1.php:135
+#: templates/property_header2.php:39
+msgid "Check Availability"
+msgstr "Check tilgængelighed"
+
+#: libs/help_functions.php:721
+msgid "Close"
+msgstr "Luk"
+
+#: libs/help_functions.php:882
+#: templates/submit_templates/property_calendar.php:160
+#: templates/submit_templates/property_price.php:717
+msgid "Start Hour"
+msgstr ""
+
+#: libs/help_functions.php:883
+#: templates/submit_templates/property_calendar.php:178
+#: templates/submit_templates/property_calendar.php:398
+#: templates/submit_templates/property_price.php:741
+msgid "End Hour"
+msgstr ""
+
+#: libs/help_functions.php:1117
+#, php-format
+msgid "%s Child"
+msgid_plural "%s Children"
+msgstr[0] ""
+msgstr[1] ""
+
+#: libs/help_functions.php:1118
+#, php-format
+msgid "%s infant"
+msgid_plural "%s Infants"
+msgstr[0] ""
+msgstr[1] ""
+
+#: libs/help_functions.php:1355
+msgid "I consent to the"
+msgstr "Jeg giver mit samtykke til, at"
+
+#. Template Name of the plugin/theme
+#: libs/help_functions.php:1355
+msgid "GDPR Terms"
+msgstr ""
+
+#: libs/help_functions.php:1380
+msgid "Share"
+msgstr "Delt"
+
+#: libs/help_functions.php:2106
+msgid "K"
+msgstr "K"
+
+#: libs/help_functions.php:2110
+msgid "M"
+msgstr "M"
+
+#: libs/help_functions.php:2136
+msgid "Transport"
+msgstr "Transport muligheder"
+
+#: libs/help_functions.php:2137
+msgid "Supermarkets"
+msgstr "Supermarkeder"
+
+#: libs/help_functions.php:2138
+msgid "Schools"
+msgstr "Skoler"
+
+#: libs/help_functions.php:2139 libs/help_functions.php:5735
+#: libs/help_functions.php:7433
+msgid "Restaurants"
+msgstr "Restauranter"
+
+#: libs/help_functions.php:2140
+msgid "Pharmacies"
+msgstr "Apoteker"
+
+#: libs/help_functions.php:2141
+msgid "Hospitals"
+msgstr "Hospitaler"
+
+#: libs/help_functions.php:2574
+msgid ""
+"It seems that this period was booked after you made the initial request and "
+"you cannot pay & finalize this request."
+msgstr ""
+
+#: libs/help_functions.php:2901 templates/listing_reviews.php:74
+msgid "of"
+msgstr "af"
+
+#: libs/help_functions.php:2909 templates/listing_reviews.php:67
+msgid "Posted on "
+msgstr "Tilføjet den"
+
+#: libs/help_functions.php:4253
+msgid "Pay Submission Fee"
+msgstr "Gebyr for indsendelse af betaling"
+
+#: libs/help_functions.php:4465 libs/theme-slider.php:149
+#: libs/theme-slider.php:269
+msgid "guest"
+msgstr "gæst"
+
+#: libs/help_functions.php:4486
+msgid "room"
+msgstr "værelse"
+
+#: libs/help_functions.php:4488
+msgid "rooms"
+msgstr "rum"
+
+#: libs/help_functions.php:4500
+msgid "bedroom"
+msgstr "soveværelse"
+
+#: libs/help_functions.php:4502
+msgid "bedrooms"
+msgstr "soveværelser"
+
+#: libs/help_functions.php:4514
+msgid "bath"
+msgstr "bad"
+
+#: libs/help_functions.php:4516
+msgid "baths"
+msgstr ""
+
+#: libs/help_functions.php:5695 libs/help_functions.php:7393
+msgid "Active Life"
+msgstr "Aktivt liv"
+
+#: libs/help_functions.php:5697 libs/help_functions.php:7395
+msgid "Arts & Entertainment"
+msgstr "Kunst og underholdning"
+
+#: libs/help_functions.php:5699 libs/help_functions.php:7397
+msgid "Automotive"
+msgstr "Automotive"
+
+#: libs/help_functions.php:5701 libs/help_functions.php:7399
+msgid "Beauty & Spas"
+msgstr "Skønhed og kurbade"
+
+#: libs/help_functions.php:5703 libs/help_functions.php:7401
+msgid "Education"
+msgstr "Uddannelse"
+
+#: libs/help_functions.php:5705 libs/help_functions.php:7403
+msgid "Event Planning & Services"
+msgstr "Event Planlægning & Services"
+
+#: libs/help_functions.php:5707 libs/help_functions.php:7405
+msgid "Financial Services"
+msgstr "Finansielle tjenesteydelser"
+
+#: libs/help_functions.php:5709 libs/help_functions.php:7407
+msgid "Food"
+msgstr "Mad"
+
+#: libs/help_functions.php:5711 libs/help_functions.php:7409
+msgid "Health & Medical"
+msgstr "Sundhed &amp; medicinsk"
+
+#: libs/help_functions.php:5713 libs/help_functions.php:7411
+msgid "Home Services "
+msgstr "Hjemmeservice"
+
+#: libs/help_functions.php:5715 libs/help_functions.php:7413
+msgid "Hotels & Travel"
+msgstr "Hoteller og rejser"
+
+#: libs/help_functions.php:5717 libs/help_functions.php:7415
+msgid "Local Flavor"
+msgstr "Lokale favoritter"
+
+#: libs/help_functions.php:5719 libs/help_functions.php:7417
+msgid "Local Services"
+msgstr "Lokale tjenester"
+
+#: libs/help_functions.php:5721 libs/help_functions.php:7419
+msgid "Mass Media"
+msgstr "Medier"
+
+#: libs/help_functions.php:5723 libs/help_functions.php:7421
+msgid "Nightlife"
+msgstr "Natteliv"
+
+#: libs/help_functions.php:5725 libs/help_functions.php:7423
+msgid "Pets"
+msgstr "Husdyr"
+
+#: libs/help_functions.php:5727 libs/help_functions.php:7425
+msgid "Professional Services"
+msgstr "Professionelle tjenester"
+
+#: libs/help_functions.php:5729 libs/help_functions.php:7427
+msgid "Public Services & Government"
+msgstr "Offentlige tjenester"
+
+#: libs/help_functions.php:5731 libs/help_functions.php:7429
+msgid "Real Estate"
+msgstr "Ejendom"
+
+#: libs/help_functions.php:5733 libs/help_functions.php:7431
+msgid "Religious Organizations"
+msgstr "Religiøse organisationer"
+
+#: libs/help_functions.php:5737 libs/help_functions.php:7435
+msgid "Shopping"
+msgstr "Indkøb"
+
+#: libs/help_functions.php:5739 libs/help_functions.php:7437
+msgid "Transportation"
+msgstr "Transport"
+
+#: libs/help_functions.php:5840
+msgid "miles"
+msgstr "miles"
+
+#: libs/help_functions.php:5843
+msgid "km"
+msgstr "km"
+
+#: libs/help_functions.php:6052
+msgid "Accuracy"
+msgstr "Nøjagtighed"
+
+#: libs/help_functions.php:6053
+msgid "Communication"
+msgstr "Kommunikation"
+
+#: libs/help_functions.php:6054
+msgid "Cleanliness"
+msgstr ""
+
+#: libs/help_functions.php:6055 templates/advanced_search_map_list.php:50
+#: templates/user_menu.php:207
+msgid "Location"
+msgstr "Lokation"
+
+#: libs/help_functions.php:6057
+#: templates/submit_templates/property_details.php:183
+#: templates/submit_templates/property_price.php:420
+msgid "Value"
+msgstr "Værdi"
+
+#: libs/help_functions.php:6313
+#: templates/submit_templates/property_description.php:40
+#: templates/submit_templates/property_description.php:46
+#: templates/submit_templates/property_description_first.php:43
+#: templates/submit_templates/property_description_first.php:49
+#: user_dashboard_invoices.php:106
+msgid "Title"
+msgstr "Titel"
+
+#: libs/help_functions.php:6314 libs/help_functions.php:6437
+#: libs/help_functions.php:6522
+msgid "Main Category"
+msgstr ""
+
+#: libs/help_functions.php:6315 libs/help_functions.php:6438
+#: libs/help_functions.php:6523
+msgid "Second Category"
+msgstr ""
+
+#: libs/help_functions.php:6316 libs/help_functions.php:6439
+#: libs/help_functions.php:6524
+msgid "Property/Item City"
+msgstr ""
+
+#: libs/help_functions.php:6317 libs/help_functions.php:6440
+#: libs/help_functions.php:6525
+msgid "Property/Item Area"
+msgstr ""
+
+#: libs/help_functions.php:6318 libs/megamenu.php:255
+#: templates/property_menu.php:3 templates/property_menu_hidden.php:3
+#: templates/submit_templates/property_description.php:29
+#: templates/submit_templates/property_description_first.php:34
+#: templates/user_menu.php:203
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: libs/help_functions.php:6319
+msgid "Affiliate link"
+msgstr ""
+
+#: libs/help_functions.php:6320
+#: templates/submit_templates/property_price.php:299
+msgid "Listing Price"
+msgstr ""
+
+#: libs/help_functions.php:6321
+msgid "Listing Taxes"
+msgstr ""
+
+#: libs/help_functions.php:6322
+msgid "Listing Price per day for 7 or more booked days"
+msgstr ""
+
+#: libs/help_functions.php:6323
+msgid "Listing Price per day for 30 or more booked days"
+msgstr ""
+
+#: libs/help_functions.php:6324
+msgid "Listing Price per weekend"
+msgstr ""
+
+#: libs/help_functions.php:6327 libs/help_functions.php:6449
+#: libs/help_functions.php:6534
+msgid "Minimum Days"
+msgstr "Minimum antal dage"
+
+#: libs/help_functions.php:6330 libs/help_functions.php:6451
+#: libs/help_functions.php:6536
+msgid "Extra Price per Guest"
+msgstr ""
+
+#: libs/help_functions.php:6331
+msgid "Start check-in on "
+msgstr ""
+
+#: libs/help_functions.php:6332
+msgid "Start/End check-in on "
+msgstr ""
+
+#: libs/help_functions.php:6333
+msgid "Extra Booking options"
+msgstr ""
+
+#: libs/help_functions.php:6334
+#: templates/submit_templates/property_price.php:867
+msgid "Custom Price"
+msgstr ""
+
+#: libs/help_functions.php:6335
+msgid "Property Media"
+msgstr "Ejendom Media"
+
+#: libs/help_functions.php:6336
+msgid "Embed Video Id"
+msgstr ""
+
+#: libs/help_functions.php:6337
+msgid "Embed Video Type"
+msgstr ""
+
+#: libs/help_functions.php:6338 libs/help_functions.php:8001
+msgid "Virtual Tour"
+msgstr "Virtuel tur"
+
+#: libs/help_functions.php:6339
+msgid "property Size"
+msgstr "Areal m2"
+
+#: libs/help_functions.php:6340 libs/help_functions.php:6453
+#: libs/help_functions.php:6538
+msgid "Property Rooms"
+msgstr "Værelser"
+
+#: libs/help_functions.php:6341 libs/help_functions.php:6454
+#: libs/help_functions.php:6539
+msgid "Property Bedrooms"
+msgstr "Soveværelser"
+
+#: libs/help_functions.php:6342 libs/help_functions.php:6455
+#: libs/help_functions.php:6540
+msgid "Property Bathrooms"
+msgstr "Badeværelser"
+
+#: libs/help_functions.php:6349 libs/help_functions.php:6456
+#: libs/help_functions.php:6541 libs/listing_functions.php:78
+msgid "Property Address"
+msgstr "Adresse"
+
+#: libs/help_functions.php:6350 libs/help_functions.php:6457
+#: libs/help_functions.php:6542
+msgid "Property Zip"
+msgstr "Post nr."
+
+#: libs/help_functions.php:6351 libs/help_functions.php:6458
+#: libs/help_functions.php:6543
+msgid "Property County"
+msgstr "Region"
+
+#: libs/help_functions.php:6352 libs/help_functions.php:6459
+#: libs/help_functions.php:6544
+msgid "Property State"
+msgstr ""
+
+#: libs/help_functions.php:6353
+msgid "Property Map"
+msgstr "Kort"
+
+#: libs/help_functions.php:6354
+msgid "Property Latitude"
+msgstr "Ejendom Breddegrad"
+
+#: libs/help_functions.php:6355
+msgid "Property Longitude"
+msgstr "Ejendom Længdegrad"
+
+#: libs/help_functions.php:6356
+msgid "Google Camera Angle"
+msgstr ""
+
+#: libs/help_functions.php:6357
+msgid "Do Not Consider Children as Guests"
+msgstr ""
+
+#: libs/help_functions.php:6358
+msgid "Maximum Extra guests above capacity"
+msgstr ""
+
+#: libs/help_functions.php:6436 libs/help_functions.php:6521
+msgid "Leave Blank"
+msgstr ""
+
+#: libs/help_functions.php:6441 libs/help_functions.php:6526
+msgid "Property/Item Price"
+msgstr ""
+
+#: libs/help_functions.php:6442 libs/help_functions.php:6527
+msgid "Property/Item Guests Capacity"
+msgstr ""
+
+#: libs/help_functions.php:6443 libs/help_functions.php:6528
+msgid "Property/Item Taxes"
+msgstr ""
+
+#: libs/help_functions.php:6444 libs/help_functions.php:6529
+msgid "Property/Item Price per day for 7 or more booked days"
+msgstr ""
+
+#: libs/help_functions.php:6445 libs/help_functions.php:6530
+msgid "Property/Item Price per day for 30 or more booked days"
+msgstr ""
+
+#: libs/help_functions.php:6446 libs/help_functions.php:6531
+msgid "Property/Item Price per weekend"
+msgstr ""
+
+#: libs/help_functions.php:6452 libs/help_functions.php:6537
+#: libs/listing_functions.php:1562
+msgid "Property Size"
+msgstr "Ejendommens størrelse"
+
+#: libs/help_functions.php:6460 libs/help_functions.php:6545
+msgid "Property Country"
+msgstr "Land"
+
+#: libs/help_functions.php:6546
+msgid "Maximum extra guests above capacity"
+msgstr ""
+
+#: libs/help_functions.php:6640
+msgid "These fields are mandatory: "
+msgstr ""
+
+#: libs/help_functions.php:6664
+msgid "Check-in"
+msgstr "Tjek ind"
+
+#: libs/help_functions.php:6665
+#: templates/submit_templates/property_price.php:876
+#: user_dashboard_allinone.php:104
+msgid "Start Date"
+msgstr "Start dato"
+
+#: libs/help_functions.php:6669
+#: templates/submit_templates/property_price.php:881
+#: user_dashboard_allinone.php:110
+msgid "End Date"
+msgstr "Slut dato"
+
+#: libs/help_functions.php:6672 libs/help_functions.php:6677
+msgid "per night"
+msgstr "pr. nat"
+
+#: libs/help_functions.php:6673 libs/help_functions.php:6678
+msgid "per day"
+msgstr "per dag"
+
+#: libs/help_functions.php:6674 libs/help_functions.php:6679
+msgid "per hour"
+msgstr ""
+
+#: libs/help_functions.php:6682
+msgid "/night"
+msgstr ""
+
+#: libs/help_functions.php:6683
+msgid "/day"
+msgstr "/dag"
+
+#: libs/help_functions.php:6684
+msgid "/hour"
+msgstr ""
+
+#: libs/help_functions.php:6687
+msgid "Price per night"
+msgstr "Pris per nat"
+
+#: libs/help_functions.php:6688
+msgid "Price per day"
+msgstr "Pris pr. dag"
+
+#: libs/help_functions.php:6689
+msgid "Price per hour"
+msgstr ""
+
+#: libs/help_functions.php:6692 libs/help_functions.php:6697
+#: libs/help_functions.php:6727
+#, php-format
+msgid "Price per night (%sd+)"
+msgstr ""
+
+#: libs/help_functions.php:6693 libs/help_functions.php:6698
+#: libs/help_functions.php:6728
+#, php-format
+msgid "Price per day (%sd+)"
+msgstr ""
+
+#: libs/help_functions.php:6694 libs/help_functions.php:6699
+#: libs/help_functions.php:6729
+#, php-format
+msgid "Price per hour (%sh+)"
+msgstr ""
+
+#: libs/help_functions.php:6702
+msgid "nights"
+msgstr "nætter"
+
+#: libs/help_functions.php:6703
+msgid "days"
+msgstr "dage"
+
+#: libs/help_functions.php:6707
+msgid "night"
+msgstr "nat"
+
+#: libs/help_functions.php:6708
+msgid "day"
+msgstr "dag"
+
+#: libs/help_functions.php:6709
+msgid "hour"
+msgstr "time"
+
+#: libs/help_functions.php:6712
+msgid "nights with custom price"
+msgstr ""
+
+#: libs/help_functions.php:6713
+msgid "days with custom price"
+msgstr ""
+
+#: libs/help_functions.php:6714
+msgid "hours with custom price"
+msgstr ""
+
+#: libs/help_functions.php:6717
+msgid "nights with weekend price"
+msgstr ""
+
+#: libs/help_functions.php:6718
+msgid "days with weekend price"
+msgstr ""
+
+#: libs/help_functions.php:6719
+msgid "hours with weekend price"
+msgstr ""
+
+#: libs/help_functions.php:6722
+#, php-format
+msgid ""
+"Price per night if the item is rented for more than %s nights or more than "
+"%s nights"
+msgstr ""
+
+#: libs/help_functions.php:6723
+#, php-format
+msgid ""
+"Price per day if the item is rented for more than 1 week %s days or more "
+"than %s days"
+msgstr ""
+
+#: libs/help_functions.php:6724
+#, php-format
+msgid ""
+"Price per hour if the item is rented for more than %s hours or more than %s "
+"hours"
+msgstr ""
+
+#: libs/help_functions.php:6732
+msgid "Minimum nights of booking"
+msgstr ""
+
+#: libs/help_functions.php:6733
+#: templates/submit_templates/property_price.php:954
+#: user_dashboard_allinone.php:136
+msgid "Minimum days of booking"
+msgstr ""
+
+#: libs/help_functions.php:6734
+msgid "Minimum hours of booking"
+msgstr ""
+
+#: libs/help_functions.php:6737
+#, php-format
+msgid "Early Bird Discount - in % from the price per night"
+msgstr ""
+
+#: libs/help_functions.php:6738
+#, php-format
+msgid "Early Bird Discount - in % from the price per day"
+msgstr ""
+
+#: libs/help_functions.php:6739
+#, php-format
+msgid "Early Bird Discount - in % from the price per hour"
+msgstr ""
+
+#: libs/help_functions.php:6742 user_dashboard_allinone.php:148
+msgid "Extra Price per guest per night in"
+msgstr ""
+
+#: libs/help_functions.php:6743
+msgid "Extra Price per guest per day in"
+msgstr ""
+
+#: libs/help_functions.php:6744
+msgid "Extra Price per guest per hour in"
+msgstr ""
+
+#: libs/help_functions.php:6747
+msgid "No of nights"
+msgstr ""
+
+#: libs/help_functions.php:6748
+msgid "No of days"
+msgstr ""
+
+#: libs/help_functions.php:6749
+msgid "No of hours"
+msgstr ""
+
+#: libs/help_functions.php:6752
+msgid "Per Night per Guest"
+msgstr ""
+
+#: libs/help_functions.php:6753
+msgid "Per Day per Guest"
+msgstr ""
+
+#: libs/help_functions.php:6754
+msgid "Per Hour per Guest"
+msgstr ""
+
+#: libs/help_functions.php:7023
+msgid "Type to Search"
+msgstr "Hvad leder du efter?"
+
+#: libs/help_functions.php:7034
+msgid "Afghanistan"
+msgstr "Afghanistan"
+
+#: libs/help_functions.php:7035
+msgid "Albania"
+msgstr "Albanien"
+
+#: libs/help_functions.php:7036
+msgid "Algeria"
+msgstr "Algeriet"
+
+#: libs/help_functions.php:7037
+msgid "American Samoa"
+msgstr "American Samoa"
+
+#: libs/help_functions.php:7038
+msgid "Andorra"
+msgstr "Andorra"
+
+#: libs/help_functions.php:7039
+msgid "Angola"
+msgstr "Angola"
+
+#: libs/help_functions.php:7040
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: libs/help_functions.php:7041
+msgid "Antarctica"
+msgstr "Antarktis"
+
+#: libs/help_functions.php:7042
+msgid "Antigua and Barbuda"
+msgstr "Antigua og Barbuda"
+
+#: libs/help_functions.php:7043
+msgid "Argentina"
+msgstr "Argentina"
+
+#: libs/help_functions.php:7044
+msgid "Armenia"
+msgstr "Armenien"
+
+#: libs/help_functions.php:7045
+msgid "Aruba"
+msgstr "Aruba"
+
+#: libs/help_functions.php:7046
+msgid "Australia"
+msgstr "Australien"
+
+#: libs/help_functions.php:7047
+msgid "Austria"
+msgstr "Østrig"
+
+#: libs/help_functions.php:7048
+msgid "Azerbaijan"
+msgstr "Aserbajdsjan"
+
+#: libs/help_functions.php:7049
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: libs/help_functions.php:7050
+msgid "Bahrain"
+msgstr "Bahrain"
+
+#: libs/help_functions.php:7051
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#: libs/help_functions.php:7052
+msgid "Barbados"
+msgstr "Barbados"
+
+#: libs/help_functions.php:7053
+msgid "Belarus"
+msgstr "Hviderusland"
+
+#: libs/help_functions.php:7054
+msgid "Belgium"
+msgstr "Belgien"
+
+#: libs/help_functions.php:7055
+msgid "Belize"
+msgstr "Belize"
+
+#: libs/help_functions.php:7056
+msgid "Benin"
+msgstr "Benin"
+
+#: libs/help_functions.php:7057
+msgid "Bermuda"
+msgstr "Bermuda"
+
+#: libs/help_functions.php:7058
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: libs/help_functions.php:7059
+msgid "Bolivia"
+msgstr "Bolivia"
+
+#: libs/help_functions.php:7060
+msgid "Bosnia and Herzegowina"
+msgstr ""
+
+#: libs/help_functions.php:7061
+msgid "Botswana"
+msgstr "Botswana"
+
+#: libs/help_functions.php:7062
+msgid "Bouvet Island"
+msgstr "Bouvetøen"
+
+#: libs/help_functions.php:7063
+msgid "Brazil"
+msgstr "Brasilien"
+
+#: libs/help_functions.php:7064
+msgid "British Indian Ocean Territory"
+msgstr "Det britiske territorium i Det Indiske Ocean"
+
+#: libs/help_functions.php:7065
+msgid "Brunei Darussalam"
+msgstr "Brunei"
+
+#: libs/help_functions.php:7066
+msgid "Bulgaria"
+msgstr "Bulgarien"
+
+#: libs/help_functions.php:7067
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: libs/help_functions.php:7068
+msgid "Burundi"
+msgstr "Burundi"
+
+#: libs/help_functions.php:7069
+msgid "Cambodia"
+msgstr "Cambodia"
+
+#: libs/help_functions.php:7070
+msgid "Cameroon"
+msgstr "Cameroun"
+
+#: libs/help_functions.php:7071
+msgid "Canada"
+msgstr "Canada"
+
+#: libs/help_functions.php:7072
+msgid "Cape Verde"
+msgstr "Kap Verde"
+
+#: libs/help_functions.php:7073
+msgid "Cayman Islands"
+msgstr "Caymanøerne"
+
+#: libs/help_functions.php:7074
+msgid "Central African Republic"
+msgstr "Centralafrikanske Republik"
+
+#: libs/help_functions.php:7075
+msgid "Chad"
+msgstr "Chad"
+
+#: libs/help_functions.php:7076
+msgid "Chile"
+msgstr "Chile"
+
+#: libs/help_functions.php:7077
+msgid "China"
+msgstr "Kina"
+
+#: libs/help_functions.php:7078
+msgid "Christmas Island"
+msgstr "Christmas Island"
+
+#: libs/help_functions.php:7079
+msgid "Cocos (Keeling) Islands"
+msgstr "Cocos (Keeling) Islands"
+
+#: libs/help_functions.php:7080
+msgid "Colombia"
+msgstr "Colombia"
+
+#: libs/help_functions.php:7081
+msgid "Comoros"
+msgstr "Comoros"
+
+#: libs/help_functions.php:7082
+msgid "Congo"
+msgstr "Congo"
+
+#: libs/help_functions.php:7083
+msgid "Congo, the Democratic Republic of the"
+msgstr "Congo, The Democratic Republic Of The"
+
+#: libs/help_functions.php:7084
+msgid "Cook Islands"
+msgstr "Cook Islands"
+
+#: libs/help_functions.php:7085
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: libs/help_functions.php:7086
+msgid "Cote dIvoire"
+msgstr ""
+
+#: libs/help_functions.php:7087
+msgid "Croatia (Hrvatska)"
+msgstr ""
+
+#: libs/help_functions.php:7088
+msgid "Cuba"
+msgstr "Cuba"
+
+#: libs/help_functions.php:7089
+msgid "Curacao"
+msgstr "Curaçao"
+
+#: libs/help_functions.php:7090
+msgid "Cyprus"
+msgstr "Cypern"
+
+#: libs/help_functions.php:7091
+msgid "Czech Republic"
+msgstr "Tjekkiet"
+
+#: libs/help_functions.php:7092
+msgid "Denmark"
+msgstr "Danmark"
+
+#: libs/help_functions.php:7093
+msgid "Djibouti"
+msgstr "Djibouti"
+
+#: libs/help_functions.php:7094
+msgid "Dominica"
+msgstr "Dominica"
+
+#: libs/help_functions.php:7095
+msgid "Dominican Republic"
+msgstr "Dominican Republic"
+
+#: libs/help_functions.php:7096
+msgid "East Timor"
+msgstr "Øst Timor"
+
+#: libs/help_functions.php:7097
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#: libs/help_functions.php:7098
+msgid "Egypt"
+msgstr "Egypt"
+
+#: libs/help_functions.php:7099
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#: libs/help_functions.php:7100
+msgid "Equatorial Guinea"
+msgstr "Equatorial Guinea"
+
+#: libs/help_functions.php:7101
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: libs/help_functions.php:7102
+msgid "Estonia"
+msgstr "Estonia"
+
+#: libs/help_functions.php:7103
+msgid "Ethiopia"
+msgstr "Etiopien"
+
+#: libs/help_functions.php:7104
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falkland Islands (Malvinas)"
+
+#: libs/help_functions.php:7105
+msgid "Faroe Islands"
+msgstr "Færøerne"
+
+#: libs/help_functions.php:7106
+msgid "Fiji"
+msgstr "Fiji"
+
+#: libs/help_functions.php:7107
+msgid "Finland"
+msgstr "Finland"
+
+#: libs/help_functions.php:7108
+msgid "France"
+msgstr "Frankrig"
+
+#: libs/help_functions.php:7109
+msgid "France Metropolitan"
+msgstr "Fransk Metropolitan"
+
+#: libs/help_functions.php:7110
+msgid "French Guiana"
+msgstr "Fransk Guyana"
+
+#: libs/help_functions.php:7111
+msgid "French Polynesia"
+msgstr "Fransk Polynesien"
+
+#: libs/help_functions.php:7112
+msgid "French Southern Territories"
+msgstr "Franske Sydlige Territorier"
+
+#: libs/help_functions.php:7113
+msgid "Gabon"
+msgstr "Gabon"
+
+#: libs/help_functions.php:7114
+msgid "Gambia"
+msgstr "Gambia"
+
+#: libs/help_functions.php:7115
+msgid "Georgia"
+msgstr "Georgien"
+
+#: libs/help_functions.php:7116
+msgid "Germany"
+msgstr "Tyskland"
+
+#: libs/help_functions.php:7117
+msgid "Ghana"
+msgstr "Ghana"
+
+#: libs/help_functions.php:7118
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: libs/help_functions.php:7119
+msgid "Greece"
+msgstr "Grækenland"
+
+#: libs/help_functions.php:7120
+msgid "Greenland"
+msgstr "Grønland"
+
+#: libs/help_functions.php:7121
+msgid "Grenada"
+msgstr "Grenada"
+
+#: libs/help_functions.php:7122
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#: libs/help_functions.php:7123
+msgid "Guam"
+msgstr "Guam"
+
+#: libs/help_functions.php:7124
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: libs/help_functions.php:7125
+msgid "Guinea"
+msgstr "Guinea"
+
+#: libs/help_functions.php:7126
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bissau"
+
+#: libs/help_functions.php:7127
+msgid "Guyana"
+msgstr "Guyana"
+
+#: libs/help_functions.php:7128
+msgid "Haiti"
+msgstr "Haiti"
+
+#: libs/help_functions.php:7129
+msgid "Heard and Mc Donald Islands"
+msgstr "Heard og McDonald øerne"
+
+#: libs/help_functions.php:7130
+msgid "Holy See (Vatican City State)"
+msgstr "Holy See (Vatican City State)"
+
+#: libs/help_functions.php:7131
+msgid "Honduras"
+msgstr "Honduras"
+
+#: libs/help_functions.php:7132
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: libs/help_functions.php:7133
+msgid "Hungary"
+msgstr "Ungarn"
+
+#: libs/help_functions.php:7134
+msgid "Iceland"
+msgstr "Island"
+
+#: libs/help_functions.php:7135
+msgid "India"
+msgstr "Indien"
+
+#: libs/help_functions.php:7136
+msgid "Indonesia"
+msgstr "Indonesia"
+
+#: libs/help_functions.php:7137
+msgid "Iran (Islamic Republic of)"
+msgstr ""
+
+#: libs/help_functions.php:7138
+msgid "Iraq"
+msgstr "Irak"
+
+#: libs/help_functions.php:7139
+msgid "Ireland"
+msgstr "Ireland"
+
+#: libs/help_functions.php:7140
+msgid "Israel"
+msgstr "Israel"
+
+#: libs/help_functions.php:7141
+msgid "Italy"
+msgstr "Italien"
+
+#: libs/help_functions.php:7142
+msgid "Island of Saba"
+msgstr ""
+
+#: libs/help_functions.php:7143
+msgid "Jamaica"
+msgstr "Jamaica"
+
+#: libs/help_functions.php:7144
+msgid "Japan"
+msgstr "Japan"
+
+#: libs/help_functions.php:7145
+msgid "Jordan"
+msgstr "Jordan"
+
+#: libs/help_functions.php:7146
+msgid "Kazakhstan"
+msgstr "Kazakhstan"
+
+#: libs/help_functions.php:7147
+msgid "Kenya"
+msgstr "Kenya"
+
+#: libs/help_functions.php:7148
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: libs/help_functions.php:7149
+msgid "Korea, Democratic People Republic of"
+msgstr ""
+
+#: libs/help_functions.php:7150
+msgid "Korea, Republic of"
+msgstr "Korea, Republic Of"
+
+#: libs/help_functions.php:7151
+msgid "Kosovo"
+msgstr "Kosovo"
+
+#: libs/help_functions.php:7152
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: libs/help_functions.php:7153
+msgid "Kyrgyzstan"
+msgstr "Kyrgyzstan"
+
+#: libs/help_functions.php:7154
+msgid "Lao, People Democratic Republic"
+msgstr ""
+
+#: libs/help_functions.php:7155
+msgid "Latvia"
+msgstr "Letland"
+
+#: libs/help_functions.php:7156
+msgid "Lebanon"
+msgstr "Lebanon"
+
+#: libs/help_functions.php:7157
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: libs/help_functions.php:7158
+msgid "Liberia"
+msgstr "Liberia"
+
+#: libs/help_functions.php:7159
+msgid "Libyan Arab Jamahiriya"
+msgstr "Libyen"
+
+#: libs/help_functions.php:7160
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: libs/help_functions.php:7161
+msgid "Lithuania"
+msgstr "Litauen"
+
+#: libs/help_functions.php:7162
+msgid "Les Saintes"
+msgstr ""
+
+#: libs/help_functions.php:7163
+msgid "Luxembourg"
+msgstr "Luxembourg"
+
+#: libs/help_functions.php:7164
+msgid "Macau"
+msgstr "Macao"
+
+#: libs/help_functions.php:7165
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Makedonien"
+
+#: libs/help_functions.php:7166
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: libs/help_functions.php:7167
+msgid "Malawi"
+msgstr "Malawi"
+
+#: libs/help_functions.php:7168
+msgid "Malaysia"
+msgstr "Malaysia"
+
+#: libs/help_functions.php:7169
+msgid "Maldives"
+msgstr "Maldiverne"
+
+#: libs/help_functions.php:7170
+msgid "Mali"
+msgstr "Mali"
+
+#: libs/help_functions.php:7171
+msgid "Malta"
+msgstr "Malta"
+
+#: libs/help_functions.php:7172
+msgid "Marie-Galante"
+msgstr ""
+
+#: libs/help_functions.php:7173
+msgid "Marshall Islands"
+msgstr "Marshall Islands"
+
+#: libs/help_functions.php:7174
+msgid "Martinique"
+msgstr "Martinique"
+
+#: libs/help_functions.php:7175
+msgid "Mauritania"
+msgstr "Mauritania"
+
+#: libs/help_functions.php:7176
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#: libs/help_functions.php:7177
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: libs/help_functions.php:7178
+msgid "Mexico"
+msgstr "Mexico"
+
+#: libs/help_functions.php:7179
+msgid "Micronesia, Federated States of"
+msgstr "Micronesia, Federated States Of"
+
+#: libs/help_functions.php:7180
+msgid "Moldova, Republic of"
+msgstr "Moldova, Republic Of"
+
+#: libs/help_functions.php:7181
+msgid "Monaco"
+msgstr "Monaco"
+
+#: libs/help_functions.php:7182
+msgid "Mongolia"
+msgstr "Mongoliet"
+
+#: libs/help_functions.php:7183
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: libs/help_functions.php:7184
+msgid "Morocco"
+msgstr "Marokko"
+
+#: libs/help_functions.php:7185
+msgid "Mozambique"
+msgstr "Mozambique"
+
+#: libs/help_functions.php:7186
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: libs/help_functions.php:7187
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: libs/help_functions.php:7188
+msgid "Namibia"
+msgstr "Namibia"
+
+#: libs/help_functions.php:7189
+msgid "Nauru"
+msgstr "Nauru"
+
+#: libs/help_functions.php:7190
+msgid "Nepal"
+msgstr "Nepal"
+
+#: libs/help_functions.php:7191
+msgid "Netherlands"
+msgstr "Holland"
+
+#: libs/help_functions.php:7192
+msgid "Netherlands Antilles"
+msgstr "Hollandske Antilles"
+
+#: libs/help_functions.php:7193
+msgid "New Caledonia"
+msgstr "New Caledonia"
+
+#: libs/help_functions.php:7194
+msgid "New Zealand"
+msgstr "New Zealand"
+
+#: libs/help_functions.php:7195
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: libs/help_functions.php:7196
+msgid "Niger"
+msgstr "Niger"
+
+#: libs/help_functions.php:7197
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: libs/help_functions.php:7198
+msgid "Niue"
+msgstr "Niue"
+
+#: libs/help_functions.php:7199
+msgid "Norfolk Island"
+msgstr "Norfolk Øen"
+
+#: libs/help_functions.php:7200
+msgid "Northern Mariana Islands"
+msgstr "Nordlige Mariana Øerne"
+
+#: libs/help_functions.php:7201
+msgid "Norway"
+msgstr "Norge"
+
+#: libs/help_functions.php:7202
+msgid "Oman"
+msgstr "Oman"
+
+#: libs/help_functions.php:7203
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: libs/help_functions.php:7204
+msgid "Palau"
+msgstr "Palau"
+
+#: libs/help_functions.php:7205
+msgid "Panama"
+msgstr "Panama"
+
+#: libs/help_functions.php:7206
+msgid "Papua New Guinea"
+msgstr "Papua New Guinea"
+
+#: libs/help_functions.php:7207
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: libs/help_functions.php:7208
+msgid "Peru"
+msgstr "Peru"
+
+#: libs/help_functions.php:7209
+msgid "Philippines"
+msgstr "Philippines"
+
+#: libs/help_functions.php:7210
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#: libs/help_functions.php:7211
+msgid "Poland"
+msgstr "Polen"
+
+#: libs/help_functions.php:7212
+msgid "Portugal"
+msgstr "Portugal"
+
+#: libs/help_functions.php:7213
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#: libs/help_functions.php:7214
+msgid "Qatar"
+msgstr "Qatar"
+
+#: libs/help_functions.php:7215
+msgid "Reunion"
+msgstr "Réunion"
+
+#: libs/help_functions.php:7216
+msgid "Romania"
+msgstr "Rumænien"
+
+#: libs/help_functions.php:7217
+msgid "Russian Federation"
+msgstr "Rusland"
+
+#: libs/help_functions.php:7218
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#: libs/help_functions.php:7219
+msgid "Saint Kitts and Nevis"
+msgstr "Saint Kitts og Nevis"
+
+#: libs/help_functions.php:7220
+msgid "Saint Lucia"
+msgstr "Saint Lucia"
+
+#: libs/help_functions.php:7221
+msgid "Saint Vincent and the Grenadines"
+msgstr "Saint Vincent og Grenadinerne"
+
+#: libs/help_functions.php:7222
+msgid "Saint Barthélemy"
+msgstr "Sankt Barthélemy"
+
+#: libs/help_functions.php:7223
+msgid "Saint Martin"
+msgstr ""
+
+#: libs/help_functions.php:7224
+msgid "Sint Maarten"
+msgstr ""
+
+#: libs/help_functions.php:7225
+msgid "Samoa"
+msgstr "Samoa"
+
+#: libs/help_functions.php:7226
+msgid "San Marino"
+msgstr "San Marino"
+
+#: libs/help_functions.php:7227
+msgid "Sao Tome and Principe"
+msgstr "São Tomé og Príncipe"
+
+#: libs/help_functions.php:7228
+msgid "Saudi Arabia"
+msgstr "Saudi-Arabien"
+
+#: libs/help_functions.php:7229
+msgid "Serbia"
+msgstr "Serbien"
+
+#: libs/help_functions.php:7230
+msgid "Senegal"
+msgstr "Senegal"
+
+#: libs/help_functions.php:7231
+msgid "Seychelles"
+msgstr "Seychellerne"
+
+#: libs/help_functions.php:7232
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: libs/help_functions.php:7233
+msgid "Singapore"
+msgstr "Singapore"
+
+#: libs/help_functions.php:7234
+msgid "Slovakia (Slovak Republic)"
+msgstr "Slovakiet (Slovakiske Republik)"
+
+#: libs/help_functions.php:7235
+msgid "Slovenia"
+msgstr "Slovenien"
+
+#: libs/help_functions.php:7236
+msgid "Solomon Islands"
+msgstr "Salomon Øerne"
+
+#: libs/help_functions.php:7237
+msgid "Somalia"
+msgstr "Somalia"
+
+#: libs/help_functions.php:7238
+msgid "South Africa"
+msgstr "Sydafrika"
+
+#: libs/help_functions.php:7239
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "South Georgia og South Sandwich Islands"
+
+#: libs/help_functions.php:7240
+msgid "Spain"
+msgstr "Spanien"
+
+#: libs/help_functions.php:7241
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: libs/help_functions.php:7242
+msgid "St. Helena"
+msgstr ""
+
+#: libs/help_functions.php:7243
+msgid "St. Pierre and Miquelon"
+msgstr ""
+
+#: libs/help_functions.php:7244
+msgid "Sudan"
+msgstr "Sudan"
+
+#: libs/help_functions.php:7245
+msgid "Suriname"
+msgstr "Surinam"
+
+#: libs/help_functions.php:7246
+msgid "Svalbard and Jan Mayen Islands"
+msgstr "Svalbard og Jan Mayen Øerne"
+
+#: libs/help_functions.php:7247
+msgid "Swaziland"
+msgstr "Swaziland"
+
+#: libs/help_functions.php:7248
+msgid "Sweden"
+msgstr "Sverige"
+
+#: libs/help_functions.php:7249
+msgid "Switzerland"
+msgstr "Schweiz"
+
+#: libs/help_functions.php:7250
+msgid "Syrian Arab Republic"
+msgstr "Syrien"
+
+#: libs/help_functions.php:7251
+msgid "Taiwan, Province of China"
+msgstr "Taiwan"
+
+#: libs/help_functions.php:7252
+msgid "Tajikistan"
+msgstr "Tadsjikistan"
+
+#: libs/help_functions.php:7253
+msgid "Tanzania, United Republic of"
+msgstr "Tanzania"
+
+#: libs/help_functions.php:7254
+msgid "Thailand"
+msgstr "Thailand"
+
+#: libs/help_functions.php:7255
+msgid "Togo"
+msgstr "Togo"
+
+#: libs/help_functions.php:7256
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: libs/help_functions.php:7257
+msgid "Tonga"
+msgstr "Tonga"
+
+#: libs/help_functions.php:7258
+msgid "Trinidad and Tobago"
+msgstr "Trinidad og Tobago"
+
+#: libs/help_functions.php:7259
+msgid "Tunisia"
+msgstr "Tunesien"
+
+#: libs/help_functions.php:7260
+msgid "Turkey"
+msgstr "Tyrkiet"
+
+#: libs/help_functions.php:7261
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: libs/help_functions.php:7262
+msgid "Turks and Caicos Islands"
+msgstr "Turks- og Caicosøerne"
+
+#: libs/help_functions.php:7263
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: libs/help_functions.php:7264
+msgid "Uganda"
+msgstr "Uganda"
+
+#: libs/help_functions.php:7265
+msgid "Ukraine"
+msgstr "Ukraine"
+
+#: libs/help_functions.php:7266
+msgid "United Arab Emirates"
+msgstr "Forenede Arabiske Emirater"
+
+#: libs/help_functions.php:7267
+msgid "United Kingdom"
+msgstr "Storbritannien"
+
+#: libs/help_functions.php:7268
+msgid "United States"
+msgstr "United States"
+
+#: libs/help_functions.php:7269
+msgid "United States Minor Outlying Islands"
+msgstr "USA's ydre småøer"
+
+#: libs/help_functions.php:7270
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: libs/help_functions.php:7271
+msgid "Uzbekistan"
+msgstr "Uzbekistan"
+
+#: libs/help_functions.php:7272
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: libs/help_functions.php:7273
+msgid "Venezuela"
+msgstr "Venezuela"
+
+#: libs/help_functions.php:7274
+msgid "Vietnam"
+msgstr "Vietnam"
+
+#: libs/help_functions.php:7275
+msgid "Virgin Islands (British)"
+msgstr "Jomfruøerne (Britisk)"
+
+#: libs/help_functions.php:7276
+msgid "Virgin Islands (U.S.)"
+msgstr "Amerikanske Jomfruøer."
+
+#: libs/help_functions.php:7277
+msgid "Wallis and Futuna Islands"
+msgstr "Wallis og Futuna-øerne"
+
+#: libs/help_functions.php:7278
+msgid "Western Sahara"
+msgstr "Vest Sahara"
+
+#: libs/help_functions.php:7279
+msgid "Yemen"
+msgstr "Yemen"
+
+#: libs/help_functions.php:7280
+msgid "Yugoslavia"
+msgstr "Jugoslavien"
+
+#: libs/help_functions.php:7281
+msgid "Zambia"
+msgstr "Zambia"
+
+#: libs/help_functions.php:7282
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
+#: libs/help_functions.php:7326 libs/pin-admin.php:92
+msgid "For action "
+msgstr "For type"
+
+#: libs/help_functions.php:7327 libs/help_functions.php:7344
+#: libs/help_functions.php:7361 libs/help_functions.php:7373
+#: libs/pin-admin.php:93 libs/pin-admin.php:105
+msgid "Image size must be 44px x 50px. "
+msgstr ""
+
+#: libs/help_functions.php:7343
+msgid "For category "
+msgstr ""
+
+#: libs/help_functions.php:7360 libs/pin-admin.php:121
+msgid "For action"
+msgstr ""
+
+#: libs/help_functions.php:7360 libs/pin-admin.php:121
+msgid "category"
+msgstr "kategori"
+
+#: libs/help_functions.php:7372 libs/pin-admin.php:132 libs/pin-admin.php:133
+msgid "Userpin in geolocation"
+msgstr "Mærke ved geolokation"
+
+#: libs/help_functions.php:8063
+msgid "Adults"
+msgstr "Voksne"
+
+#: libs/help_functions.php:8064
+msgid "Ages 13 or above"
+msgstr ""
+
+#: libs/help_functions.php:8068
+msgid "Ages 2 to 12"
+msgstr ""
+
+#: libs/help_functions.php:8072
+msgid "Under 2 years"
+msgstr ""
+
+#: libs/icalendar.php:57 libs/icalendar.php:150
+msgid "external"
+msgstr "ekstern"
+
+#: libs/listing_functions.php:12
+msgid "What's Nearby"
+msgstr ""
+
+#: libs/listing_functions.php:40
+msgid "Property Price"
+msgstr "Lejepris"
+
+#: libs/listing_functions.php:110
+msgid "Property Details"
+msgstr "Ejendoms detaljer"
+
+#: libs/listing_functions.php:148
+#: templates/submit_templates/property_amenities.php:111
+msgid "Amenities and Features"
+msgstr "Faciliteter og funktioner"
+
+#. Template Name of the plugin/theme
+#: libs/listing_functions.php:188
+#: templates/submit_templates/property_details.php:209
+msgid "Terms and Conditions"
+msgstr "Vilkår & Betingelser"
+
+#: libs/listing_functions.php:240
+msgid "Sleeping Situation"
+msgstr ""
+
+#: libs/listing_functions.php:326
+msgid "icon"
+msgstr "Ikon:"
+
+#: libs/listing_functions.php:492
+msgid "Other Features "
+msgstr ""
+
+#: libs/listing_functions.php:585 libs/listing_functions.php:732
+#: libs/listing_functions.php:1020 libs/listing_functions.php:1034
+#: libs/listing_functions.php:1074 libs/listing_functions.php:1278
+#: libs/listing_functions.php:1289
+#: templates/submit_templates/property_price.php:33
+#: user_dashboard_allinone.php:26
+msgid "All"
+msgstr "Alle"
+
+#: libs/listing_functions.php:615
+#: templates/submit_templates/property_price.php:46 word_remove.php:311
+msgid "Sunday and Saturday"
+msgstr ""
+
+#: libs/listing_functions.php:616
+#: templates/submit_templates/property_price.php:47 word_remove.php:312
+msgid "Friday and Saturday"
+msgstr ""
+
+#: libs/listing_functions.php:617
+#: templates/submit_templates/property_price.php:48 word_remove.php:313
+msgid "Friday, Saturday and Sunday"
+msgstr ""
+
+#: libs/listing_functions.php:638
+msgid "Price per weekend "
+msgstr ""
+
+#: libs/listing_functions.php:642
+msgid "Extra Price per guest"
+msgstr ""
+
+#: libs/listing_functions.php:646 libs/listing_functions.php:848
+msgid "Price per guest"
+msgstr ""
+
+#: libs/listing_functions.php:665
+msgid "City Tax Fee"
+msgstr ""
+
+#: libs/listing_functions.php:669
+msgid "of price per night"
+msgstr ""
+
+#: libs/listing_functions.php:675
+msgid "Minimum no of"
+msgstr ""
+
+#: libs/listing_functions.php:679
+msgid "Allow more guests than the capacity: "
+msgstr ""
+
+#: libs/listing_functions.php:679 libs/reviews.php:22
+msgid "yes"
+msgstr "ja"
+
+#: libs/listing_functions.php:685 libs/listing_functions.php:852
+#: libs/listing_functions.php:1274
+msgid "Booking starts only on"
+msgstr ""
+
+#: libs/listing_functions.php:689
+msgid "Security deposit"
+msgstr ""
+
+#: libs/listing_functions.php:693 libs/listing_functions.php:856
+#: libs/listing_functions.php:1285
+msgid "Booking starts/ends only on"
+msgstr ""
+
+#: libs/listing_functions.php:698
+msgid "discount"
+msgstr "rabat"
+
+#: libs/listing_functions.php:698
+msgid "for bookings made"
+msgstr ""
+
+#: libs/listing_functions.php:698
+msgid "nights in advance"
+msgstr ""
+
+#: libs/listing_functions.php:702
+msgid "Maximum extra guests allowed"
+msgstr ""
+
+#: libs/listing_functions.php:710
+msgid "Extra options"
+msgstr "Ekstra indstillinger"
+
+#: libs/listing_functions.php:842 libs/listing_functions.php:1246
+msgid "Extra price per guest"
+msgstr ""
+
+#: libs/listing_functions.php:845 libs/listing_functions.php:1257
+msgid "Price in weekends"
+msgstr ""
+
+#: libs/listing_functions.php:936 libs/listing_functions.php:1192
+msgid "To"
+msgstr "Til"
+
+#: libs/listing_functions.php:1042 libs/listing_functions.php:1296
+msgid "delete period"
+msgstr ""
+
+#: libs/listing_functions.php:1445
+msgid "Exact location information is provided after a booking is confirmed."
+msgstr ""
+
+#: libs/listing_functions.php:1456 libs/listing_functions.php:1497
+#: templates/submit_templates/property_location.php:86
+msgid "County"
+msgstr "Landsdel"
+
+#: libs/listing_functions.php:1459 libs/listing_functions.php:1500
+#: templates/submit_templates/property_location.php:75
+msgid "State"
+msgstr "Region"
+
+#: libs/listing_functions.php:1462 libs/listing_functions.php:1503
+#: templates/submit_templates/property_location.php:52
+msgid "Zip"
+msgstr "Postnummer"
+
+#: libs/listing_functions.php:1465 libs/listing_functions.php:1506
+#: templates/submit_templates/property_description.php:303
+#: templates/submit_templates/property_description.php:307
+#: templates/submit_templates/property_description_first.php:299
+#: templates/submit_templates/property_description_first.php:302
+msgid "Country"
+msgstr "Land"
+
+#: libs/listing_functions.php:1550
+msgid "Property Status"
+msgstr "Ejendomsstatus"
+
+#: libs/listing_functions.php:1552
+msgid "Listing Status"
+msgstr "Lejemåls Status"
+
+#: libs/listing_functions.php:1556
+msgid "Property ID"
+msgstr "Ejendoms ID"
+
+#: libs/listing_functions.php:1558
+msgid "Listing ID"
+msgstr "Annonce nr."
+
+#: libs/listing_functions.php:1564
+msgid "Listing Size"
+msgstr "Lejemåls størrelse"
+
+#: libs/listing_functions.php:1569
+msgid "Property Lot Size"
+msgstr "Grundens størrelse"
+
+#: libs/listing_functions.php:1571
+msgid "Listing Lot Size"
+msgstr ""
+
+#: libs/listing_functions.php:1581
+#: templates/submit_templates/property_details.php:130
+msgid "Bathrooms"
+msgstr "Badeværelser"
+
+#: libs/megamenu.php:165
+#, php-format
+msgid "%s (Invalid)"
+msgstr "%s (Ugyldig)"
+
+#: libs/megamenu.php:168
+#, php-format
+msgid "%s (Pending)"
+msgstr "%s (afventer)"
+
+#: libs/megamenu.php:192
+msgid "Move up"
+msgstr "Flyt op"
+
+#: libs/megamenu.php:205
+msgid "Move down"
+msgstr "Flyt ned"
+
+#: libs/megamenu.php:207 libs/megamenu.php:209
+msgid "Edit Menu Item"
+msgstr "Rediger menupunkt"
+
+#: libs/megamenu.php:218
+msgid "URL"
+msgstr "URL"
+
+#: libs/megamenu.php:225
+msgid "Navigation Label"
+msgstr "Navigation Etiket"
+
+#: libs/megamenu.php:231
+msgid "Title Attribute"
+msgstr "Titel attribut"
+
+#: libs/megamenu.php:238
+msgid "Open link in a new window/tab"
+msgstr "Åbn link i et nyt vindue / faneblad"
+
+#: libs/megamenu.php:243
+msgid "CSS Classes (optional)"
+msgstr "CSS Klasser (Valgfrit)"
+
+#: libs/megamenu.php:249
+msgid "Link Relationship (XFN)"
+msgstr "Link relation (XFN)"
+
+#: libs/megamenu.php:257
+msgid ""
+"The description will be displayed in the menu if the current theme supports "
+"it."
+msgstr ""
+"Beskrivelsen vil blive vist i menuen, hvis det aktuelle tema understøtter "
+"det."
+
+#: libs/megamenu.php:264
+msgid "Menu Item Icon(ex: fa fa-comment)"
+msgstr "Menupunktikon(f.eks. fa fa-kommentar)"
+
+#: libs/megamenu.php:273
+msgid "Menu Item Label(ex: \"new\")"
+msgstr "Etiket til menupunkt(f.eks. \"ny\")"
+
+#: libs/megamenu.php:288
+msgid "Set as Mega Menu?"
+msgstr "Sæt som Mega Menu?"
+
+#: libs/megamenu.php:294
+msgid "Mega Menu Widget Area"
+msgstr "Mega Menu Widget område"
+
+#: libs/megamenu.php:296
+msgid "Select Widget Area"
+msgstr "Vælg Widgetområde"
+
+#: libs/megamenu.php:307
+msgid "Upload Background Image | "
+msgstr "Overfør | "
+
+#: libs/megamenu.php:309
+msgid "Remove Image"
+msgstr "Fjern billede"
+
+#: libs/megamenu.php:320
+msgid ""
+"Container Styles( *set custom styles for mega menu container only:.  Ex: "
+"background position, background repeat )"
+msgstr ""
+"Container typografier (* Angiv kun brugerdefinerede typografier for Mega "
+"Menu containeren:.  Ex: baggrunds position, gentagelse af baggrund)"
+
+#: libs/megamenu.php:336
+msgid "Draw border right on mega menu column?"
+msgstr "Vil du tegne kant lige på megamenukolonnen?"
+
+#: libs/megamenu.php:344
+#, php-format
+msgid "Original: %s"
+msgstr "Original: %s"
+
+#: libs/megamenu.php:357
+msgid "Remove"
+msgstr "Fjern"
+
+#: libs/megamenu.php:358 templates/book_per_hour_form.php:9
+msgid "Cancel"
+msgstr "Annuller"
+
+#: libs/pin-admin.php:61
+msgid ""
+"Add new Google Maps pins for single actions / single categories. For speed "
+"reason, you MUST add pins if you change categories and actions names."
+msgstr ""
+
+#: libs/pin-admin.php:62
+msgid ""
+"If you add images directly into the input fields (without Upload button) "
+"please use the full image path. For ex: http://www.wprentals..... . If you "
+"use the \"upload\"  button use also \"Insert into Post\" button from the pop "
+"up window."
+msgstr ""
+
+#: libs/pin-admin.php:63
+msgid ""
+"Pins retina version must be uploaded at the same time (same folder) as the "
+"original pin and the name of the retina file should be with_2x at the end.  "
+msgstr ""
+
+#: libs/pin-admin.php:63
+msgid "Help here"
+msgstr ""
+
+#: libs/pin-admin.php:70
+msgid "Use price Pins ?"
+msgstr ""
+
+#: libs/pin-admin.php:71
+msgid ""
+"Use price Pins ?(The css class for price pins is \"wpestate_marker\" . Each "
+"pin has also receive a class with the name of the category or action: For "
+"example \"wpestate_marker apartments sales\")"
+msgstr ""
+
+#: libs/pin-admin.php:80
+msgid "Use Full Price Pins ?"
+msgstr ""
+
+#: libs/pin-admin.php:81
+msgid ""
+"If not we will show prices without before and after label and in this "
+"format : 5,23m or 6.83k "
+msgstr ""
+
+#: libs/pin-admin.php:95 libs/pin-admin.php:107 libs/pin-admin.php:124
+#: libs/pin-admin.php:135
+msgid "Upload Pin"
+msgstr "Upload Pin"
+
+#: libs/pin-admin.php:104
+msgid "For category: "
+msgstr ""
+
+#: libs/pin-admin.php:113
+msgid ""
+"Add new Google Maps pins for actions & categories combined (example: "
+"'apartments in sales')"
+msgstr ""
+"Tilføj nye Google Maps Pins til typer & kategorier kombineret (eksempel: "
+"‘lejligheder i salg')"
+
+#: libs/pin-admin.php:122
+msgid "Image size must be 44px x 50px."
+msgstr ""
+
+#: libs/pin-admin.php:140 libs/property-admin.php:100
+#: libs/property-admin.php:169 libs/theme-slider.php:63
+msgid "Save Changes"
+msgstr "Gem ændringer"
+
+#: libs/plugins.php:119 libs/plugins/class-tgm-plugin-activation.php:334
+msgid "Install Required Plugins"
+msgstr "Installer påkrævede plugins"
+
+#: libs/plugins.php:120 libs/plugins/class-tgm-plugin-activation.php:335
+msgid "Install Plugins"
+msgstr "Installer plugins"
+
+#. translators: %s: plugin name.
+#: libs/plugins.php:121 libs/plugins/class-tgm-plugin-activation.php:337
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr "Installerer plugin: %s"
+
+#: libs/plugins.php:122 libs/plugins/class-tgm-plugin-activation.php:340
+msgid "Something went wrong with the plugin API."
+msgstr "Noget gik galt med dette plugins API."
+
+#. translators: 1: plugin name(s).
+#: libs/plugins.php:123 libs/plugins/class-tgm-plugin-activation.php:343
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] "Dette tema kræver følgende plugin:%1$s."
+msgstr[1] "Dette tema kræver følgende plugins:%1$s."
+
+#. translators: 1: plugin name(s).
+#: libs/plugins.php:124 libs/plugins/class-tgm-plugin-activation.php:349
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] "Dette tema anbefaler følgende plugin:%1$s."
+msgstr[1] "Dette tema anbefaler følgende plugins:%1$s."
+
+#: libs/plugins.php:125
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"installed."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins installed."
+msgstr[0] ""
+"Beklager, men du har ikke de korrekte tilladelser til at installere "
+"pluginnet %s. Kontakt administratoren af dette websted for at få hjælp til "
+"at installere pluginnet."
+msgstr[1] ""
+"Beklager, men du har ikke de rigtige tilladelser til at installere %s-"
+"plugins. Kontakt administratoren af dette websted for hjælp til at få "
+"plugins installeret."
+
+#. translators: 1: plugin name(s).
+#: libs/plugins.php:126 libs/plugins/class-tgm-plugin-activation.php:367
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] "Følgende obligatoriske plugin er i øjeblikket inaktiv:%1$s."
+msgstr[1] "Følgende påkrævede plugins er i øjeblikket inaktive:%1$s."
+
+#. translators: 1: plugin name(s).
+#: libs/plugins.php:127 libs/plugins/class-tgm-plugin-activation.php:373
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] "Følgende anbefalede plugin er i øjeblikket inaktiv:%1$s."
+msgstr[1] "Følgende anbefalede plugins er i øjeblikket inaktiv:%1$s."
+
+#: libs/plugins.php:128
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin activated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins activated."
+msgstr[0] ""
+"Beklager, men du har ikke de korrekte tilladelser til at aktivere plug-in'en "
+"%s. Kontakt administratoren af dette websted for at få hjælp til at aktivere "
+"plugin'et."
+msgstr[1] ""
+"Beklager, men du har ikke de rigtige tilladelser til at aktivere %s-plugins. "
+"Kontakt administratoren af dette websted for at få hjælp til at få plugins "
+"aktiveret."
+
+#. translators: 1: plugin name(s).
+#: libs/plugins.php:129 libs/plugins/class-tgm-plugin-activation.php:355
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+"Følgende plugin skal opdateres til den nyeste version for at sikre maksimal "
+"kompatibilitet med dette tema:%1$s."
+msgstr[1] ""
+"Følgende plugins skal opdateres til den nyeste version for at sikre maksimal "
+"kompatibilitet med dette tema:%1$s."
+
+#: libs/plugins.php:130
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"updated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins "
+"updated."
+msgstr[0] ""
+"Beklager, men du har ikke de rigtige tilladelser til at opdatere %s-"
+"pluginet. Kontakt administratoren af dette websted for at få hjælp til at få "
+"opdateringen af pluginet."
+msgstr[1] ""
+"Beklager, men du har ikke de rigtige tilladelser til at opdatere %s-plugins. "
+"Kontakt administratoren af dette websted for at få hjælp til at få "
+"opdateringer til plugins."
+
+#: libs/plugins.php:131 libs/plugins/class-tgm-plugin-activation.php:378
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "Begynd installeringen af plugin"
+msgstr[1] "Begynd at installere plugins"
+
+#: libs/plugins.php:132
+msgid "Activate installed plugin"
+msgid_plural "Activate installed plugins"
+msgstr[0] "Aktivere installeret plugin"
+msgstr[1] "Activate installed plugins"
+
+#: libs/plugins.php:133 libs/plugins/class-tgm-plugin-activation.php:392
+msgid "Return to Required Plugins Installer"
+msgstr "Vend tilbage til Installation af påkrævede plugins"
+
+#: libs/plugins.php:134 libs/plugins/class-tgm-plugin-activation.php:394
+#: libs/plugins/class-tgm-plugin-activation.php:3244
+msgid "Plugin activated successfully."
+msgstr "Plugin blev korrekt aktiveret."
+
+#: libs/plugins.php:135
+#, php-format
+msgid "All plugins installed and activated successfully. %s"
+msgstr "Alle plugins blev installeret og aktiveret med succes. %s"
+
+#. translators: %s: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:339
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr "Opdaterer plugin: %s"
+
+#. translators: 1: plugin name(s).
+#: libs/plugins/class-tgm-plugin-activation.php:361
+#, php-format
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] "Der er en opdatering tilgængelig for:%1$s."
+msgstr[1] "Der er opdateringer tilgængelig for:%1$s."
+
+#: libs/plugins/class-tgm-plugin-activation.php:383
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] "Begynd at opdatere plugin"
+msgstr[1] "Begynd at opdatere plugins"
+
+#: libs/plugins/class-tgm-plugin-activation.php:388
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "Begynd at aktivere plugin"
+msgstr[1] "Begynd at aktivere plugins"
+
+#: libs/plugins/class-tgm-plugin-activation.php:393
+#: libs/plugins/class-tgm-plugin-activation.php:912
+#: libs/plugins/class-tgm-plugin-activation.php:2618
+#: libs/plugins/class-tgm-plugin-activation.php:3665
+msgid "Return to the Dashboard"
+msgstr "Tilbage til Dashboard"
+
+#: libs/plugins/class-tgm-plugin-activation.php:395
+#: libs/plugins/class-tgm-plugin-activation.php:3037
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] "Følgende plugin blev aktiveret succesfuldt :"
+msgstr[1] "Følgende plugin'er blev aktiveret korrekt:"
+
+#. translators: 1: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:397
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "Ingen handling. Plugin %1$s var allerede aktivt."
+
+#. translators: 1: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:399
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+"Plugin ikke aktiveret. En højere version af %s kræves af dette tema. Opdater "
+"venligst plugin."
+
+#. translators: 1: dashboard link.
+#: libs/plugins/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr "Alle plugins installeret og aktiveret med succes. %1$s"
+
+#: libs/plugins/class-tgm-plugin-activation.php:402
+msgid "Dismiss this notice"
+msgstr "Luk denne besked"
+
+#: libs/plugins/class-tgm-plugin-activation.php:403
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+"Der er en eller flere påkrævede eller anbefalede plugins til installation, "
+"opdatering eller aktivering."
+
+#: libs/plugins/class-tgm-plugin-activation.php:404
+msgid "Please contact the administrator of this site for help."
+msgstr "Kontakt venligst administratoren af denne side for hjælp."
+
+#: libs/plugins/class-tgm-plugin-activation.php:607
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr "Dette plugin skal opdateres for at være kompatibelt med dit tema."
+
+#: libs/plugins/class-tgm-plugin-activation.php:608
+msgid "Update Required"
+msgstr "Opdatering påkrævet"
+
+#: libs/plugins/class-tgm-plugin-activation.php:1019
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr ""
+"Den eksterne plugin-pakke indeholder ikke en mappe med den ønskede slug, og "
+"omdøbning virkede ikke."
+
+#: libs/plugins/class-tgm-plugin-activation.php:1019
+#: libs/plugins/class-tgm-plugin-activation.php:1022
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+"Kontakt venligst udbyderen af dette plugin og bed dem om at pakke deres "
+"plugin i henhold til WordPress' retningslinjer."
+
+#: libs/plugins/class-tgm-plugin-activation.php:1022
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+"Den eksterne plugin-pakke indeholder mere end én fil, men filerne er ikke "
+"pakket i en mappe."
+
+#: libs/plugins/class-tgm-plugin-activation.php:1206
+#: libs/plugins/class-tgm-plugin-activation.php:3033
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr "og"
+
+#. translators: %s: version number
+#: libs/plugins/class-tgm-plugin-activation.php:2067
+#, php-format
+msgid "TGMPA v%s"
+msgstr "TGMPA v%s"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2358
+msgid "Required"
+msgstr "Påkrævet"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2361
+msgid "Recommended"
+msgstr "Anbefalet"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2377
+msgid "WordPress Repository"
+msgstr "WordPress arkiv"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2380
+msgid "External Source"
+msgstr "Ekstern Kilde"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2383
+msgid "Pre-Packaged"
+msgstr "Færdigpakket"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2400
+msgid "Not Installed"
+msgstr "Ikke installeret"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2404
+msgid "Installed But Not Activated"
+msgstr "Installeret, men ikke aktiveret"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2406
+msgid "Active"
+msgstr "Aktiv"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2412
+msgid "Required Update not Available"
+msgstr "Nødvendig Opdatering ikke Tilgængelig"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2415
+msgid "Requires Update"
+msgstr "Kræver Opdatering"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2418
+msgid "Update recommended"
+msgstr "Opdatering anbefalet"
+
+#. translators: 1: install status, 2: update status
+#: libs/plugins/class-tgm-plugin-activation.php:2427
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr "%1$s, %2$s"
+
+#. translators: 1: number of plugins.
+#: libs/plugins/class-tgm-plugin-activation.php:2473
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] "Alle < span class = \"count\" > ( %s) </span>"
+msgstr[1] "Alle < span class = \"count\" > ( %s) </span>"
+
+#. translators: 1: number of plugins.
+#: libs/plugins/class-tgm-plugin-activation.php:2477
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] "Sådan installeres < span class = \"count\" > ( %s) </span>"
+msgstr[1] "Sådan installeres < span class = \"count\" > ( %s) </span>"
+
+#. translators: 1: number of plugins.
+#: libs/plugins/class-tgm-plugin-activation.php:2481
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] "Opdatering tilgængelig <span class=\"count\">(%s)</span>"
+msgstr[1] "Opdatering tilgængelig <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: libs/plugins/class-tgm-plugin-activation.php:2485
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] "For at aktivere <span class=\"count\">(%s)</span>"
+msgstr[1] "For at aktivere <span class=\"count\">(%s)</span>"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2567
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr "ukendt"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2575
+msgid "Installed version:"
+msgstr "Installeret version:"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2583
+msgid "Minimum required version:"
+msgstr "Minimum påkrævet version:"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2595
+msgid "Available version:"
+msgstr "Tilgængelig version:"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2618
+msgid "No plugins to install, update or activate."
+msgstr "Ingen plugins at installere, opdatere eller aktivere."
+
+#: libs/plugins/class-tgm-plugin-activation.php:2632
+msgid "Plugin"
+msgstr "Plugin"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2633
+msgid "Source"
+msgstr "Kilde"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2638
+msgid "Version"
+msgstr "Version"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2639 user_dashboard.php:104
+#: user_dashboard_favorite.php:47 user_dashboard_invoices.php:122
+#: user_dashboard_my_bookings.php:51 user_dashboard_my_reservations.php:81
+msgid "Status"
+msgstr "Status"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: libs/plugins/class-tgm-plugin-activation.php:2688
+#, php-format
+msgid "Install %2$s"
+msgstr "Installer %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: libs/plugins/class-tgm-plugin-activation.php:2693
+#, php-format
+msgid "Update %2$s"
+msgstr "Opdater %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: libs/plugins/class-tgm-plugin-activation.php:2699
+#, php-format
+msgid "Activate %2$s"
+msgstr "Aktiver %2$s"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2769
+msgid "Upgrade message from the plugin author:"
+msgstr "Opgraderingsmeddelelse fra forfatteren af plugin:"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2802
+msgid "Install"
+msgstr "Installer"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2808
+msgid "Update"
+msgstr "Opdater"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2811
+msgid "Activate"
+msgstr "Aktiver"
+
+#: libs/plugins/class-tgm-plugin-activation.php:2842
+msgid "No plugins were selected to be installed. No action taken."
+msgstr "Ingen plugins blev valgt til installation. Ingen handling taget."
+
+#: libs/plugins/class-tgm-plugin-activation.php:2844
+msgid "No plugins were selected to be updated. No action taken."
+msgstr "Ingen plugins blev valgt til opdatering. Ingen handling udført."
+
+#: libs/plugins/class-tgm-plugin-activation.php:2885
+msgid "No plugins are available to be installed at this time."
+msgstr "Ingen plugins er tilgængelige til installation i øjeblikket."
+
+#: libs/plugins/class-tgm-plugin-activation.php:2887
+msgid "No plugins are available to be updated at this time."
+msgstr "Ingen plugins er tilgængelige til opdatering i øjeblikket."
+
+#: libs/plugins/class-tgm-plugin-activation.php:2993
+msgid "No plugins were selected to be activated. No action taken."
+msgstr "Ingen plugins blev valgt til aktivering. Ingen handling taget."
+
+#: libs/plugins/class-tgm-plugin-activation.php:3019
+msgid "No plugins are available to be activated at this time."
+msgstr "Ingen plugins er tilgængelige til aktivering i øjeblikket."
+
+#: libs/plugins/class-tgm-plugin-activation.php:3243
+msgid "Plugin activation failed."
+msgstr "Plugin aktivering fejlede."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: libs/plugins/class-tgm-plugin-activation.php:3583
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr "Opdaterer plugin %1$s (%2$d/%3$d)"
+
+#. translators: 1: plugin name, 2: error message.
+#: libs/plugins/class-tgm-plugin-activation.php:3586
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr "Der skete en fejl under installationen af %1$s: <strong>%2$s</strong>."
+
+#. translators: 1: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:3588
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr "Installationen af %1$s fejlede."
+
+#: libs/plugins/class-tgm-plugin-activation.php:3592
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+"Installering og aktivering startes. Denne proces kan tage lidt tid for nogle "
+"hosts, så hav venligst tålmodighed."
+
+#. translators: 1: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:3594
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr "%1$s installeret og aktiveret uden fejl."
+
+#: libs/plugins/class-tgm-plugin-activation.php:3594
+#: libs/plugins/class-tgm-plugin-activation.php:3602
+msgid "Show Details"
+msgstr "Vis detaljer"
+
+#: libs/plugins/class-tgm-plugin-activation.php:3594
+#: libs/plugins/class-tgm-plugin-activation.php:3602
+msgid "Hide Details"
+msgstr "Skjul detaljer"
+
+#: libs/plugins/class-tgm-plugin-activation.php:3595
+msgid "All installations and activations have been completed."
+msgstr "Alle installationer og aktiveringer er fuldendt."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: libs/plugins/class-tgm-plugin-activation.php:3597
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr "Installerer og aktiverer plugin %1$s (%2$d/%3$d)"
+
+#: libs/plugins/class-tgm-plugin-activation.php:3600
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+"Installering starter. Det kan tage lidt tid for nogle hosts, så hav venligst "
+"tålmodighed."
+
+#. translators: 1: plugin name.
+#: libs/plugins/class-tgm-plugin-activation.php:3602
+#, php-format
+msgid "%1$s installed successfully."
+msgstr "%1$s blev installeret korrekt."
+
+#: libs/plugins/class-tgm-plugin-activation.php:3603
+msgid "All installations have been completed."
+msgstr "Alle installationer er fuldendt."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: libs/plugins/class-tgm-plugin-activation.php:3605
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr "Installerer plugin %1$s (%2$d/%3$d)"
+
+#: libs/property-admin.php:37
+msgid "Field Name"
+msgstr "Felt navn"
+
+#: libs/property-admin.php:38 libs/property-admin.php:73
+msgid "Field Label"
+msgstr "Felt etiket"
+
+#: libs/property-admin.php:39 libs/property-admin.php:76
+msgid "Field Type"
+msgstr "Felt Type"
+
+#: libs/property-admin.php:40
+msgid "Field Order"
+msgstr "Felt rækkefølge"
+
+#: libs/property-admin.php:41
+msgid "Dropdown values"
+msgstr "Dropdown værdier"
+
+#: libs/property-admin.php:50 templates/submit_templates/property_price.php:788
+msgid "delete"
+msgstr "slet"
+
+#: libs/property-admin.php:57
+msgid "Custom Fields list"
+msgstr ""
+
+#: libs/property-admin.php:58
+msgid "Add, edit or delete property custom fields."
+msgstr ""
+
+#: libs/property-admin.php:66
+msgid "Add New Custom Field"
+msgstr "Tilføj nyt brugerdefineret felt"
+
+#: libs/property-admin.php:67
+msgid "Fill the form in order to add a new custom field"
+msgstr ""
+
+#: libs/property-admin.php:70
+msgid "Field name"
+msgstr "Felt navn"
+
+#: libs/property-admin.php:88
+msgid "Dropdown values separated by \",\" (only for dropdown field type)"
+msgstr "Dropdown værdier adskilt af \",\" (kun for dropdown felt type)"
+
+#: libs/property-admin.php:92
+msgid " Order in listing page"
+msgstr "Rækkefølge på ejendomsliste"
+
+#: libs/property-admin.php:95
+msgid " click to add field"
+msgstr ""
+
+#: libs/property-admin.php:128
+msgid "Property Address Label"
+msgstr ""
+
+#: libs/property-admin.php:129 libs/property-admin.php:135
+msgid "Custom title instead of Features and Amenities label."
+msgstr ""
+
+#: libs/property-admin.php:134
+msgid "Property Features Label"
+msgstr ""
+
+#: libs/property-admin.php:140
+msgid "Property Description Label"
+msgstr ""
+
+#: libs/property-admin.php:141
+msgid "Custom title instead of Description label."
+msgstr ""
+
+#: libs/property-admin.php:146
+msgid "Property Details Label"
+msgstr ""
+
+#: libs/property-admin.php:147
+msgid "Custom title instead of Property Details label. "
+msgstr ""
+
+#: libs/property-admin.php:153
+msgid "Property Price Label"
+msgstr "Pris"
+
+#: libs/property-admin.php:154
+msgid "Custom title instead of Property Price label. "
+msgstr ""
+
+#: libs/property-admin.php:161
+msgid "Property Status "
+msgstr ""
+
+#: libs/property-admin.php:162
+msgid ""
+"Property Status (* you may need to add new css classes - please see the help "
+"files) "
+msgstr ""
+"Ejendom status (* du skal muligvis tilføje nye css klasser - se "
+"hjælpefilerne)"
+
+#: libs/property-admin.php:163
+msgid "type here the new status... "
+msgstr ""
+
+#: libs/property-admin.php:164
+msgid "click to add new status"
+msgstr ""
+
+#: libs/reviews.php:6
+msgid "Is Review"
+msgstr ""
+
+#: libs/reviews.php:7
+msgid "Stars"
+msgstr "Stjerner"
+
+#: libs/reviews.php:20
+msgid "no"
+msgstr "nej"
+
+#: libs/reviews.php:29
+msgid "stars"
+msgstr "stjerner"
+
+#: libs/search_functions.php:415
+msgid "All Actions"
+msgstr ""
+
+#: libs/search_functions.php:417 libs/search_functions3.php:761
+msgid "All Counties/States"
+msgstr ""
+
+#: libs/search_functions.php:532
+msgid "Price range:"
+msgstr "Min - Max"
+
+#: libs/search_functions.php:687 libs/search_functions3.php:769
+msgid "All Countries"
+msgstr "Alle lande"
+
+#: libs/theme-import.php:32 libs/theme-import.php:48 libs/theme-import.php:64
+#: libs/theme-import.php:80 libs/theme-import.php:95 libs/theme-import.php:110
+#: libs/theme-import.php:126 libs/theme-import.php:141
+#: libs/theme-import.php:156 libs/theme-import.php:171
+#: libs/theme-import.php:186
+msgid "Clear theme cache after demo import is complete!"
+msgstr "Ryd temaets cache efter import af demo-indhold er afsluttet!"
+
+#: libs/theme-setup.php:1131
+msgid "Profile Update"
+msgstr "Profilopdatering"
+
+#: libs/theme-setup.php:1134
+msgid ""
+"A user updated his profile on %website_url.\n"
+"Username: %user_login"
+msgstr ""
+
+#: libs/theme-setup.php:1139
+msgid "New User ID verification"
+msgstr ""
+
+#: libs/theme-setup.php:1142
+msgid ""
+"A user added his User ID verification image on %website_url.\n"
+"Username: %user_login.\n"
+"You can check the verification status here: %user_profile_url"
+msgstr ""
+
+#: libs/theme-setup.php:1148
+msgid "Password Reset Request"
+msgstr "Anmod om  nyt Password"
+
+#: libs/theme-setup.php:1151
+msgid ""
+"Someone requested that the password be reset for the following account:\n"
+"%website_url \n"
+"Username: %forgot_username .\n"
+"If this was a mistake, just ignore this email and nothing will happen. To "
+"reset your password, visit the following address:%reset_link,\n"
+"Thank You!"
+msgstr ""
+
+#: libs/theme-setup.php:1160
+msgid "Your Password was Reset"
+msgstr ""
+
+#: libs/theme-setup.php:1163
+msgid ""
+"Your new password for the account at: %website_url: \n"
+"Username:%user_login, \n"
+"Password:%user_pass\n"
+"You can now login with your new password at: %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1170
+msgid "Your purchase was activated"
+msgstr ""
+
+#: libs/theme-setup.php:1173
+msgid ""
+"Hi there,\n"
+"Your purchase on  %website_url is activated! You should go check it out."
+msgstr ""
+
+#: libs/theme-setup.php:1178
+msgid "Your listing was approved"
+msgstr ""
+
+#: libs/theme-setup.php:1181
+msgid ""
+"Hi there,\n"
+"Your listing, %property_title was approved on  %website_url ! The listing "
+"is: %property_url.\n"
+"You should go check it out."
+msgstr ""
+
+#: libs/theme-setup.php:1187
+msgid "New User Registration"
+msgstr "Ny bruger registrering"
+
+#: libs/theme-setup.php:1190
+msgid ""
+"New user registration on %website_url.\n"
+"Username: %user_login_register, \n"
+"E-mail: %user_email_register"
+msgstr ""
+
+#: libs/theme-setup.php:1196
+msgid "Your username and password on %website_url"
+msgstr "Your username and password on %website_url"
+
+#: libs/theme-setup.php:1199
+msgid ""
+"Hi there,\n"
+"Welcome to %website_url ! You can login now using the below credentials:\n"
+"Username:%user_login_register\n"
+"Password: %user_pass_register\n"
+"If you have any problems, please contact me.\n"
+"Thank you!"
+msgstr ""
+
+#: libs/theme-setup.php:1207
+msgid "Expired Listing sent for approval on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1210
+msgid ""
+"Hi there,\n"
+"A user has re-submited a new property on %website_url ! You should go check "
+"it out.\n"
+"This is the property title: %submission_title."
+msgstr ""
+
+#: libs/theme-setup.php:1216
+msgid "New Paid Submission on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1219
+msgid ""
+"Hi there,\n"
+"You have a new paid submission on  %website_url ! You should go check it out."
+msgstr ""
+
+#: libs/theme-setup.php:1226
+msgid "New Feature Upgrade on  %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1229
+msgid ""
+"Hi there,\n"
+"You have a new featured submission on  %website_url ! You should go check it "
+"out."
+msgstr ""
+
+#: libs/theme-setup.php:1235
+msgid "Account Downgraded on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1238
+msgid ""
+"Hi there,\n"
+"You downgraded your subscription on %website_url. Because your listings "
+"number was greater than what the actual package offers, we set the status of "
+"all your listings to expired. You will need to choose which listings you "
+"want live and send them again for approval.\n"
+"Thank you!"
+msgstr ""
+
+#: libs/theme-setup.php:1245
+msgid "Membership Cancelled on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1248
+msgid ""
+"Hi there,\n"
+"Your subscription on %website_url was cancelled because it expired or the "
+"recurring payment from the merchant was not processed. All your listings are "
+"no longer visible for our visitors but remain in your account.\n"
+"Thank you."
+msgstr ""
+
+#: libs/theme-setup.php:1254
+msgid "Membership Activated on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1257
+msgid ""
+"Hi there,\n"
+"Your new membership on %website_url is activated! You should go check it out."
+msgstr ""
+
+#: libs/theme-setup.php:1264
+msgid "Free Listing expired on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1267
+msgid ""
+"Hi there,\n"
+"One of your free listings on  %website_url has expired. The listing is "
+"%expired_listing_url.\n"
+"Thank you!"
+msgstr ""
+
+#: libs/theme-setup.php:1273
+msgid "New Listing Submission on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1276
+msgid ""
+"Hi there,\n"
+"A user has submited a new property on %website_url ! You should go check it "
+"out.This is the property title %new_listing_title!"
+msgstr ""
+
+#: libs/theme-setup.php:1281
+msgid "Listing Edited on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1284
+msgid ""
+"Hi there,\n"
+"A user has edited one of his listings  on %website_url ! You should go check "
+"it out. The property name is : %editing_listing_title!"
+msgstr ""
+
+#: libs/theme-setup.php:1290
+msgid "Recurring Payment on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1293
+msgid ""
+"Hi there,\n"
+"We charged your account on %merchant for a subscription on %website_url ! "
+"You should go check it out."
+msgstr ""
+
+#: libs/theme-setup.php:1301 libs/theme-setup.php:1309
+#: libs/theme-setup.php:1317
+msgid "Booking Confirmed on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1304
+msgid ""
+"Hi there,\n"
+"Your booking made on %website_url was confirmed! You can see all your "
+"reservations by logging in your account and visiting My Reservations page."
+msgstr ""
+
+#: libs/theme-setup.php:1312
+msgid ""
+"Hi there,\n"
+"Somebody confirmed a booking on %website_url! You should go and check it out!"
+"Please remember that the confirmation is made based on the payment "
+"confirmation of a non-refundable fee of the total invoice cost, processed "
+"through %website_url and sent to website administrator. "
+msgstr ""
+
+#: libs/theme-setup.php:1320
+msgid ""
+"Hi there,\n"
+"You confirmed a booking on %website_url! The booking was confirmed with no "
+"deposit!"
+msgstr ""
+
+#: libs/theme-setup.php:1327
+msgid "New Message on %website_url."
+msgstr ""
+
+#: libs/theme-setup.php:1330
+msgid ""
+"Hi there,\n"
+"You have a new message on %website_url! You should go and check it out!\n"
+"The message is:\n"
+"%content"
+msgstr ""
+
+#: libs/theme-setup.php:1338
+msgid "New Booking Request on %website_url."
+msgstr ""
+
+#: libs/theme-setup.php:1341
+msgid ""
+"Hi there,\n"
+"You have received a new booking request on %website_url !  Go to your "
+"account in Bookings page to see the request, issue the invoice or reject "
+"it!\n"
+"The property is: %booking_property_link"
+msgstr ""
+
+#: libs/theme-setup.php:1347
+msgid "You booked a period on %website_url."
+msgstr ""
+
+#: libs/theme-setup.php:1350
+msgid ""
+"Hi there,\n"
+"You have booked a period for your own listing on %website_url !  The "
+"reservation will appear in your account, under My Bookings. \n"
+"The property is: %booking_property_link"
+msgstr ""
+
+#: libs/theme-setup.php:1356
+msgid "New Invoice on %website_url."
+msgstr ""
+
+#: libs/theme-setup.php:1359
+msgid ""
+"Hi there,\n"
+"An invoice was generated for your booking request on %website_url !  A "
+"deposit will be required for booking to be confirmed. For more details check "
+"out your account, My Reservations page."
+msgstr ""
+
+#: libs/theme-setup.php:1365
+msgid "Booking Request Rejected on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1368
+msgid ""
+"Hi there,\n"
+"One of your booking requests sent on %website_url was rejected by the owner. "
+"The rejected reservation is automatically removed from your account. "
+msgstr ""
+
+#: libs/theme-setup.php:1373
+msgid "Booking Request Cancelled on %website_url"
+msgstr ""
+
+#: libs/theme-setup.php:1376
+msgid ""
+"Hi there,\n"
+"One of the unconfirmed booking requests you received on %website_url  was "
+"cancelled! The request is automatically deleted from your account!"
+msgstr ""
+
+#: libs/theme-setup.php:1381
+msgid "Booking Period Cancelled on %website_url."
+msgstr ""
+
+#: libs/theme-setup.php:1384
+msgid ""
+"Hi there,\n"
+"One of your confirmed bookings on %website_url  was cancelled by property "
+"owner. "
+msgstr ""
+
+#: libs/theme-setup.php:1390
+msgid "You ordered a new Wire Transfer"
+msgstr ""
+
+#: libs/theme-setup.php:1393
+msgid ""
+"We received your Wire Transfer payment request on  %website_url !\n"
+"Please follow the instructions below in order to start submitting properties "
+"as soon as possible.\n"
+"The invoice number is: %invoice_no, Amount: %total_price. \n"
+"Instructions:  %payment_details."
+msgstr ""
+
+#: libs/theme-setup.php:1399
+msgid "Somebody ordered a new Wire Transfer"
+msgstr ""
+
+#: libs/theme-setup.php:1402
+msgid ""
+"Hi there,\n"
+"You received a new Wire Transfer payment request on %website_url.\n"
+"The invoice number is:  %invoice_no,  Amount: %total_price.\n"
+"Please wait until the payment is made to activate the user purchase."
+msgstr ""
+
+#: libs/theme-setup.php:1408
+msgid "Invoice payment reminder"
+msgstr ""
+
+#: libs/theme-setup.php:1411
+msgid ""
+"Hi there,\n"
+"We remind you that you need to fully pay the invoice no %invoice_id until  "
+"%until_date. This invoice is for booking no %booking_id on property "
+"%property_title with the url %property_url.\n"
+"Thank you."
+msgstr ""
+
+#: libs/theme-slider.php:12
+msgid "Select Properties "
+msgstr "Ejendomme"
+
+#: libs/theme-slider.php:13
+msgid ""
+"Select properties for slider - *hold CTRL for multiple select.For speed "
+"reason we show only the first 50 listings. If you want to add litings that "
+"are not present in this section use the \"manual\" field below.  "
+msgstr ""
+
+#: libs/theme-slider.php:38
+msgid ""
+"Add Properties in theme slider by ID. Place here the Listings Id separated "
+"by comma."
+msgstr ""
+
+#: libs/theme-slider.php:39
+msgid ""
+"Place here the Listings Id separated by comma. Will Overwrite the above "
+"selection!"
+msgstr ""
+
+#: libs/theme-slider.php:45
+msgid "Number of milisecons before auto cycling an item"
+msgstr ""
+
+#: libs/theme-slider.php:46
+msgid ""
+"Number of milisecons before auto cycling an item (5000=5sec).Put 0 if you "
+"don't want to autoslide. "
+msgstr ""
+
+#: libs/theme-slider.php:54
+msgid "Design Type?"
+msgstr ""
+
+#: libs/theme-slider.php:55
+msgid "Select the design type."
+msgstr ""
+
+#: page.php:26 single.php:54
+msgid "by"
+msgstr "af"
+
+#: page.php:38 single.php:66
+msgid "Pages:"
+msgstr "Sider:"
+
+#: page.php:43 single.php:71
+msgid "Next page"
+msgstr "Næste side"
+
+#: page.php:44 single.php:72
+msgid "Previous page"
+msgstr "Forrige side"
+
+#: search.php:27
+msgid "Search Results for: "
+msgstr "Søgeresultater for: "
+
+#: search.php:33
+msgid ""
+"We didn't find any results. Please try again with different search "
+"parameters. "
+msgstr ""
+
+#: single.php:54
+msgid "Published on"
+msgstr "Udgivet d."
+
+#: single.php:81 templates/search_unit.php:20
+#: templates/submit_templates/property_description.php:65
+#: templates/submit_templates/property_description_first.php:63
+msgid "Category"
+msgstr "Kategori:"
+
+#: templates/adv_search_mobile.php:2
+msgid "Advanced Search"
+msgstr "Avanceret Søgning"
+
+#: templates/advanced_search_map_list.php:56
+msgid "Radius:"
+msgstr "Radius:"
+
+#: templates/advanced_search_map_list.php:85
+msgid "Search Options"
+msgstr "Søgemuligheder"
+
+#: templates/agent_reviews.php:14
+msgid "Reviews "
+msgstr "Anmeldelser "
+
+#: templates/agent_unit.php:46
+msgid "Lives in"
+msgstr ""
+
+#: templates/agent_unit.php:48
+msgid "non disclosed"
+msgstr ""
+
+#: templates/agentdetails.php:72
+msgid "My details"
+msgstr "Mine detaljer"
+
+#: templates/agentdetails.php:98
+msgid "About Me "
+msgstr "Om mig"
+
+#: templates/ajax_container.php:2
+msgid "Your search results"
+msgstr ""
+
+#: templates/blog_unit_new.php:52
+msgid "Category: "
+msgstr "Kategori: "
+
+#: templates/blog_unit_new.php:55
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: templates/book_per_hour_form.php:12
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/booking_form_template.php:45 templates/listingslider.php:51
+#: templates/mobile_booking.php:35
+msgid "per guest"
+msgstr ""
+
+#: templates/breadcrumbs.php:24
+msgid "Home"
+msgstr "Hjem"
+
+#: templates/breadcrumbs.php:29
+msgid "Archives"
+msgstr "Arkiver"
+
+#: templates/breadcrumbs.php:32 templates/half_map_core.php:63
+msgid "Search Results"
+msgstr "Søgeresultater"
+
+#: templates/contact_host.php:3
+msgid "CONTACT OWNER"
+msgstr ""
+
+#: templates/download_pdf.php:12
+msgid "Documents"
+msgstr "Dokumenter"
+
+#: templates/google_maps_base.php:68
+msgid "click to enable zoom"
+msgstr ""
+
+#: templates/google_maps_base.php:72 templates/google_maps_base_map_list.php:14
+msgid "Loading Maps"
+msgstr ""
+
+#: templates/half_map_core.php:53 templates/normal_map_core.php:45
+msgid "results"
+msgstr "resultater"
+
+#: templates/half_map_core.php:67 templates/normal_map_core.php:78
+msgid "Listings in "
+msgstr "Lejemål"
+
+#: templates/listing_page_1.php:193
+msgid "On the Map"
+msgstr ""
+
+#: templates/listing_reviews.php:97
+#, php-format
+msgid "%d Review"
+msgid_plural "%d Reviews"
+msgstr[0] ""
+msgstr[1] "%d anmeldelser"
+
+#: templates/listingslider.php:17
+msgid "click to see all images"
+msgstr ""
+
+#: templates/listingslider.php:66
+msgid "gallery"
+msgstr "galleri"
+
+#: templates/listingslider_for_type4.php:80 templates/property_pictures.php:23
+#: templates/property_pictures.php:43
+msgid "See all"
+msgstr "Se alle"
+
+#: templates/listingslider_for_type4.php:80 templates/property_pictures.php:23
+#: templates/property_pictures.php:43 templates/property_pictures2.php:6
+msgid "photos"
+msgstr "billeder"
+
+#: templates/login_modal_form.php:24 templates/login_modal_form.php:26
+#: templates/login_modal_form.php:105
+msgid "Log in to your account"
+msgstr ""
+
+#: templates/login_modal_form.php:28
+msgid "Please fill in the log in or register forms"
+msgstr ""
+
+#: templates/login_modal_form.php:30 templates/login_modal_form.php:33
+msgid "Please login!"
+msgstr ""
+
+#: templates/login_modal_form.php:31
+msgid "You need to login in order to send a message"
+msgstr ""
+
+#: templates/login_modal_form.php:34
+msgid "You need to login in order to book a listing"
+msgstr ""
+
+#: templates/login_modal_form.php:111 templates/mobile_menu.php:90
+#: templates/mobile_menu.php:113
+msgid "Username"
+msgstr "Brugernavn"
+
+#: templates/login_modal_form.php:115 templates/mobile_menu.php:93
+#: templates/mobile_menu.php:119
+msgid "Password"
+msgstr "Adgangskode"
+
+#: templates/login_modal_form.php:122 templates/mobile_menu.php:87
+#: templates/mobile_menu.php:99 templates/top_user_menu.php:37
+msgid "Login"
+msgstr "Log ind"
+
+#: templates/login_modal_form.php:124
+msgid "Don't have an account?"
+msgstr "Har du ikke en konto?"
+
+#: templates/login_modal_form.php:125 templates/login_modal_form.php:173
+msgid "Forgot Password"
+msgstr "Glemt adgangskode"
+
+#: templates/login_modal_form.php:147
+msgid "Create an account"
+msgstr "Opret en konto"
+
+#: templates/login_modal_form.php:151
+msgid "Already a member? Sign in!"
+msgstr "Allerede medlem? Log ind!"
+
+#: templates/login_modal_form.php:177 templates/mobile_menu.php:173
+msgid "Enter Your Email Address"
+msgstr "Indtast din e-mailadresse"
+
+#: templates/login_modal_form.php:184 templates/mobile_menu.php:179
+msgid "Return to Login"
+msgstr ""
+
+#: templates/mobile_booking.php:52
+msgid "Make a reservation"
+msgstr "Reserveer je Camper"
+
+#: templates/mobile_menu.php:54 templates/user_menu.php:167
+msgid "Dashboard"
+msgstr "Kontrolpanel"
+
+#: templates/mobile_menu.php:59 templates/user_menu.php:174
+msgid "My Subscription"
+msgstr "Mit abonnement"
+
+#: templates/mobile_menu.php:68 templates/top_user_menu.php:89
+msgid "Reservations"
+msgstr "Reservationer"
+
+#: templates/mobile_menu.php:70 templates/top_user_menu.php:94
+msgid "Bookings"
+msgstr "Bookinger"
+
+#: templates/mobile_menu.php:72 templates/top_user_menu.php:99
+msgid "Inbox"
+msgstr "Indbakke"
+
+#: templates/mobile_menu.php:74 templates/top_user_menu.php:103
+#: templates/user_menu.php:239
+msgid "Invoices"
+msgstr "Fakturaer"
+
+#: templates/mobile_menu.php:101
+msgid "Need an account? Register here!"
+msgstr ""
+
+#: templates/mobile_menu.php:102
+msgid "Forgot Password?"
+msgstr "Glemt adgangskode?"
+
+#: templates/mobile_menu.php:110 templates/mobile_menu.php:147
+msgid "Register"
+msgstr "Registrér"
+
+#: templates/mobile_menu.php:120
+msgid "Retype Password"
+msgstr "Skriv lösenordet igen"
+
+#: templates/mobile_menu.php:130
+msgid "I only want to book"
+msgstr ""
+
+#: templates/mobile_menu.php:132
+msgid "I want to rent my property"
+msgstr ""
+
+#: templates/mobile_menu.php:135
+msgid "I agree with "
+msgstr "Jeg er enig i: "
+
+#: templates/mobile_menu.php:135
+msgid "terms & conditions"
+msgstr "vilkår og betingelser"
+
+#: templates/mobile_menu.php:137
+msgid "A password will be e-mailed to you"
+msgstr "Et password vil blive sendt til dig"
+
+#: templates/mobile_menu.php:151
+msgid "Back to Login"
+msgstr "Tilbage til Log Ind"
+
+#: templates/owner_area.php:105 templates/owner_area.php:126
+msgid "See Owner Profile"
+msgstr ""
+
+#: templates/owner_details_header.php:83 templates/owner_details_header.php:95
+msgid "not set"
+msgstr "ikke angivet"
+
+#: templates/payment_management_booking.php:80
+msgid "service fee"
+msgstr ""
+
+#: templates/payment_management_booking.php:80
+msgid "taxes:"
+msgstr ""
+
+#: templates/payment_management_booking.php:80
+msgid "youearned"
+msgstr ""
+
+#: templates/payment_management_booking.php:83
+msgid "Pay Owner- Disabled until "
+msgstr ""
+
+#: templates/payment_management_booking.php:85
+msgid "Pay Owner"
+msgstr ""
+
+#: templates/payment_management_booking.php:92
+msgid "Refund Security Deposit- Disabled until "
+msgstr "Refunderet Sikkerheds depositum - Låst indtil"
+
+#: templates/payment_management_booking.php:94
+msgid "Refund Security Deposit"
+msgstr ""
+
+#: templates/payment_management_booking.php:97
+msgid "Refund Renter"
+msgstr ""
+
+#: templates/payment_management_booking.php:100
+msgid "Issue Final Invoice"
+msgstr ""
+
+#: templates/places_unit_1.php:61
+msgid "Discover"
+msgstr "Discover"
+
+#: templates/property_list_filters.php:67
+msgid "Sort by"
+msgstr "Sorter efter"
+
+#: templates/property_list_filters.php:72
+msgid "Price High to Low"
+msgstr "Pris Høj -> Lav"
+
+#: templates/property_list_filters.php:73
+msgid "Price Low to High"
+msgstr "Pris Lav -> Høj"
+
+#: templates/property_menu.php:5 templates/property_menu_hidden.php:5
+#: templates/user_menu.php:206
+msgid "Details"
+msgstr "Detaljer"
+
+#: templates/property_menu.php:6
+msgid "Ammenities"
+msgstr ""
+
+#: templates/property_menu.php:7
+msgid "Avalability"
+msgstr "Tilgæmgelighed"
+
+#: templates/property_menu.php:13 templates/property_menu_hidden.php:14
+msgid "Yelp"
+msgstr "Yelp"
+
+#: templates/property_menu.php:17 templates/property_menu_hidden.php:19
+#: user_dashboard.php:102 user_dashboard_favorite.php:45
+msgid "Reviews"
+msgstr "Anmeldelser"
+
+#: templates/property_menu.php:18 templates/property_menu_hidden.php:20
+msgid "Owner"
+msgstr "Ejer"
+
+#: templates/property_menu.php:19 templates/property_menu_hidden.php:21
+msgid "Map"
+msgstr "Kort"
+
+#: templates/property_menu_hidden.php:6 templates/user_menu.php:208
+msgid "Amenities"
+msgstr "Faciliteter"
+
+#: templates/property_menu_hidden.php:7 templates/show_avalability.php:3
+msgid "Availability"
+msgstr "Tilgængelighed"
+
+#: templates/property_pictures2.php:6
+msgid "Property Pictures"
+msgstr ""
+
+#: templates/property_pictures3.php:46
+msgid "video thumb"
+msgstr "Video Miniature"
+
+#: templates/property_pictures3.php:87 templates/property_pictures3.php:123
+msgid "slider"
+msgstr ""
+
+#: templates/related_posts.php:32
+msgid "Related Posts"
+msgstr "Relaterede Indlæg"
+
+#: templates/search_unit.php:9
+msgid "delete search"
+msgstr ""
+
+#: templates/search_unit.php:14
+msgid "Search Parameters: "
+msgstr ""
+
+#: templates/search_unit.php:27
+msgid "For"
+msgstr "Til"
+
+#: templates/search_unit.php:56 templates/search_unit.php:70
+msgid "has"
+msgstr "har"
+
+#: templates/search_unit.php:58 templates/search_unit.php:72
+msgid "smaller than "
+msgstr ""
+
+#: templates/search_unit.php:60
+msgid "bigger than"
+msgstr ""
+
+#: templates/search_unit.php:74
+msgid "bigger than "
+msgstr ""
+
+#: templates/show_avalability.php:26
+msgid "past"
+msgstr "tidligere"
+
+#: templates/show_avalability.php:27
+msgid "today"
+msgstr "i dag"
+
+#: templates/show_avalability.php:28
+msgid "booked"
+msgstr ""
+
+#: templates/similar_listings.php:106
+msgid "Similar Listings"
+msgstr "Sammenlignelige ejendomme"
+
+#: templates/submission_guide.php:81
+msgid "Description "
+msgstr "Beskrivelse "
+
+#: templates/submission_guide.php:82
+msgid "Price "
+msgstr "Pris "
+
+#: templates/submission_guide.php:83
+msgid "Images "
+msgstr "Billeder "
+
+#: templates/submission_guide.php:84
+msgid "Details "
+msgstr ""
+
+#: templates/submission_guide.php:85
+msgid "Location "
+msgstr "Placering"
+
+#: templates/submission_guide.php:86
+msgid "Amenities "
+msgstr ""
+
+#: templates/submission_guide.php:87 templates/user_menu.php:209
+msgid "Calendar"
+msgstr "Kalender"
+
+#: templates/submit_templates/property_amenities.php:52
+msgid "Other Features"
+msgstr ""
+
+#: templates/submit_templates/property_amenities.php:121
+msgid "Select the amenities and features that apply for your listing"
+msgstr ""
+
+#: templates/submit_templates/property_amenities.php:133
+#: templates/submit_templates/property_calendar.php:117
+#: templates/submit_templates/property_description.php:381
+#: templates/submit_templates/property_details.php:362
+#: templates/submit_templates/property_images.php:160
+#: templates/submit_templates/property_location.php:167
+#: templates/submit_templates/property_price.php:817
+msgid "Save"
+msgstr "Gem"
+
+#: templates/submit_templates/property_amenities.php:134
+msgid "Go to Calendar settings."
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:33
+msgid "When is your listing available"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:40
+msgid "*Click to select the period you wish to mark as booked for visitors."
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:60
+msgid "Today"
+msgstr "I dag"
+
+#: templates/submit_templates/property_calendar.php:61
+msgid "Dates Booked"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:67
+msgid "Import/Export iCalendar feeds"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:69
+msgid "This is the listing iCalendar feed to export"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:97
+msgid "delete imported dates"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:102
+msgid "There are no calendar feeds"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:109
+msgid ""
+"iCalendar import feeds (feed will be read every 3 hours and when you hit "
+"save)"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:110
+msgid "feed name"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:111
+msgid "feed url"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:112
+msgid "Add new feed"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:140
+msgid "Reserve a period"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:141
+msgid "Mark dates as booked."
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:158
+msgid "Select Start and End Hours"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:203
+msgid "Your notes"
+msgstr ""
+
+#: templates/submit_templates/property_calendar.php:206
+msgid "Book Period"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:69
+#: templates/submit_templates/property_description_first.php:67
+msgid "Listed In/Room Type"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:73
+#: templates/submit_templates/property_description_first.php:71
+msgid "Property Description"
+msgstr "Beskrivelse af ejendom"
+
+#: templates/submit_templates/property_description.php:88
+#: templates/submit_templates/property_description_first.php:90
+msgid "Category and Listed In/Room Type"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:91
+#: templates/submit_templates/property_description_first.php:93
+msgid "Listing Categories"
+msgstr "Annonce kategorier"
+
+#: templates/submit_templates/property_description.php:152
+#: templates/submit_templates/property_description_first.php:161
+#: templates/submit_templates/property_description_first.php:166
+msgid "Guest No"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:158
+msgid "Guest No (mandatory)"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:179
+#: templates/submit_templates/property_description_first.php:186
+msgid "Children(ages 2-12) will not be charged"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:193
+#: templates/submit_templates/property_description_first.php:202
+msgid "Allow guests above capacity?"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:198
+#: templates/submit_templates/property_description_first.php:207
+msgid "Maximum extra guests above capacity (if extra guests are allowed)"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:226
+#: templates/submit_templates/property_description_first.php:225
+msgid "City and Neighborhood"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:229
+#: templates/submit_templates/property_description_first.php:228
+#: templates/submit_templates/property_location.php:22
+msgid "Listing Location"
+msgstr "Annoncens placering"
+
+#: templates/submit_templates/property_description.php:245
+msgid "City (mandatory)"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:252
+#: templates/submit_templates/property_description_first.php:250
+msgid "Type the city name"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:275
+#: templates/submit_templates/property_description_first.php:273
+msgid "Neighborhood / Area"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:282
+#: templates/submit_templates/property_description_first.php:278
+msgid "Type the neighborhood name"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:325
+#: templates/submit_templates/property_description_first.php:318
+msgid "Describe your listing"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:339
+#: templates/submit_templates/property_description_first.php:330
+msgid "Affiliate Link"
+msgstr ""
+
+#: templates/submit_templates/property_description.php:343
+msgid ""
+"Affiliate Link. User will be redirected to this link when he wants to make a "
+"booking."
+msgstr ""
+
+#: templates/submit_templates/property_description.php:354
+#: templates/submit_templates/property_description.php:358
+#: templates/submit_templates/property_description.php:360
+msgid "Private Notes"
+msgstr "Private noter"
+
+#: templates/submit_templates/property_description.php:375
+#: templates/submit_templates/property_description_first.php:345
+msgid ""
+"Allow instant booking? If checked, you will not have the option to reject a "
+"booking request."
+msgstr ""
+
+#: templates/submit_templates/property_description.php:382
+msgid "Go to Price settings."
+msgstr ""
+
+#: templates/submit_templates/property_description_first.php:334
+msgid ""
+"Affiliate Link. User will be redirected to this link when he wants to make a "
+"booking. "
+msgstr ""
+
+#: templates/submit_templates/property_description_first.php:361
+#: templates/submit_templates/property_description_first.php:363
+#: word_remove.php:51
+msgid "Continue"
+msgstr "Fortsæt"
+
+#: templates/submit_templates/property_description_first.php:390
+msgid ""
+"You must Login / Register in the modal form that shows after you press the "
+"Continue button or else your data will be lost. "
+msgstr ""
+
+#: templates/submit_templates/property_details.php:54
+#: templates/submit_templates/property_details.php:59
+msgid "Listing Details"
+msgstr "Annonce detaljer"
+
+#: templates/submit_templates/property_details.php:72
+msgid "Size in"
+msgstr ""
+
+#: templates/submit_templates/property_details.php:146
+msgid "Custom Details"
+msgstr ""
+
+#: templates/submit_templates/property_details.php:158
+msgid "Delete"
+msgstr "Slet"
+
+#: templates/submit_templates/property_details.php:177
+msgid "Extra Details"
+msgstr "Ekstra detaljer"
+
+#: templates/submit_templates/property_details.php:180
+msgid "Label"
+msgstr "Label"
+
+#: templates/submit_templates/property_details.php:186
+msgid "Add Detail"
+msgstr "Tilføj detalje"
+
+#: templates/submit_templates/property_details.php:245
+#: templates/submit_templates/property_details.php:276
+#: templates/submit_templates/property_details.php:302
+#: templates/submit_templates/property_details.php:330
+msgid "Yes"
+msgstr "Ja"
+
+#: templates/submit_templates/property_details.php:246
+#: templates/submit_templates/property_details.php:277
+#: templates/submit_templates/property_details.php:303
+#: templates/submit_templates/property_details.php:331
+msgid "No"
+msgstr "Nej"
+
+#: templates/submit_templates/property_details.php:363
+msgid "Go to Location settings."
+msgstr ""
+
+#: templates/submit_templates/property_images.php:72
+msgid "Listing Media"
+msgstr "Opslags medier"
+
+#: templates/submit_templates/property_images.php:99
+msgid "Drag and Drop Images or "
+msgstr ""
+
+#: templates/submit_templates/property_images.php:100
+msgid "Select Media"
+msgstr ""
+
+#: templates/submit_templates/property_images.php:109
+msgid "*Double Click on the image to select featured. "
+msgstr ""
+
+#: templates/submit_templates/property_images.php:110
+msgid "**Change images order with Drag & Drop. "
+msgstr ""
+
+#: templates/submit_templates/property_images.php:124
+msgid "Video from"
+msgstr ""
+
+#: templates/submit_templates/property_images.php:138
+msgid "Video id: "
+msgstr ""
+
+#: templates/submit_templates/property_images.php:151
+msgid "Virtual Tour. Copy/paste the iframe code."
+msgstr ""
+
+#: templates/submit_templates/property_images.php:161
+msgid "Go to Details settings."
+msgstr ""
+
+#: templates/submit_templates/property_location.php:35
+msgid "Listing location details"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:103
+msgid "Place Pin with Address"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:109
+msgid "Place the listing pin on the map"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:126
+msgid "Latitude (for Maps Pin Position)"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:133
+msgid "Longitude (for Maps Pin Position)"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:151
+msgid "Street View - Camera Angle (value from 0 to 360)"
+msgstr ""
+
+#: templates/submit_templates/property_location.php:168
+msgid "Go to Amenities settings."
+msgstr ""
+
+#: templates/submit_templates/property_price.php:321
+#, php-format
+msgid ""
+"There is a %s service fee that will be deducted from you earnings (earnings "
+"= total cost of the room (without security deposit, cleaning fee or city "
+"fee) + extra options)"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:338
+msgid "Booking Type "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:344
+msgid "Booking Type"
+msgstr "Bookingtype"
+
+#: templates/submit_templates/property_price.php:351
+msgid "Per Day/Night"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:352
+msgid "Per Hour"
+msgstr "Pr. time"
+
+#: templates/submit_templates/property_price.php:387
+#: templates/submit_templates/property_price.php:488
+#: templates/submit_templates/property_price.php:546
+#: templates/submit_templates/property_price.php:563
+#: templates/submit_templates/property_price.php:566
+msgid "(only numbers)"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:400
+msgid "Before Label "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:404
+msgid "After Label "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:417
+msgid "Taxes in % (taxes are considered included in the price) "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:486
+msgid "Price per weekend ("
+msgstr ""
+
+#: templates/submit_templates/property_price.php:488
+msgid ") in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:492
+msgid "Weekend Price"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:509
+msgid "Extra Guests "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:528
+msgid ""
+"Pay by the no of guests (room prices will NOT be used anymore and billing "
+"will be done by guest no only)"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:543
+msgid "Cleaning Fee "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:546
+msgid "Cleaning Fee in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:550
+msgid "Cleaning Fee calculation"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:563
+#: templates/submit_templates/property_price.php:566
+msgid "City Fee in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:570
+msgid "City Fee calculation"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:575
+#, php-format
+msgid "City Fee is a % of the daily fee"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:606
+msgid "Security Deposit in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:606
+msgid " - will be refunded if no complaints are received from the owner"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:627
+msgid "Value in %"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:631
+msgid "Minimum no of days in advance"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:652
+msgid ""
+"These options do not work together or on price per hour- choose only one and "
+"leave the other one on \"All\""
+msgstr ""
+
+#: templates/submit_templates/property_price.php:654
+msgid "Change Over days"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:664
+#: user_dashboard_allinone.php:173
+msgid "Allow only bookings starting with the check-in on:"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:683
+#: user_dashboard_allinone.php:194
+msgid "Allow only bookings with the check-in/check-out on: "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:710
+msgid "Business hours  -  for per h booking"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:773
+#: templates/submit_templates/property_price.php:777
+msgid "Extra Options"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:793
+msgid "no options"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:798
+msgid "name"
+msgstr "navn"
+
+#: templates/submit_templates/property_price.php:799
+msgid "value"
+msgstr "værdi"
+
+#: templates/submit_templates/property_price.php:801
+msgid "Add Option"
+msgstr "Tilføj Option"
+
+#: templates/submit_templates/property_price.php:818
+msgid "Go to Media settings."
+msgstr ""
+
+#: templates/submit_templates/property_price.php:830
+msgid "Price Adjustments "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:831
+msgid " *(click to select multiple days and modify price for a certain period)"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:868
+msgid "Set custom price for selected period"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:894
+#: user_dashboard_allinone.php:124
+msgid "New Price in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:942
+#: user_dashboard_allinone.php:160
+msgid "Price per weekend in "
+msgstr ""
+
+#: templates/submit_templates/property_price.php:966
+msgid "Allow only bookings starting with the check-in on changeover days"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:984
+msgid ""
+"Allow only bookings with the check-in/check-out (changeover) days/nights"
+msgstr ""
+
+#: templates/submit_templates/property_price.php:1003
+#: user_dashboard_allinone.php:217
+msgid "Set price for period"
+msgstr ""
+
+#: templates/submit_templates/user_memebership_form.php:19
+msgid "Membership"
+msgstr "Medlemskab"
+
+#: templates/submit_templates/user_memebership_form.php:29
+msgid "Paid submission"
+msgstr ""
+
+#: templates/submit_templates/user_memebership_form.php:30
+msgid "This is a paid submission."
+msgstr ""
+
+#: templates/submit_templates/user_memebership_form.php:31
+msgid "Price: "
+msgstr "Pris: "
+
+#: templates/submit_templates/user_memebership_form.php:32
+msgid "Featured (extra): "
+msgstr ""
+
+#: templates/top_user_menu.php:38
+msgid "Sign Up"
+msgstr "Tilmeld dig"
+
+#: templates/top_user_menu.php:40
+msgid "Submit Property"
+msgstr "Opret bolig"
+
+#: templates/user_menu.php:119
+msgid "User Menu"
+msgstr "brugermenu"
+
+#: templates/user_menu.php:132
+msgid "Hello,"
+msgstr "Hej,"
+
+#: templates/user_menu.php:154
+msgid "subscription will be cancel at the end of current period"
+msgstr ""
+
+#: templates/user_menu.php:154
+msgid "cancel stripe subscription"
+msgstr ""
+
+#: templates/user_menu.php:205
+msgid "Images"
+msgstr "Billeder"
+
+#: templates/user_menu.php:219
+msgid "All In One Calendar"
+msgstr ""
+
+#: templates/user_menu.php:227
+msgid "My Bookings"
+msgstr "Mine bookinger"
+
+#: templates/user_menu.php:230
+msgid "My Reservations"
+msgstr ""
+
+#: templates/user_menu.php:235
+msgid "My Inbox"
+msgstr ""
+
+#: user_dashboard.php:68 user_dashboard_my_bookings.php:72
+#: user_dashboard_my_reservations.php:29
+msgid "your nonce does not validated"
+msgstr ""
+
+#: user_dashboard.php:105 user_dashboard_favorite.php:48
+msgid "Actions"
+msgstr "Handlinger"
+
+#: user_dashboard.php:132 user_dashboard_my_bookings.php:135
+#: user_dashboard_my_reservations.php:116
+msgid "No results!"
+msgstr ""
+
+#: user_dashboard.php:134 user_dashboard_allinone.php:325
+msgid "You don't have any properties yet!"
+msgstr "Du har endnu ikke nogen ejendomme"
+
+#: user_dashboard_add_step1.php:132
+msgid "Please submit a category"
+msgstr ""
+
+#: user_dashboard_add_step1.php:139
+msgid "Please submit the second category"
+msgstr ""
+
+#: user_dashboard_add_step1.php:146
+msgid "Please chose a city."
+msgstr ""
+
+#: user_dashboard_add_step1.php:153
+msgid "Please chose an area."
+msgstr ""
+
+#: user_dashboard_add_step1.php:160
+msgid "Please add the description."
+msgstr ""
+
+#: user_dashboard_add_step1.php:167
+msgid "Please add an affiliate link."
+msgstr ""
+
+#: user_dashboard_add_step1.php:414
+msgid ""
+"Your current package doesn't let you publish more properties! You need to "
+"upgrade your subscription."
+msgstr ""
+
+#: user_dashboard_allinone.php:68 user_dashboard_allinone.php:451
+msgid "External Booking"
+msgstr ""
+
+#: user_dashboard_allinone.php:71
+msgid "Internal Booking"
+msgstr ""
+
+#: user_dashboard_allinone.php:74
+msgid "Free"
+msgstr "Gratis"
+
+#: user_dashboard_allinone.php:77
+msgid ""
+"The calendar will not be displayed correctly on resolution lower than 1200px "
+"(because of lack of space). Please do not use this feature on mobile devices."
+msgstr ""
+
+#: user_dashboard_allinone.php:94
+msgid "Custom Price & Period reservation"
+msgstr ""
+
+#: user_dashboard_allinone.php:95
+msgid "Set custom price or mark dates as booked for selected period"
+msgstr ""
+
+#: user_dashboard_allinone.php:209
+msgid "Mark days as booked ?"
+msgstr ""
+
+#: user_dashboard_edit_listing.php:329
+msgid ""
+"Congratulations, you have just added a new listing! Now go and fill in the "
+"rest of the details."
+msgstr ""
+
+#: user_dashboard_favorite.php:69
+msgid "You don't have any favorite properties yet!"
+msgstr "Du har endnu ikke nogle favorit ejendomme"
+
+#: user_dashboard_inbox.php:43
+msgid "You have"
+msgstr "Du har"
+
+#: user_dashboard_inbox.php:43
+msgid "unread messages"
+msgstr "ulæste beskeder"
+
+#: user_dashboard_invoices.php:71
+msgid "No invoices"
+msgstr "Ingen fakturaer"
+
+#: user_dashboard_invoices.php:114
+msgid "Invoice Type"
+msgstr "Fakturatype"
+
+#: user_dashboard_invoices.php:118
+msgid "Billing Type"
+msgstr "Faktureringstype"
+
+#: user_dashboard_my_bookings.php:53 user_dashboard_my_reservations.php:83
+msgid "Request by"
+msgstr ""
+
+#: user_dashboard_my_bookings.php:137
+msgid "You don't have any booking requests yet!"
+msgstr ""
+
+#: user_dashboard_my_reservations.php:118
+msgid "You don't have any reservations made!"
+msgstr "Du har endnu ikke udført en reservation"
+
+#: user_dashboard_packs.php:52
+msgid "Change your Package"
+msgstr ""
+
+#: user_dashboard_packs.php:56
+msgid "make payment recurring "
+msgstr ""
+
+#: user_dashboard_packs.php:73
+msgid "Pay via Wire transfer"
+msgstr ""
+
+#: word_remove.php:14
+msgid "Update the theme & plugins"
+msgstr ""
+
+#: word_remove.php:15
+msgid "Buy new license"
+msgstr ""
+
+#: word_remove.php:16
+msgid "Change log"
+msgstr "Ændringshistorik"
+
+#: word_remove.php:17
+msgid "Get help"
+msgstr "Få hjælp"
+
+#: word_remove.php:19
+msgid "Open ticket"
+msgstr "Åben Supportsag"
+
+#: word_remove.php:20
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: word_remove.php:21
+msgid "Rate us"
+msgstr "Giv os en bedømmelse"
+
+#: word_remove.php:30
+msgid "Current Version: "
+msgstr ""
+
+#: word_remove.php:40
+msgid "Start Now"
+msgstr ""
+
+#: word_remove.php:41
+msgid "Site Settings "
+msgstr ""
+
+#: word_remove.php:49
+msgid ""
+"We recommend doing demo import first and then finishing this setup. Adding "
+"Demo import AFTER completing this setup changes your settings options to "
+"demo options. "
+msgstr ""
+
+#: word_remove.php:51
+msgid "OR"
+msgstr "ELLER"
+
+#: word_remove.php:52
+msgid "Import Demo Content"
+msgstr "Importer demo indhold"
+
+#: word_remove.php:57
+msgid "Map Settings"
+msgstr "Kort Indstillinger"
+
+#: word_remove.php:60
+msgid ""
+"VERY IMPORTANT: For already published properties, switching from Google "
+"Places to Algolia Places/OpenStreet Places (or from Algolia/Openstreet to "
+"Google Places) may require adding properties City & address again. The 2 "
+"systems can have different names for city, area and country and search by "
+"location may not work."
+msgstr ""
+
+#: word_remove.php:78 word_remove.php:79
+msgid "What Map System you want to use?"
+msgstr ""
+
+#: word_remove.php:103
+msgid "What Places Api you want to use?"
+msgstr ""
+
+#: word_remove.php:104
+msgid "Google Places work only with Google Maps activated."
+msgstr ""
+
+#: word_remove.php:113
+msgid "Google Maps API KEY"
+msgstr "Google Maps API KEY"
+
+#: word_remove.php:114
+msgid ""
+"The Google Maps JavaScript API v3 REQUIRES an API key to function correctly. "
+"Get an APIs Console key and post the code in Theme Options. You can get it "
+"from <a href=\"https://developers.google.com/maps/documentation/javascript/"
+"tutorial#api_key\" target=\"_blank\">here</a>"
+msgstr ""
+"Google Maps JavaScript API v3 kræver en API-nøgle for at fungere korrekt. Få "
+"en API konsol nøglen og indsæt koden i Theme Options. Du kan få den fra <a "
+"href=\"https://developers.google.com/maps/documentation/javascript/"
+"tutorial#api_key\" target=\"_blank\">her</a>"
+
+#: word_remove.php:120
+msgid "MapBox API KEY -  used for tile server"
+msgstr ""
+
+#: word_remove.php:121
+msgid ""
+"You can get it from here: https://www.mapbox.com/. If you leave it blank we "
+"will use the default openstreet server which can be slow"
+msgstr ""
+
+#: word_remove.php:127
+msgid "Algolia App Id"
+msgstr ""
+
+#: word_remove.php:128 word_remove.php:136
+msgid "You can get it from here:  https://community.algolia.com/places/"
+msgstr ""
+
+#: word_remove.php:135
+msgid "Algolia API Key"
+msgstr ""
+
+#: word_remove.php:142 word_remove.php:280 word_remove.php:341
+#: word_remove.php:401
+msgid "Previous Step"
+msgstr "Forrige trin"
+
+#: word_remove.php:143 word_remove.php:281 word_remove.php:342
+#: word_remove.php:402
+msgid "Next Step"
+msgstr "Næste trin"
+
+#: word_remove.php:150
+msgid "General Settings"
+msgstr "Víðfevnd stilling"
+
+#: word_remove.php:253
+msgid "Price - thousands separator"
+msgstr ""
+
+#: word_remove.php:254
+msgid "Set the thousand separator for price numbers."
+msgstr ""
+
+#: word_remove.php:259
+msgid "Currency Symbol"
+msgstr "Valuta Symbol"
+
+#: word_remove.php:260
+msgid ""
+"This is used for default property price currency symbol and default currency "
+"symbol in multi currency dropdown"
+msgstr ""
+
+#: word_remove.php:265 word_remove.php:266
+msgid "Where to show the currency symbol?"
+msgstr ""
+
+#: word_remove.php:273
+msgid "Language for datepicker"
+msgstr "Sprog til datovælger"
+
+#: word_remove.php:274
+msgid ""
+"Select the language for booking form datepicker and search by date datepicker"
+msgstr ""
+
+#: word_remove.php:288
+msgid "Booking Settings"
+msgstr "Bookingindstillinger"
+
+#: word_remove.php:326
+msgid "Select Date Format for datepickers"
+msgstr ""
+
+#: word_remove.php:327
+msgid "You can set a dateformat that will be applied for all your datepickers"
+msgstr ""
+
+#: word_remove.php:334
+msgid "Select Weekend days"
+msgstr ""
+
+#: word_remove.php:335
+msgid "Users can set a different price per day for weekend days"
+msgstr ""
+
+#: word_remove.php:349
+msgid "Booking Payment Options"
+msgstr ""
+
+#: word_remove.php:370
+msgid "Include expenses when calculating deposit?"
+msgstr ""
+
+#: word_remove.php:371
+msgid ""
+"Include expenses when calculating deposit. The expenses are city fee and "
+"cleaning fee."
+msgstr ""
+
+#: word_remove.php:379
+#, php-format
+msgid "Deposit Fee - % booking fee"
+msgstr ""
+
+#: word_remove.php:380
+msgid ""
+"Expenses are included or not in the deposit amount according to the above "
+"option. If the value is set to 100 (100%) the \"Include expenses when "
+"calculating deposit?\" option will be auto set to \"yes\"! "
+msgstr ""
+
+#: word_remove.php:385
+msgid "Deposit Fee - fixed value booking fee"
+msgstr ""
+
+#: word_remove.php:386
+#, php-format
+msgid ""
+"Add the fixed fee as a number. If you use this option, leave blank Deposit "
+"Fee - % booking fee"
+msgstr ""
+
+#: word_remove.php:391
+#, php-format
+msgid "Service Fee - % booking fee"
+msgstr ""
+
+#: word_remove.php:392
+msgid ""
+"Service Fee. Is the commision that goes to the admin and is deducted from "
+"the total booking value."
+msgstr ""
+
+#: word_remove.php:397
+msgid "Service Fee - fixed value service fee"
+msgstr ""
+
+#: word_remove.php:398
+#, php-format
+msgid ""
+"Service Fee - fixed value service fee. If you use this option, leave blank "
+"Service Fee - % booking fee"
+msgstr ""
+
+#: word_remove.php:411
+msgid ""
+"For further setup see our help files, knowledgebase articles and tutorials "
+"to help make this process easier and more enjoyable for you: "
+msgstr ""
+
+#: word_remove.php:411
+msgid "https://help.wprentals.org"
+msgstr ""
+
+#: word_remove.php:441
+msgid "Personalize Your Website"
+msgstr ""
+
+#: word_remove.php:443
+msgid "Payments"
+msgstr "Betalinger"
+
+#. Theme Name of the plugin/theme
+msgid "WpRentals"
+msgstr ""
+
+#. Theme URI of the plugin/theme
+msgid ""
+"https://themeforest.net/item/wp-rentals-booking-accommodation-wordpress-"
+"theme/12921802"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Ultimate WordPress Theme created by WP Estate for booking accommodation. WP "
+"Rentals is clean, flexible, fully responsive and retina Ready. Its smart "
+"settings allows you to build outstanding renting websites easy and fast."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "wpestate"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://themeforest.net/user/wpestate"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Subscriptions"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard My Reservations"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Profile Page"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Submit - Step 1"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Inbox"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Contact Page"
+msgstr "Kontakt side"
+
+#. Template Name of the plugin/theme
+msgid "Owner list"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard"
+msgstr "Kontrolpanel"
+
+#. Template Name of the plugin/theme
+msgid "All in one calendar"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard My Bookings"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Paypal Processor"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Properties list half"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Main"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Blog list page"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "RentalsClub APi"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Splash Page"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Stripe Charge Page"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "ICAL FEED"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Properties list"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Edit"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Invoices"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Advanced Search Results"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "User Dashboard Favorite"
+msgstr ""
