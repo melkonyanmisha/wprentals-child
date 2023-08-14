@@ -111,7 +111,7 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
             </div>
 
             <?php
-            echo wpestate_share_unit_desing($post_id);
+//            echo wpestate_share_unit_desing($post_id);
             ?>
 
         <?php } // end else?>
