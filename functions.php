@@ -38,11 +38,14 @@ function wprentals_child_enques()
         'all'
     );
     wp_enqueue_style(
-        'wpestate-child-style',
+        'wpestate-child-main-style',
         WPRENTALS_CHILD_THEME_URL . '/style.css',
         array($parent_style),
         wp_get_theme()->get('Version')
     );
+
+
+    wp_enqueue_style('wpestate-child-style', WPRENTALS_CHILD_THEME_URL . 'css/style.css');
 }
 
 add_action('wp_enqueue_scripts', 'wprentals_child_enques');
@@ -149,5 +152,41 @@ function add_custom_user_role()
 
 add_action('init', 'add_custom_user_role');
 
+/**
+ * @return bool
+ */
+function current_user_is_admin_or_timeshare()
+{
+    return current_user_can('timeshare_user') || current_user_can('administrator');
+}
 
 
+/**
+ * @return int
+ */
+function get_room_category_id_by_slug()
+{
+    $taxonomy  = 'property_category';
+    $term_slug = 'room';
+
+    $term = get_term_by('slug', $term_slug, $taxonomy);
+
+    return ! empty($term->term_id) ? $term->term_id : 0;
+}
+
+/**
+ * Overwrite "Properties List - Properties number per page" option for Advanced Search result
+ *
+ * @return void
+ */
+function overwrite_wp_estate_prop_no()
+{
+    if (get_page_template_slug(get_the_ID()) == 'advanced_search_results.php') {
+        $wprentals_admin                      = get_option('wprentals_admin');
+        $wprentals_admin['wp_estate_prop_no'] = 100;
+
+        update_option('wprentals_admin', $wprentals_admin);
+    }
+}
+
+add_action('wp', 'overwrite_wp_estate_prop_no');
