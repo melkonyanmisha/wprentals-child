@@ -190,3 +190,23 @@ function overwrite_wp_estate_prop_no()
 }
 
 add_action('wp', 'overwrite_wp_estate_prop_no');
+
+//Filter for remove icon link(icon_bar_classic) from single Listing page
+add_filter('term_links-property_category', 'extract_text_from_link');
+add_filter('term_links-property_action_category', 'extract_text_from_link');
+
+/**
+ * @param $links
+ *
+ * @return array
+ */
+function extract_text_from_link($links)
+{
+    $without_links = [];
+    foreach ($links as $link) {
+        preg_match('/<a.*>(.*)<\/a>/', $link, $matches);
+        $without_links[] = $matches[1];
+    }
+
+    return $without_links;
+}
