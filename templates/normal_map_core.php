@@ -13,7 +13,6 @@ global $wpestate_property_unit_slider;
 global $schema_flag;
 global $current_user;
 
-//var_dump(current_user_can('timeshare_user')); exit;
 $wpestate_listing_type = wprentals_get_option('wp_estate_listing_unit_type', '');
 $wpestate_page_tax     = '';
 if ($wpestate_options['content_class'] == "col-md-12") {
@@ -23,37 +22,82 @@ if ($wpestate_options['content_class'] == "col-md-12") {
 $wpestate_property_unit_slider = esc_html(wprentals_get_option('wp_estate_prop_list_slider', ''));
 
 $custom_categories = [];
+$custom_groups     = [];
 
 ob_start();
 
-if (current_user_is_admin_or_timeshare()) {
+if (current_user_is_admin()) {
     while ($prop_selection->have_posts()): $prop_selection->the_post();
         $schema_flag = 1;
         include(locate_template('templates/property_unit.php'));
     endwhile;
-} else {
-    $room_category_id = get_room_category_id_by_slug();
+} elseif (current_user_is_timeshare()) {
+    $room_category_id    = get_room_category_id_by_slug();
+    $cottage_category_id = get_cottage_category_id_by_slug();
+    $room_group_id       = get_room_group_id_by_slug();
 
-    //During the booking process except for timeshare users and administrators can only see images for 1 unit per category
+    //During the booking process Guest users can only see images for 1 unit per group
+    while ($prop_selection->have_posts()): $prop_selection->the_post();
+        $custom_categories = get_the_terms(get_the_ID(), 'property_category');
+        $custom_groups     = get_the_terms(get_the_ID(), 'property_action_category');
+
+        if ( ! empty($custom_groups)) {
+            foreach ($custom_groups as $current_group) {
+                //Case when parent is Room Group. Show 1 listing per Group
+                if ($current_group->parent === $room_group_id) {
+                    $term_grouped_posts[$current_group->slug]['posts'][0] = get_post(); // Group posts by term slug
+                }
+            }
+        } else {
+            if ( ! empty($custom_categories)) {
+                foreach ($custom_categories as $current_category) {
+                    //Case for Cottages. Show ALL
+                    if ($current_category->term_id === $cottage_category_id) {
+                        $term_grouped_posts[$current_category->slug]['posts'][] = get_post(
+                        ); // Group posts by term slug
+                    }
+                }
+            }
+        }
+    endwhile;
+
+    // Display grouped posts by "Groups" term. Taxonomy is property_action_category
+    foreach ($term_grouped_posts as $term_id => $term_data) {
+        if ( ! empty($term_data['posts'])) {
+            foreach ($term_data['posts'] as $post) {
+                setup_postdata($post);
+
+                // Display or process the post content
+                $schema_flag = 1;
+                include(locate_template('templates/property_unit.php'));
+            }
+        }
+    }
+} else {
+    //Get by categories
+    $room_category_id    = get_room_category_id_by_slug();
+    $cottage_category_id = get_cottage_category_id_by_slug();
+
+    //During the booking process Guest users can only see images for 1 unit per category
     while ($prop_selection->have_posts()): $prop_selection->the_post();
 
         // Get the custom categories (terms) for the post
         $custom_categories = get_the_terms(get_the_ID(), 'property_category');
 
         if ( ! empty($custom_categories)) {
-            foreach ($custom_categories as $category) {
-                //Case when parent is Room
-                if ($category->parent === $room_category_id) {
-                    $term_grouped_posts[$category->slug]['posts'][0] = get_post(); // Group posts by term slug
-                } else {
-                    $term_grouped_posts[$category->slug]['posts'][] = get_post(); // Group posts by term slug
+            foreach ($custom_categories as $current_category) {
+                //Case when parent is Room Category. Show 1 listing per Group
+                if ($current_category->parent === $room_category_id) {
+                    $term_grouped_posts[$current_category->slug]['posts'][0] = get_post(); // Group posts by term slug
+                } elseif ($current_category->term_id === $cottage_category_id) {
+                    //Case for Cottages. Show ALL
+                    $term_grouped_posts[$current_category->slug]['posts'][] = get_post(); // Group posts by term slug
                 }
             }
         }
     endwhile;
-//        phpinfo(); exit;
-//var_dump($term_grouped_posts); exit;
-    // Loop through the grouped posts and display them
+
+    // Display grouped posts by "Categories" term. Taxonomy is property_category
     foreach ($term_grouped_posts as $term_id => $term_data) {
         if ( ! empty($term_data['posts'])) {
             foreach ($term_data['posts'] as $post) {
@@ -81,7 +125,6 @@ if (isset($post->ID)) {
 
 ?>
 
-
 <div class="row content-fixed" itemscope itemtype="http://schema.org/ItemList">
 
     <?php
@@ -106,21 +149,21 @@ if (isset($post->ID)) {
                                         'results',
                                         'wprentals'
                                     ); ?></h1>
-                        <?php
+                            <?php
                         } else { ?>
                             <h1 class="entry-title title_list_prop"><?php
                                 the_title(); ?></h1>
-                        <?php
+                            <?php
                         }
                     }
                     ?>
-                <?php
+                    <?php
                 } ?>
                 <div class="single-content"><?php
                     the_content(); ?></div>
             <?php
             endwhile; ?>
-        <?php
+            <?php
         } else { ?>
 
             <?php
@@ -149,7 +192,7 @@ if (isset($post->ID)) {
                 single_cat_title();
                 ?>
             </h1>
-        <?php
+            <?php
         } ?>
 
         <?php
@@ -165,8 +208,6 @@ if (isset($post->ID)) {
 
         <?php
         include(locate_template('templates/compare_list.php'));
-
-        //        var_dump($templates); exit;
         ?>
 
         <!-- Listings starts here -->

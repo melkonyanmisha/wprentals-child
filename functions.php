@@ -12,6 +12,7 @@ if ( ! defined('WPRENTALS_CHILD_THEME_URL')) {
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
 
 
 // Exit if accessed directly
@@ -155,11 +156,15 @@ add_action('init', 'add_custom_user_role');
 /**
  * @return bool
  */
-function current_user_is_admin_or_timeshare()
+function current_user_is_admin()
 {
-    return current_user_can('timeshare_user') || current_user_can('administrator');
+    return current_user_can('administrator');
 }
 
+function current_user_is_timeshare()
+{
+    return current_user_can('timeshare_user');
+}
 
 /**
  * @return int
@@ -168,6 +173,32 @@ function get_room_category_id_by_slug()
 {
     $taxonomy  = 'property_category';
     $term_slug = 'room';
+
+    $term = get_term_by('slug', $term_slug, $taxonomy);
+
+    return ! empty($term->term_id) ? $term->term_id : 0;
+}
+
+/**
+ * @return int
+ */
+function get_room_group_id_by_slug()
+{
+    $taxonomy  = 'property_action_category';
+    $term_slug = 'room';
+
+    $term = get_term_by('slug', $term_slug, $taxonomy);
+
+    return ! empty($term->term_id) ? $term->term_id : 0;
+}
+
+/**
+ * @return int
+ */
+function get_cottage_category_id_by_slug()
+{
+    $taxonomy  = 'property_category';
+    $term_slug = 'cottage';
 
     $term = get_term_by('slug', $term_slug, $taxonomy);
 
@@ -210,3 +241,5 @@ function extract_text_from_link($links)
 
     return $without_links;
 }
+
+
