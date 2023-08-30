@@ -55,6 +55,7 @@ load_child_theme_textdomain('wprentals', WPRENTALS_CHILD_THEME_PATH . 'languages
 
 function wprentals_parent_enques_overwrite()
 {
+    $listing_id                = 0;
     $reservation_grouped_array = [];
     if (check_is_listing_page(get_the_ID())) {
         $listing_id                = get_the_ID();
@@ -83,6 +84,7 @@ function wprentals_parent_enques_overwrite()
             'start_date'              => esc_html__('Check-in', 'wprentals'),
             'end_date'                => esc_html__('Check-out', 'wprentals'),
             'to'                      => esc_html__('to', 'wprentals'),
+            'listingId'               => $listing_id,
             'currentUserIsTimeshare'  => current_user_is_timeshare(),
             'reservationGroupedArray' => $reservation_grouped_array
         ]
