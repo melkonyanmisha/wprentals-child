@@ -6,10 +6,12 @@
 * @website: http://www.daterangepicker.com/
 */
 // Following the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
-//todo@@@ here is all nessacery data
-console.log(daterangepicker_vars)
+
 
 (function (root, factory) {
+    // todo@@@ here is all nessacery data
+    console.log(daterangepicker_vars)
+
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
         define(['moment', 'jquery'], function (moment, jquery) {
