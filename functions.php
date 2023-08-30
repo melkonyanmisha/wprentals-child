@@ -55,8 +55,16 @@ load_child_theme_textdomain('wprentals', WPRENTALS_CHILD_THEME_PATH . 'languages
 
 function wprentals_parent_enques_overwrite()
 {
-    var_dump(get_the_ID());
-    exit;
+    $reservation_grouped_array = [];
+    if (check_is_listing_page(get_the_ID())) {
+        $listing_id                = get_the_ID();
+        $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
+            $listing_id
+        ) ? get_all_listings_ids_in_group($listing_id) : [];
+
+        $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
+    }
+
     ####### JS #######
     wp_dequeue_script('daterangepicker');
     wp_enqueue_script(
@@ -71,10 +79,12 @@ function wprentals_parent_enques_overwrite()
         'daterangepicker-child',
         'daterangepicker_vars',
         [
-            'pls_select' => esc_html__('Select both dates:', 'wprentals'),
-            'start_date' => esc_html__('Check-in', 'wprentals'),
-            'end_date'   => esc_html__('Check-out', 'wprentals'),
-            'to'         => esc_html__('to', 'wprentals')
+            'pls_select'              => esc_html__('Select both dates:', 'wprentals'),
+            'start_date'              => esc_html__('Check-in', 'wprentals'),
+            'end_date'                => esc_html__('Check-out', 'wprentals'),
+            'to'                      => esc_html__('to', 'wprentals'),
+            'currentUserIsTimeshare'  => current_user_is_timeshare(),
+            'reservationGroupedArray' => $reservation_grouped_array
         ]
     );
 
@@ -193,3 +203,12 @@ function extract_text_from_link($links): array
 add_filter('term_links-property_category', 'extract_text_from_link');
 add_filter('term_links-property_action_category', 'extract_text_from_link');
 
+/**
+ * @param int $post_id
+ *
+ * @return bool
+ */
+function check_is_listing_page(int $post_id): bool
+{
+    return get_post_type($post_id) === 'estate_property';
+}

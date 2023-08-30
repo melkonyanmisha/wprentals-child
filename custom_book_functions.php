@@ -78,6 +78,32 @@ function get_all_listings_in_group(int $listing_id): array
     return [];
 }
 
+/**
+ * Get reservation data for all listings in current group
+ *
+ * @param array $all_listings_ids_in_group
+ *
+ * @return array
+ */
+function get_reservation_grouped_array(array $all_listings_ids_in_group): array
+{
+    if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
+        foreach ($all_listings_ids_in_group as $current_listings_id) {
+            $reservation_grouped_array[$current_listings_id] = get_post_meta(
+                $current_listings_id,
+                'booking_dates',
+                true
+            );
+
+            if ($reservation_grouped_array[$current_listings_id] == '') {
+                $reservation_grouped_array[$current_listings_id] = wpestate_get_booking_dates($current_listings_id);
+            }
+        }
+
+        return $reservation_grouped_array;
+    }
+}
+
 
 /**
  * Check booking availability
@@ -180,17 +206,7 @@ function wpestate_ajax_check_booking_valability()
     }
 
     if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
-        foreach ($all_listings_ids_in_group as $current_listings_id) {
-            $reservation_grouped_array[$current_listings_id] = get_post_meta(
-                $current_listings_id,
-                'booking_dates',
-                true
-            );
-
-            if ($reservation_grouped_array[$current_listings_id] == '') {
-                $reservation_grouped_array[$current_listings_id] = wpestate_get_booking_dates($current_listings_id);
-            }
-        }
+        $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
     } else {
         $reservation_grouped_array[] = get_post_meta($listing_id, 'booking_dates', true);
         if ($reservation_grouped_array[0] == '') {
