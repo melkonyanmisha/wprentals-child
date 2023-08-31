@@ -214,9 +214,9 @@ function wpestate_ajax_check_booking_valability()
             $reservation_grouped_array[] = wpestate_get_booking_dates($listing_id);
         }
     }
-
+//var_dump($reservation_grouped_array); exit;
     foreach ($reservation_grouped_array as $reservation_array) {
-        if (array_key_exists($from_date_unix, $reservation_array)) {
+        if ( is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
             print 'stop array_key_exists';
             die();
         }
