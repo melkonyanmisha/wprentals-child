@@ -12,6 +12,7 @@ if ( ! defined('WPRENTALS_CHILD_THEME_URL')) {
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
 
