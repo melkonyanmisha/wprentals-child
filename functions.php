@@ -21,24 +21,32 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
 if ( ! defined('ABSPATH')) {
     exit;
 }
-
-function wprentals_child_enques()
+/**
+ * @return void
+ */
+function wprentals_child_enques(): void
 {
     ####### CSS #######
     $parent_style = 'wpestate_style';
-    wp_enqueue_style('bootstrap', WPRENTALS_THEME_URL . '/css/bootstrap.css', [], '1.0', 'all');
+    wp_enqueue_style(
+        'bootstrap',
+        WPRENTALS_THEME_URL . '/css/bootstrap.css',
+        [],
+        wp_get_theme()->get('Version'),
+        'all'
+    );
     wp_enqueue_style(
         'bootstrap-theme',
         WPRENTALS_THEME_URL . '/css/bootstrap-theme.css',
         [],
-        '1.0',
+        wp_get_theme()->get('Version'),
         'all'
     );
     wp_enqueue_style(
         $parent_style,
         WPRENTALS_THEME_URL . '/style.css',
         ['bootstrap', 'bootstrap-theme'],
-        'all'
+        wp_get_theme()->get('Version')
     );
     wp_enqueue_style(
         'wpestate-child-main-style',
@@ -46,16 +54,35 @@ function wprentals_child_enques()
         [$parent_style],
         wp_get_theme()->get('Version')
     );
-
-
     wp_enqueue_style('wpestate-child-style', WPRENTALS_CHILD_THEME_URL . 'css/style.css');
+
+    ####### JS #######
+    wp_enqueue_script(
+        'wprentals-child-main-js',
+        WPRENTALS_CHILD_THEME_URL . 'js/index.js',
+        ['jquery'],
+        wp_get_theme()->get('Version')
+    );
+
+    wp_localize_script(
+        'wprentals-child-main-js',
+        'wprentalsChildData',
+        [
+            'currentUserRole' => ! empty(wp_get_current_user()->roles) ? wp_get_current_user()->roles[0] : 'guest',
+            'isHomePage'      => is_front_page() || is_home() ? true : false
+        ]
+    );
 }
 
 add_action('wp_enqueue_scripts', 'wprentals_child_enques');
 load_child_theme_textdomain('wprentals', WPRENTALS_CHILD_THEME_PATH . 'languages');
 
-
-function wprentals_parent_enques_overwrite()
+/**
+ * Overwrite parent theme scripts
+ *
+ * @return void
+ */
+function wprentals_parent_enqueues_overwrite(): void
 {
     $listing_id                = 0;
     $reservation_grouped_array = [];
@@ -74,7 +101,7 @@ function wprentals_parent_enques_overwrite()
         'daterangepicker-child',
         WPRENTALS_CHILD_THEME_URL . 'js/daterangepicker.js',
         ['jquery', 'moment'],
-        '1.0',
+        wp_get_theme()->get('Version'),
         true
     );
 
@@ -96,7 +123,7 @@ function wprentals_parent_enques_overwrite()
     wp_enqueue_style('daterangepicker-child', WPRENTALS_CHILD_THEME_URL . 'css/daterangepicker.css');
 }
 
-add_action('wp_enqueue_scripts', 'wprentals_parent_enques_overwrite', 20);
+add_action('wp_enqueue_scripts', 'wprentals_parent_enqueues_overwrite', 20);
 // END ENQUEUE PARENT ACTION
 
 
