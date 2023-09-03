@@ -102,14 +102,14 @@ function wprentals_parent_enqueues_overwrite(): void
         wp_dequeue_script('wpestate_property');
 
         $listing_id                = 0;
-        $reservation_grouped_array = [];
+        $reservation_grouped_data = [];
         if (check_is_listing_page(get_the_ID())) {
             $listing_id                = get_the_ID();
             $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
                 $listing_id
             ) ? get_all_listings_ids_in_group($listing_id) : [];
 
-            $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
+            $reservation_grouped_data = get_reservation_grouped_array($all_listings_ids_in_group);
         }
 
         if (is_user_logged_in()) {
@@ -178,7 +178,7 @@ function wprentals_parent_enqueues_overwrite(): void
 //                todo@@@custom data
                 'listingId'               => $listing_id,
                 'currentUserIsTimeshare'  => current_user_is_timeshare(),
-                'reservationGroupedArray' => $reservation_grouped_array
+                'reservationGroupedData' => $reservation_grouped_data
             )
         );
     }
