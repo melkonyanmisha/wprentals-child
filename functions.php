@@ -58,14 +58,14 @@ function wprentals_child_enques(): void
 
     ####### JS #######
     wp_enqueue_script(
-        'wprentals-child-main-js',
+        'wprentals-child-main',
         WPRENTALS_CHILD_THEME_URL . 'js/index.js',
         ['jquery'],
         wp_get_theme()->get('Version')
     );
 
     wp_localize_script(
-        'wprentals-child-main-js',
+        'wprentals-child-main',
         'wprentalsChildData',
         [
             'currentUserRole' => ! empty(wp_get_current_user()->roles) ? wp_get_current_user()->roles[0] : 'guest',
@@ -96,28 +96,28 @@ function wprentals_parent_enqueues_overwrite(): void
     }
 
     ####### JS #######
-    wp_dequeue_script('daterangepicker');
-    wp_enqueue_script(
-        'daterangepicker-child',
-        WPRENTALS_CHILD_THEME_URL . 'js/daterangepicker.js',
-        ['jquery', 'moment'],
-        wp_get_theme()->get('Version'),
-        true
-    );
+    if( get_post_type() === 'estate_property' && !is_tax() ){
+        wp_dequeue_script('wpestate_property');
 
-    wp_localize_script(
-        'daterangepicker-child',
-        'daterangepicker_vars',
-        [
-            'pls_select'              => esc_html__('Select both dates:', 'wprentals'),
-            'start_date'              => esc_html__('Check-in', 'wprentals'),
-            'end_date'                => esc_html__('Check-out', 'wprentals'),
-            'to'                      => esc_html__('to', 'wprentals'),
-            'listingId'               => $listing_id,
-            'currentUserIsTimeshare'  => current_user_is_timeshare(),
-            'reservationGroupedArray' => $reservation_grouped_array
-        ]
-    );
+        wp_enqueue_script(
+            'wprentals-child-property',
+            WPRENTALS_CHILD_THEME_URL . 'js/property.js',
+            ['jquery', 'moment'],
+            wp_get_theme()->get('Version'),
+            true
+        );
+
+        wp_localize_script(
+            'wprentals-child-property',
+            'wprentalsChildData',
+            [
+                'testKey' => 4884884884,
+                'listingId'               => $listing_id,
+                'currentUserIsTimeshare'  => current_user_is_timeshare(),
+                'reservationGroupedArray' => $reservation_grouped_array
+            ]
+        );
+    }
 
     ####### CSS #######
     wp_enqueue_style('daterangepicker-child', WPRENTALS_CHILD_THEME_URL . 'css/daterangepicker.css');
@@ -125,7 +125,6 @@ function wprentals_parent_enqueues_overwrite(): void
 
 add_action('wp_enqueue_scripts', 'wprentals_parent_enqueues_overwrite', 20);
 // END ENQUEUE PARENT ACTION
-
 
 #######CUSTOMIZATION########
 
