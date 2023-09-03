@@ -84,42 +84,104 @@ load_child_theme_textdomain('wprentals', WPRENTALS_CHILD_THEME_PATH . 'languages
  */
 function wprentals_parent_enqueues_overwrite(): void
 {
-    $listing_id                = 0;
-    $reservation_grouped_array = [];
-    if (check_is_listing_page(get_the_ID())) {
-        $listing_id                = get_the_ID();
-        $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
-            $listing_id
-        ) ? get_all_listings_ids_in_group($listing_id) : [];
-
-        $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
+    ####### JS #######
+    global $post;
+    $page_template = '';
+    if (isset($post->ID)) {
+        $page_template = get_post_meta($post->ID, '_wp_page_template', true);
     }
 
-    ####### JS #######
-    if( get_post_type() === 'estate_property' && !is_tax() ){
+    if (
+        'estate_property' == get_post_type()
+        || 'estate_agent' == get_post_type()
+        || $page_template == 'user_dashboard_invoices.php'
+        || $page_template == 'user_dashboard_my_reservations.php'
+        || $page_template == 'user_dashboard_my_bookings.php'
+    ) {
+        wp_deregister_script('wpestate_property');
         wp_dequeue_script('wpestate_property');
+
+        $listing_id                = 0;
+        $reservation_grouped_array = [];
+        if (check_is_listing_page(get_the_ID())) {
+            $listing_id                = get_the_ID();
+            $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
+                $listing_id
+            ) ? get_all_listings_ids_in_group($listing_id) : [];
+
+            $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
+        }
+
+        if (is_user_logged_in()) {
+            $logged_in = "yes";
+        } else {
+            $logged_in = "no";
+        }
+
+        $early_discount             = '';
+        $include_children_as_guests = '';
+        $include_booking_type       = '';
+        if (isset($post->ID)) {
+            $early_discount             = floatval(get_post_meta($post->ID, 'early_bird_percent', true));
+            $include_booking_type       = wprentals_return_booking_type($post->ID);
+            $include_children_as_guests = get_post_meta($post->ID, 'children_as_guests', true);
+        }
+
+        $book_type            = intval(wprentals_get_option('wp_estate_booking_type'));
+        $property_js_required = ['jquery', 'wpestate_control', 'fancybox'];
+        if ($book_type == 2 || $book_type == 3) {
+            $property_js_required = ['jquery', 'wpestate_control', 'fullcalendar', 'fancybox'];
+        }
 
         wp_enqueue_script(
             'wprentals-child-property',
             WPRENTALS_CHILD_THEME_URL . 'js/property.js',
-            ['jquery', 'moment'],
+            $property_js_required,
             wp_get_theme()->get('Version'),
             true
         );
 
         wp_localize_script(
-            'wprentals-child-property',
-            'wprentalsChildData',
-            [
+            'wprentals-child-property', 'property_vars',
+            array(
+                'plsfill'                 => esc_html__('Please fill all the forms!', 'wprentals'),
+                'sending'                 => esc_html__('Sending Request...', 'wprentals'),
+                'logged_in'               => $logged_in,
+                'notlog'                  => esc_html__('You need to log in order to book a listing!', 'wprentals'),
+                'viewless'                => esc_html__('View less', 'wprentals'),
+                'viewmore'                => esc_html__('View more', 'wprentals'),
+                'nostart'                 => esc_html__(
+                    'Check-in date cannot be bigger than Check-out date',
+                    'wprentals'
+                ),
+                'noguest'                 => esc_html__('Please select the number of guests', 'wprentals'),
+                'guestoverload'           => esc_html__(
+                    'The number of guests is greater than the property capacity - ',
+                    'wprentals'
+                ),
+                'guests'                  => esc_html__('guests', 'wprentals'),
+                'early_discount'          => $early_discount,
+                'rental_type'             => wprentals_get_option('wp_estate_item_rental_type'),
+                'book_type'               => $include_booking_type,
+                'reserved'                => esc_html__('reserved', 'wprentals'),
+                'use_gdpr'                => wprentals_get_option('wp_estate_use_gdpr'),
+                'gdpr_terms'              => esc_html__('You must agree to GDPR Terms', 'wprentals'),
+                'is_woo'                  => wprentals_get_option('wp_estate_enable_woo', ''),
+                'allDayText'              => esc_html__('hours', 'wprentals'),
+                'clickandragtext'         => esc_html__('click and drag to select the hours', 'wprentals'),
+                'processing'              => esc_html__('Processing..', 'wprentals'),
+                'book_now'                => esc_html__('Book Now', 'wprentals'),
+                'instant_booking'         => esc_html__('Instant Booking', 'wprentals'),
+                'send_mess'               => esc_html__('Send Message', 'wprentals'),
+                'children_as_guests'      => $include_children_as_guests,
+
+//                todo@@@custom data
                 'listingId'               => $listing_id,
                 'currentUserIsTimeshare'  => current_user_is_timeshare(),
                 'reservationGroupedArray' => $reservation_grouped_array
-            ]
+            )
         );
     }
-
-    ####### CSS #######
-    wp_enqueue_style('daterangepicker-child', WPRENTALS_CHILD_THEME_URL . 'css/daterangepicker.css');
 }
 
 add_action('wp_enqueue_scripts', 'wprentals_parent_enqueues_overwrite', 20);
