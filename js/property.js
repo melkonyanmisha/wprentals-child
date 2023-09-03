@@ -21,10 +21,21 @@ if(control_vars_property.custom_price!==''){
     price_array     = JSON.parse (control_vars_property.custom_price);
 }
 
-booking_array=[];
-if( control_vars_property.booking_array!=='' && control_vars_property.booking_array.length!==0 ){
-    booking_array   = JSON.parse (control_vars_property.booking_array);
+// booking_array=[];
+// if( control_vars_property.booking_array!=='' && control_vars_property.booking_array.length!==0 ){
+//     booking_array   = JSON.parse (control_vars_property.booking_array);
+// }
+
+//todo@@@ start customization
+let booking_array = {};
+
+for (const listingId in property_vars?.reservationGroupedData) {
+    if (!Array.isArray(property_vars.reservationGroupedData[listingId])) {
+        Object.assign(booking_array, property_vars.reservationGroupedData[listingId]);
+    }
 }
+//todo@@@ end customization
+
 
 cleaning_fee_per_day            =   control_vars_property.cleaning_fee_per_day;
 city_fee_per_day                =   control_vars_property.city_fee_per_day;
