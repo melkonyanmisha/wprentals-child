@@ -101,7 +101,6 @@ function wprentals_parent_enqueues_overwrite(): void
         wp_deregister_script('wpestate_property');
         wp_dequeue_script('wpestate_property');
 
-        $listing_id                = 0;
         $reservation_grouped_data = [];
         if (check_is_listing_page(get_the_ID())) {
             $listing_id                = get_the_ID();
@@ -144,40 +143,38 @@ function wprentals_parent_enqueues_overwrite(): void
         wp_localize_script(
             'wprentals-child-property', 'property_vars',
             array(
-                'plsfill'                 => esc_html__('Please fill all the forms!', 'wprentals'),
-                'sending'                 => esc_html__('Sending Request...', 'wprentals'),
-                'logged_in'               => $logged_in,
-                'notlog'                  => esc_html__('You need to log in order to book a listing!', 'wprentals'),
-                'viewless'                => esc_html__('View less', 'wprentals'),
-                'viewmore'                => esc_html__('View more', 'wprentals'),
-                'nostart'                 => esc_html__(
+                'plsfill'                => esc_html__('Please fill all the forms!', 'wprentals'),
+                'sending'                => esc_html__('Sending Request...', 'wprentals'),
+                'logged_in'              => $logged_in,
+                'notlog'                 => esc_html__('You need to log in order to book a listing!', 'wprentals'),
+                'viewless'               => esc_html__('View less', 'wprentals'),
+                'viewmore'               => esc_html__('View more', 'wprentals'),
+                'nostart'                => esc_html__(
                     'Check-in date cannot be bigger than Check-out date',
                     'wprentals'
                 ),
-                'noguest'                 => esc_html__('Please select the number of guests', 'wprentals'),
-                'guestoverload'           => esc_html__(
+                'noguest'                => esc_html__('Please select the number of guests', 'wprentals'),
+                'guestoverload'          => esc_html__(
                     'The number of guests is greater than the property capacity - ',
                     'wprentals'
                 ),
-                'guests'                  => esc_html__('guests', 'wprentals'),
-                'early_discount'          => $early_discount,
-                'rental_type'             => wprentals_get_option('wp_estate_item_rental_type'),
-                'book_type'               => $include_booking_type,
-                'reserved'                => esc_html__('reserved', 'wprentals'),
-                'use_gdpr'                => wprentals_get_option('wp_estate_use_gdpr'),
-                'gdpr_terms'              => esc_html__('You must agree to GDPR Terms', 'wprentals'),
-                'is_woo'                  => wprentals_get_option('wp_estate_enable_woo', ''),
-                'allDayText'              => esc_html__('hours', 'wprentals'),
-                'clickandragtext'         => esc_html__('click and drag to select the hours', 'wprentals'),
-                'processing'              => esc_html__('Processing..', 'wprentals'),
-                'book_now'                => esc_html__('Book Now', 'wprentals'),
-                'instant_booking'         => esc_html__('Instant Booking', 'wprentals'),
-                'send_mess'               => esc_html__('Send Message', 'wprentals'),
-                'children_as_guests'      => $include_children_as_guests,
+                'guests'                 => esc_html__('guests', 'wprentals'),
+                'early_discount'         => $early_discount,
+                'rental_type'            => wprentals_get_option('wp_estate_item_rental_type'),
+                'book_type'              => $include_booking_type,
+                'reserved'               => esc_html__('reserved', 'wprentals'),
+                'use_gdpr'               => wprentals_get_option('wp_estate_use_gdpr'),
+                'gdpr_terms'             => esc_html__('You must agree to GDPR Terms', 'wprentals'),
+                'is_woo'                 => wprentals_get_option('wp_estate_enable_woo', ''),
+                'allDayText'             => esc_html__('hours', 'wprentals'),
+                'clickandragtext'        => esc_html__('click and drag to select the hours', 'wprentals'),
+                'processing'             => esc_html__('Processing..', 'wprentals'),
+                'book_now'               => esc_html__('Book Now', 'wprentals'),
+                'instant_booking'        => esc_html__('Instant Booking', 'wprentals'),
+                'send_mess'              => esc_html__('Send Message', 'wprentals'),
+                'children_as_guests'     => $include_children_as_guests,
 
 //                todo@@@custom data
-                'listingId'               => $listing_id,
-                'currentUserIsTimeshare'  => current_user_is_timeshare(),
                 'reservationGroupedData' => $reservation_grouped_data
             )
         );
