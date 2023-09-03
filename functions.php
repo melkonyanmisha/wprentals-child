@@ -111,7 +111,6 @@ function wprentals_parent_enqueues_overwrite(): void
             'wprentals-child-property',
             'wprentalsChildData',
             [
-                'testKey' => 4884884884,
                 'listingId'               => $listing_id,
                 'currentUserIsTimeshare'  => current_user_is_timeshare(),
                 'reservationGroupedArray' => $reservation_grouped_array
