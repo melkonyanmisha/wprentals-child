@@ -105,6 +105,79 @@ function get_reservation_grouped_array(array $all_listings_ids_in_group): array
     return $reservation_grouped_array;
 }
 
+/**
+ * Convert date to necessarily format. Example 1970-01-01
+ *
+ * @param string $dateString
+ *
+ * @return string
+ */
+function convert_date_format(string $dateString): string
+{
+    return date('Y-m-d', strtotime($dateString));
+}
+
+/**
+ * Returns the key of month difference
+ * Depends on the difference between the booking start day and the current day.
+ *
+ * @param string $from_date
+ *
+ * @return string
+ * @throws Exception
+ */
+function timeshare_get_discount_months_diff(string $from_date): string
+{
+    $current_date       = date('Y-m-d');
+    $current_date_obj   = new DateTime($current_date);
+    $from_date_obj      = new DateTime($from_date);
+    $interval_obj       = $from_date_obj->diff($current_date_obj);
+    $interval_by_months = $interval_obj->m + 12 * $interval_obj->y;
+
+    if ($interval_by_months < 2) {
+        $key_discount_months_diff = 'less_two';
+    } elseif ($interval_by_months > 2 && $interval_by_months < 4) {
+        $key_discount_months_diff = 'two_four_before';
+    } elseif ($interval_by_months > 4 && $interval_by_months < 6) {
+        $key_discount_months_diff = 'four_six_before';
+    } else {
+        $key_discount_months_diff = 'more_six';
+    }
+
+    return $key_discount_months_diff;
+}
+
+function timeshare_discount_price_calc(float $price, string $fromdate, string $to_date): float
+{
+    //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
+return $price;
+    if ( ! current_user_is_timeshare()) {
+        return $price;
+    }
+
+    $timeshare_price_calc_data = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
+
+    if ( ! ($timeshare_price_calc_data)) {
+        return $price;
+    }
+    $from_date_converted                   = convert_date_format($fromdate);
+    $to_date_converted                     = convert_date_format($to_date);
+    $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
+    $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
+
+
+//        todo@@@ continue to get the daily_percent or weekly_percent or yearly_percent
+//    var_dump(99999);
+//    var_dump($discount_months_diff);
+//    var_dump($from_date_converted);
+//    var_dump($to_date_converted);
+//    var_dump($price);
+//    var_dump($necessarily_timeshare_price_calc_data);
+//    exit;
+
+
+    return $price;
+}
 
 /**
  * Check booking availability
@@ -216,7 +289,7 @@ function wpestate_ajax_check_booking_valability()
     }
 //var_dump($reservation_grouped_array); exit;
     foreach ($reservation_grouped_array as $reservation_array) {
-        if ( is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
+        if (is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
             print 'stop array_key_exists';
             die();
         }
@@ -319,7 +392,6 @@ function wpestate_ajax_add_booking_instant()
     //$fromdate               =   wpestate_convert_dateformat($fromdate);
     //$to_date                =   wpestate_convert_dateformat($to_date);
 
-
     $fromdate = wpestate_convert_dateformat_twodig($fromdate);
     $to_date  = wpestate_convert_dateformat_twodig($to_date);
 
@@ -401,6 +473,11 @@ function wpestate_ajax_add_booking_instant()
     );
     $price         = $booking_array['total_price'];
 
+//  todo@@@ get customized price
+    $price = timeshare_discount_price_calc($price, $fromdate, $to_date);
+//    var_dump(99999);
+//    var_dump($price);
+//    exit;
 
     // updating the booking detisl
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
@@ -1055,40 +1132,8 @@ function wpestate_ajax_add_booking_instant()
 
             </div>';
 
-
-    $invoice_details = array(
-        "invoice_status" => "issued",
-        "purchase_date"  => $date,
-        "buyer_id"       => $userID,
-        "item_price"     => $booking_array['total_price'],
-
-        "orignal_invoice_id"        => $invoice_id,
-        "billing_for"               => $billing_for,
-        "type"                      => $type,
-        "pack_id"                   => $pack_id,
-        "date"                      => $date,
-        "user_id"                   => $user_id,
-        "is_featured"               => $is_featured,
-        "is_upgrade"                => $is_upgrade,
-        "paypal_tax_id"             => $paypal_tax_id,
-        "details"                   => $details,
-        "price"                     => $price,
-        "to_be_paid"                => $booking_array['deposit'],
-        "submission_curency_status" => $submission_curency_status,
-        "bookid"                    => $bookid,
-        "author_id"                 => $author_id,
-        "youearned"                 => $booking_array['youearned'],
-        "service_fee"               => $booking_array['service_fee'],
-        "booking_taxes"             => $booking_array['taxes'],
-        "security_deposit"          => $booking_array['security_deposit'],
-        "renting_details"           => $details,
-        "custom_price_array"        => $booking_array['custom_price_array'],
-        "balance"                   => $booking_array['balance']
-    );
-
     if ($booking_array['balance'] > 0) {
         update_post_meta($invoice_id, 'invoice_status_full', 'waiting');
-        $invoice_details['invoice_status_full'] = 'waiting';
     }
 
     if ($booking_array['balance'] == 0) {

@@ -11,6 +11,10 @@ if ( ! defined('WPRENTALS_CHILD_THEME_URL')) {
     define('WPRENTALS_CHILD_THEME_URL', trailingslashit(get_stylesheet_directory_uri()));
 }
 
+if ( ! defined('TIMESHARE_PRICE_CALC_DATA')) {
+    define('TIMESHARE_PRICE_CALC_DATA', 'timeshare_price_calc_data');
+}
+
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
