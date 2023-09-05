@@ -1,59 +1,20 @@
 <?php
-
 /**
- * @param string $taxonomy
- *
+ * Remove the original estate_property custom post type and add a new one
  * @return void
  */
-function add_taxonomy_term_meta_field(string $taxonomy)
+function replace_wpestate_create_property_type(): void
 {
-    ?>
-    <div class="form-field">
-        <label for="current-group-order">Group order</label>
-        <input style="width: 20%;" type="number" name="current_group_order" id="current-group-order">
-        <p class="description">It will be used when booking from a timeshare user.</p>
-    </div>
-    <?php
+    unregister_post_type('estate_property');
+    custom_wpestate_create_property_type();
 }
+
+add_action('after_setup_theme', 'replace_wpestate_create_property_type');
 
 /**
- * @param WP_Term $term
- * @param string $taxonomy
- *
  * @return void
  */
-function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
-{
-    $term_meta = get_term_meta($term->term_id, 'current_group_order', true);
-    ?>
-    <table class="form-table">
-        <tr class="form-field">
-            <th scope="row">
-                <label for="current-group-order">Group order</label>
-            </th>
-            <td>
-                <input style="width: 20%;" class="postform" type="number" name="current_group_order"
-                       id="current-group-order" value="<?= esc_attr($term_meta); ?>">
-                <p class="description">It will be used when booking from a timeshare user.</p>
-            </td>
-        </tr>
-    </table>
-    <?php
-}
-
-/**
- * @param int $term_id
- *
- * @return void
- */
-function save_taxonomy_term_meta(int $term_id)
-{
-    if (isset($_POST['current_group_order'])) {
-        update_term_meta($term_id, 'current_group_order', sanitize_text_field($_POST['current_group_order']));
-    }
-}
-
-function custom_wpestate_create_property_type()
+function custom_wpestate_create_property_type():void
 {
     $rewrites = wpestate_safe_rewite();
     if (isset($rewrites[0])) {
@@ -187,15 +148,55 @@ function custom_wpestate_create_property_type()
     wprentals_convert_features_status_to_tax();
 }
 
-// todo@@
 /**
- * Remove the original estate_property custom post type and add a new one
+ * @param string $taxonomy
+ *
  * @return void
  */
-function replace_wpestate_create_property_type(): void
+function add_taxonomy_term_meta_field(string $taxonomy)
 {
-    unregister_post_type('estate_property');
-    custom_wpestate_create_property_type();
+    ?>
+    <div class="form-field">
+        <label for="current-group-order">Group order</label>
+        <input style="width: 20%;" type="number" name="current_group_order" id="current-group-order">
+        <p class="description">It will be used when booking from a timeshare user.</p>
+    </div>
+    <?php
 }
 
-add_action('after_setup_theme', 'replace_wpestate_create_property_type');
+/**
+ * @param WP_Term $term
+ * @param string $taxonomy
+ *
+ * @return void
+ */
+function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
+{
+    $term_meta = get_term_meta($term->term_id, 'current_group_order', true);
+    ?>
+    <table class="form-table">
+        <tr class="form-field">
+            <th scope="row">
+                <label for="current-group-order">Group order</label>
+            </th>
+            <td>
+                <input style="width: 20%;" class="postform" type="number" name="current_group_order"
+                       id="current-group-order" value="<?= esc_attr($term_meta); ?>">
+                <p class="description">It will be used when booking from a timeshare user.</p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+/**
+ * @param int $term_id
+ *
+ * @return void
+ */
+function save_taxonomy_term_meta(int $term_id)
+{
+    if (isset($_POST['current_group_order'])) {
+        update_term_meta($term_id, 'current_group_order', sanitize_text_field($_POST['current_group_order']));
+    }
+}
