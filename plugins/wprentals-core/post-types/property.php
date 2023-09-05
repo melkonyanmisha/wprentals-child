@@ -158,7 +158,7 @@ function add_taxonomy_term_meta_field(string $taxonomy)
     ?>
     <div class="form-field">
         <label for="current-group-order">Group order</label>
-        <input style="width: 20%;" type="number" name="current_group_order" id="current-group-order">
+        <input style="width: 20%;" type="number" name="<?= ROOM_GROUP_ORDER; ?>" id="current-group-order">
         <p class="description">It will be used when booking from a timeshare user.</p>
     </div>
     <?php
@@ -172,7 +172,7 @@ function add_taxonomy_term_meta_field(string $taxonomy)
  */
 function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
 {
-    $term_meta = get_term_meta($term->term_id, 'current_group_order', true);
+    $term_meta = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
     ?>
     <table class="form-table">
         <tr class="form-field">
@@ -180,7 +180,7 @@ function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
                 <label for="current-group-order">Group order</label>
             </th>
             <td>
-                <input style="width: 20%;" class="postform" type="number" name="current_group_order"
+                <input style="width: 20%;" class="postform" type="number" name=<?= ROOM_GROUP_ORDER; ?>
                        id="current-group-order" value="<?= esc_attr($term_meta); ?>">
                 <p class="description">It will be used when booking from a timeshare user.</p>
             </td>
@@ -196,7 +196,7 @@ function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
  */
 function save_taxonomy_term_meta(int $term_id)
 {
-    if (isset($_POST['current_group_order'])) {
-        update_term_meta($term_id, 'current_group_order', sanitize_text_field($_POST['current_group_order']));
+    if (isset($_POST[ROOM_GROUP_ORDER])) {
+        update_term_meta($term_id, ROOM_GROUP_ORDER, sanitize_text_field($_POST[ROOM_GROUP_ORDER]));
     }
 }
