@@ -32,9 +32,10 @@ if (current_user_is_admin()) {
         include(locate_template('templates/property_unit.php'));
     endwhile;
 } elseif (current_user_is_timeshare()) {
-    $room_category_id    = get_room_category_id_by_slug();
-    $cottage_category_id = get_cottage_category_id_by_slug();
-    $room_group_id       = get_room_group_id_by_slug();
+    $room_category_id                = get_room_category_id_by_slug();
+    $cottage_category_id             = get_cottage_category_id_by_slug();
+    $room_group_id                   = get_room_group_id_by_slug();
+    $group_with_max_room_group_order = get_group_with_max_room_group_order();
 
     while ($prop_selection->have_posts()): $prop_selection->the_post();
         $custom_categories = get_the_terms(get_the_ID(), 'property_category');
@@ -44,7 +45,7 @@ if (current_user_is_admin()) {
             foreach ($custom_groups as $current_group) {
                 //Case when parent is Room Group. Show 1 listing from Group which has a max group order
                 if ($current_group->parent === $room_group_id) {
-                    if ($current_group->slug === get_group_slug_with_max_room_group_order()) {
+                    if ( ! empty($group_with_max_room_group_order->slug) && $group_with_max_room_group_order->slug === $current_group->slug) {
                         $term_grouped_posts[$current_group->slug]['posts'][0] = get_post(); // Group posts by term slug
                     }
                 }

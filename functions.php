@@ -311,10 +311,12 @@ function check_is_listing_page(int $post_id): bool
     return get_post_type($post_id) === 'estate_property';
 }
 
+
+
 /**
- * @return string
+ * @return object|int|mixed|stdClass|string|WP_Term
  */
-function get_group_slug_with_max_room_group_order()
+function get_group_with_max_room_group_order(): object
 {
     $args = array(
         'taxonomy'   => 'property_action_category',
@@ -324,20 +326,24 @@ function get_group_slug_with_max_room_group_order()
 
     $terms = get_terms($args);
 
-    $max_current_group_order  = 0;
-    $term_slug_with_max_order = '';
+    $max_current_group_order = 0;
+    $term_with_max_order     = new stdClass();
 
     foreach ($terms as $term) {
         $term_order = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
 
         if ($term_order && is_numeric($term_order)) {
             $term_order = intval($term_order);
+
             if ($term_order > $max_current_group_order) {
-                $max_current_group_order  = $term_order;
-                $term_slug_with_max_order = $term->slug;
+                $max_current_group_order    = $term_order;
+                $term_with_max_order        = $term;
+                $term_with_max_order->order = $term_order;
             }
         }
     }
 
-    return $term_slug_with_max_order;
+    return $term_with_max_order;
 }
+
+
