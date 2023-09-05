@@ -1,5 +1,58 @@
 <?php
 
+/**
+ * @param string $taxonomy
+ *
+ * @return void
+ */
+function add_taxonomy_term_meta_field(string $taxonomy)
+{
+    ?>
+    <div class="form-field">
+        <label for="current-group-order">Group order</label>
+        <input style="width: 20%;" type="number" name="current_group_order" id="current-group-order">
+        <p class="description">It will be used when booking from a timeshare user.</p>
+    </div>
+    <?php
+}
+
+/**
+ * @param WP_Term $term
+ * @param string $taxonomy
+ *
+ * @return void
+ */
+function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
+{
+    $term_meta = get_term_meta($term->term_id, 'current_group_order', true);
+    ?>
+    <table class="form-table">
+        <tr class="form-field">
+            <th scope="row">
+                <label for="current-group-order">Group order</label>
+            </th>
+            <td>
+                <input style="width: 20%;" class="postform" type="number" name="current_group_order"
+                       id="current-group-order" value="<?= esc_attr($term_meta); ?>">
+                <p class="description">It will be used when booking from a timeshare user.</p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+/**
+ * @param int $term_id
+ *
+ * @return void
+ */
+function save_taxonomy_term_meta(int $term_id)
+{
+    if (isset($_POST['current_group_order'])) {
+        update_term_meta($term_id, 'current_group_order', sanitize_text_field($_POST['current_group_order']));
+    }
+}
+
 function custom_wpestate_create_property_type()
 {
     $rewrites = wpestate_safe_rewite();
@@ -88,8 +141,9 @@ function custom_wpestate_create_property_type()
         $slug = 'action';
     }
 
+    $taxonomy = 'property_action_category';
     // add custom taxonomy
-    register_taxonomy('property_action_category', 'estate_property', array(
+    register_taxonomy($taxonomy, 'estate_property', array(
             'labels'       => array(
                 'name'          => $action_name,
                 'add_new_item'  => $action_add_new_item,
@@ -101,46 +155,13 @@ function custom_wpestate_create_property_type()
         )
     );
 
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[3])) {
-        $slug = $rewrites[3];
-    } else {
-        $slug = 'city';
-    }
+    // Add a custom meta input field for the taxonomy term
+    add_action($taxonomy . '_add_form_fields', 'add_taxonomy_term_meta_field', 10, 2);
+    add_action($taxonomy . '_edit_form_fields', 'edit_taxonomy_term_meta_field', 10, 2);
 
-    // add custom taxonomy
-    register_taxonomy('property_city', 'estate_property', array(
-            'labels'       => array(
-                'name'          => esc_html__('City', 'wprentals-core'),
-                'add_new_item'  => esc_html__('Add New City', 'wprentals-core'),
-                'new_item_name' => esc_html__('New City', 'wprentals-core')
-            ),
-            'hierarchical' => true,
-            'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
-        )
-    );
-
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[4])) {
-        $slug = $rewrites[4];
-    } else {
-        $slug = 'area';
-    }
-
-    // add custom taxonomy
-    register_taxonomy('property_area', 'estate_property', array(
-            'labels'       => array(
-                'name'          => esc_html__('Neighborhood / Area', 'wprentals-core'),
-                'add_new_item'  => esc_html__('Add New Neighborhood / Area', 'wprentals-core'),
-                'new_item_name' => esc_html__('New Neighborhood / Area', 'wprentals-core')
-            ),
-            'hierarchical' => true,
-            'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
-
-        )
-    );
+    // Save the custom meta field value when the term is saved
+    add_action('edited_' . $taxonomy, 'save_taxonomy_term_meta');
+    add_action('create_' . $taxonomy, 'save_taxonomy_term_meta');
 
     $rewrites = wpestate_safe_rewite();
     if (isset($rewrites[5])) {
@@ -155,27 +176,6 @@ function custom_wpestate_create_property_type()
                 'name'          => esc_html__('Features & Amenities', 'wprentals-core'),
                 'add_new_item'  => esc_html__('Add New Feature', 'wprentals-core'),
                 'new_item_name' => esc_html__('New Feature', 'wprentals-core')
-            ),
-            'hierarchical' => true,
-            'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
-
-        )
-    );
-
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[6])) {
-        $slug = $rewrites[6];
-    } else {
-        $slug = 'status';
-    }
-
-    // add custom taxonomy
-    register_taxonomy('property_status', 'estate_property', array(
-            'labels'       => array(
-                'name'          => esc_html__('Property Status', 'wprentals-core'),
-                'add_new_item'  => esc_html__('Add New Status', 'wprentals-core'),
-                'new_item_name' => esc_html__('New Status', 'wprentals-core')
             ),
             'hierarchical' => true,
             'query_var'    => true,
