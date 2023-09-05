@@ -36,16 +36,17 @@ if (current_user_is_admin()) {
     $cottage_category_id = get_cottage_category_id_by_slug();
     $room_group_id       = get_room_group_id_by_slug();
 
-    //During the booking process Guest users can only see images for 1 unit per group
     while ($prop_selection->have_posts()): $prop_selection->the_post();
         $custom_categories = get_the_terms(get_the_ID(), 'property_category');
         $custom_groups     = get_the_terms(get_the_ID(), 'property_action_category');
 
         if ( ! empty($custom_groups)) {
             foreach ($custom_groups as $current_group) {
-                //Case when parent is Room Group. Show 1 listing per Group
+                //Case when parent is Room Group. Show 1 listing from Group which has a max group order
                 if ($current_group->parent === $room_group_id) {
-                    $term_grouped_posts[$current_group->slug]['posts'][0] = get_post(); // Group posts by term slug
+                    if ($current_group->slug === get_group_slug_with_max_room_group_order()) {
+                        $term_grouped_posts[$current_group->slug]['posts'][0] = get_post(); // Group posts by term slug
+                    }
                 }
             }
         } else {

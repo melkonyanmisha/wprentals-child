@@ -7,12 +7,18 @@ if ( ! defined('WPRENTALS_THEME_URL')) {
 if ( ! defined('WPRENTALS_CHILD_THEME_PATH')) {
     define('WPRENTALS_CHILD_THEME_PATH', trailingslashit(get_stylesheet_directory()));
 }
+
 if ( ! defined('WPRENTALS_CHILD_THEME_URL')) {
     define('WPRENTALS_CHILD_THEME_URL', trailingslashit(get_stylesheet_directory_uri()));
 }
 
 if ( ! defined('TIMESHARE_PRICE_CALC_DATA')) {
     define('TIMESHARE_PRICE_CALC_DATA', 'timeshare_price_calc_data');
+}
+
+//meta_key for save room Group order in wp_termmeta
+if ( ! defined('ROOM_GROUP_ORDER')) {
+    define('ROOM_GROUP_ORDER', 'room_group_order');
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
@@ -303,4 +309,35 @@ add_filter('term_links-property_action_category', 'extract_text_from_link');
 function check_is_listing_page(int $post_id): bool
 {
     return get_post_type($post_id) === 'estate_property';
+}
+
+/**
+ * @return string
+ */
+function get_group_slug_with_max_room_group_order()
+{
+    $args = array(
+        'taxonomy'   => 'property_action_category',
+        'hide_empty' => true, // Include terms with no posts assigned
+        'fields'     => 'all', // Get all term data including custom meta
+    );
+
+    $terms = get_terms($args);
+
+    $max_current_group_order  = 0;
+    $term_slug_with_max_order = '';
+
+    foreach ($terms as $term) {
+        $term_order = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
+
+        if ($term_order && is_numeric($term_order)) {
+            $term_order = intval($term_order);
+            if ($term_order > $max_current_group_order) {
+                $max_current_group_order  = $term_order;
+                $term_slug_with_max_order = $term->slug;
+            }
+        }
+    }
+
+    return $term_slug_with_max_order;
 }
