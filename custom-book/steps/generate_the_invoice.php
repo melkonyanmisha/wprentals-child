@@ -14,14 +14,15 @@ function generate_the_invoice(
     $property_author,
     $early_bird_percent,
     $early_bird_days,
-    $taxes_value
+    $taxes_value,
+    $extra_pay_options
 ) {
     $options_array_explanations = [];
     $current_user  = wp_get_current_user();
     $userID        = $current_user->ID;
     $allowded_html = [];
-    $fromdate      = wp_kses($_POST['fromdate'], $allowded_html);
-    $to_date       = wp_kses($_POST['todate'], $allowded_html);
+    $fromdate      = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+    $to_date       = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
 
     wpestate_check_for_booked_time($fromdate, $to_date, $reservation_array, $property_id);
     //end check

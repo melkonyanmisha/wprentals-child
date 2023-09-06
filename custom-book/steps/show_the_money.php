@@ -7,7 +7,8 @@ function show_the_money(
     $rental_type,
     $booking_type,
     $extra_options_array,
-    $options_array_explanations
+    $options_array_explanations,
+    $extra_pay_options
 ) {
     $current_user = wp_get_current_user();
     $userID       = $current_user->ID;
