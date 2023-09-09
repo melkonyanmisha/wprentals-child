@@ -171,7 +171,27 @@ function timeshare_get_discount_months_diff(string $from_date): string
     return $key_discount_months_diff;
 }
 
-function timeshare_discount_price_calc(float $price, string $fromdate, string $to_date): float
+/**
+ * Returns the booked total days
+ *
+ * @param string $from_date
+ * @param string $to_date
+ *
+ * @return false|int
+ */
+function get_booked_days_count(string $from_date, string $to_date)
+{
+    // Convert date strings to DateTime objects
+    $date1Obj = DateTime::createFromFormat('y-m-d', $from_date);
+    $date2Obj = DateTime::createFromFormat('y-m-d', $to_date);
+
+    // Calculate the difference between the two dates
+    $interval = $date2Obj->diff($date1Obj);
+
+    return $interval->days;
+}
+
+function timeshare_discount_price_calc(float $price, string $from_date, string $to_date): float
 {
     //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
 //    return $price;
@@ -179,12 +199,19 @@ function timeshare_discount_price_calc(float $price, string $fromdate, string $t
         return $price;
     }
 
-    $timeshare_price_calc_data = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
+    $timeshare_price_calc_data   = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
+    $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
+    $timeshare_user_data_decoded = ! empty($timeshare_user_data_encoded) ? json_decode(
+        $timeshare_user_data_encoded[0],
+        true
+    ) : [];
+    $timeshare_package_duration  = ! empty($timeshare_user_data_decoded) ? $timeshare_user_data_decoded[TIMESHARE_PACKAGE_DURATION] : TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE;
+    $booked_days_count           = get_booked_days_count($from_date, $to_date);
 
     if ( ! ($timeshare_price_calc_data)) {
         return $price;
     }
-    $from_date_converted                   = convert_date_format($fromdate);
+    $from_date_converted                   = convert_date_format($from_date);
     $to_date_converted                     = convert_date_format($to_date);
     $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
     $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
@@ -194,12 +221,39 @@ function timeshare_discount_price_calc(float $price, string $fromdate, string $t
     if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
         $price_percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
 
-        $price = $price * $price_percent / 100;
+        if ($timeshare_package_duration >= $booked_days_count) {
+            $price = $price * $price_percent / 100;
+        } else {
+            // Divide price calculation by part
+            $price_per_day = $price / $booked_days_count;
 
+            // Price for Timeshare user depends on available days of package duration
+            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day * $price_percent / 100;
+            $remaining_days                     = $booked_days_count - $timeshare_package_duration;
+            // Calculate as Standard client(Guest)
+            $remaining_days_price = $price_per_day * $remaining_days;
+
+            // Calculated Total Price
+            $price = $discounted_price_by_available_days + $remaining_days_price;
+
+            ///todo@@@ need to minus days from package duration
+
+//            var_dump(11111);
+//            var_dump('total price is .... '. $price);
+//            var_dump('$booked_days_count is.... ' . $booked_days_count);
+//            var_dump('$price_per_day is' . $price_per_day);
+//            var_dump('$discounted_price_by_available_days is' . $discounted_price_by_available_days);
+//            var_dump('$remaining_days_price is' . $remaining_days_price);
+//            var_dump($price);
+//            var_dump($price_percent);
+//            var_dump('$timeshare_package_duration is...  ' . $timeshare_package_duration);
+//            var_dump($from_date);
+//            var_dump($to_date);
+//            exit;
+        }
     } else {
         //Case for Low, Normal, Hot, Very Hot, Special
     }
-
 
 
 //        todo@@@ continue to get the daily_percent or weekly_percent or yearly_percent

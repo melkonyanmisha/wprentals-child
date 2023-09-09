@@ -21,6 +21,21 @@ if ( ! defined('ROOM_GROUP_ORDER')) {
     define('ROOM_GROUP_ORDER', 'room_group_order');
 }
 
+//Meta Key
+if ( ! defined('TIMESHARE_USER_DATA')) {
+    define('TIMESHARE_USER_DATA', 'timeshare_user_data');
+}
+
+//The Timeshare user package duration
+if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
+    define('TIMESHARE_PACKAGE_DURATION', 'timeshare_package_duration');
+}
+
+//Default value for TIMESHARE_PACKAGE_DURATION if it not set in DB
+if ( ! defined('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE')) {
+    define('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE', 7);
+}
+
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';

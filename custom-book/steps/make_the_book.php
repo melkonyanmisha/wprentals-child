@@ -39,9 +39,8 @@ function make_the_book($property_id, $owner_id, $booking_guest_no, $early_bird_p
         'ID'         => $booking_id,
         'post_title' => $event_name . ' ' . $booking_id
     );
+
     wp_update_post($post);
-
-
     update_post_meta($booking_id, 'booking_status', $status);
     update_post_meta($booking_id, 'booking_id', $property_id);
     update_post_meta($booking_id, 'owner_id', $owner_id);
