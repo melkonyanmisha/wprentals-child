@@ -174,7 +174,7 @@ function timeshare_get_discount_months_diff(string $from_date): string
 function timeshare_discount_price_calc(float $price, string $fromdate, string $to_date): float
 {
     //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
-    return $price;
+//    return $price;
     if ( ! current_user_is_timeshare()) {
         return $price;
     }
@@ -190,17 +190,29 @@ function timeshare_discount_price_calc(float $price, string $fromdate, string $t
     $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
 
 
+    //Case for Less than 2 months and All Season
+    if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
+        $price_percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
+
+        $price = $price * $price_percent / 100;
+
+    } else {
+        //Case for Low, Normal, Hot, Very Hot, Special
+    }
+
+
+
 //        todo@@@ continue to get the daily_percent or weekly_percent or yearly_percent
-//    var_dump(99999);
-//    var_dump($discount_months_diff);
+//    var_dump($price);
+//    var_dump(ceil($price));
 //    var_dump($from_date_converted);
 //    var_dump($to_date_converted);
-//    var_dump($price);
+//    var_dump($discount_months_diff);
 //    var_dump($necessarily_timeshare_price_calc_data);
 //    exit;
 
 
-    return $price;
+    return ceil($price);
 }
 
 /**
@@ -349,7 +361,6 @@ function wpestate_ajax_check_booking_valability()
     print 'run';
     die();
 }
-
 
 
 /**

@@ -3,7 +3,9 @@
 function wpestate_ajax_add_booking_instant()
 {
     $booking_instant_data = [];
-
+    $listing_id = intval($_POST['listing_edit']);
+    
+    
     if (current_user_is_timeshare()) {
         $from_date                     = new DateTime($_POST['fromdate']);
         $from_date_unix                = $from_date->getTimestamp();
@@ -21,15 +23,15 @@ function wpestate_ajax_add_booking_instant()
             foreach ($group_data_to_book['rooms_ids'] as $room_id) {
 //        todo@@@@ need to continue and modify wpestate_child_ajax_add_booking_instant() function
 
-//                wpestate_child_ajax_add_booking_instant(true, $room_id);
+                wpestate_child_ajax_add_booking_instant($room_id, true, false);
             }
         } else {
             //Case for Cottages
 //            var_dump(44444); exit;
-            $booking_instant_data = wpestate_child_ajax_add_booking_instant(true, $_POST['listing_edit']);
+            $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id, true, true);
         }
     } else {
-        wpestate_child_ajax_add_booking_instant();
+        wpestate_child_ajax_add_booking_instant($listing_id, false, false  );
     }
 
     steps_after_book($booking_instant_data);
@@ -85,26 +87,25 @@ function steps_after_book($booking_instant_data)
     die();
 }
 
-function wpestate_child_ajax_add_booking_instant($is_timeshare_user = false, $property_id = false)
+function wpestate_child_ajax_add_booking_instant($listing_id ,$is_timeshare_user, $is_cottage )
 {
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
     $allowded_html    = array();
     $booking_guest_no = isset($_POST['booking_guest_no']) ? intval($_POST['booking_guest_no']) : 0;
 
-//    todo@@@ booking continue..need to change $property_id if it called from wpestate_ajax_add_booking_instant()
+//    todo@@@ booking continue..need to change $listing_id if it called from wpestate_ajax_add_booking_instant()
 
-    $property_id     = $property_id ? intval($property_id) : intval($_POST['listing_edit']);
-    $instant_booking = floatval(get_post_meta($property_id, 'instant_booking', true));
+    $instant_booking = floatval(get_post_meta($listing_id, 'instant_booking', true));
 
     if ($instant_booking != 1) {
         die();
     }
 
-    $owner_id           = wpsestate_get_author($property_id);
-    $early_bird_percent = floatval(get_post_meta($property_id, 'early_bird_percent', true));
-    $early_bird_days    = floatval(get_post_meta($property_id, 'early_bird_days', true));
-    $taxes_value        = floatval(get_post_meta($property_id, 'property_taxes', true));
-    $extra_pay_options  = get_post_meta($property_id, 'extra_pay_options', true);
+    $owner_id           = wpsestate_get_author($listing_id);
+    $early_bird_percent = floatval(get_post_meta($listing_id, 'early_bird_percent', true));
+    $early_bird_days    = floatval(get_post_meta($listing_id, 'early_bird_days', true));
+    $taxes_value        = floatval(get_post_meta($listing_id, 'property_taxes', true));
+    $extra_pay_options  = get_post_meta($listing_id, 'extra_pay_options', true);
     $extra_options      = wp_kses($_POST['extra_options'], $allowded_html);
     $extra_options      = rtrim($extra_options, ",");
 
@@ -113,13 +114,13 @@ function wpestate_child_ajax_add_booking_instant($is_timeshare_user = false, $pr
         $extra_options_array = explode(',', $extra_options);
     }
 
-    $booking_type = wprentals_return_booking_type($property_id);
+    $booking_type = wprentals_return_booking_type($listing_id);
     $rental_type  = wprentals_get_option('wp_estate_item_rental_type');
 
     // STEP1 -make the book
 
     $make_the_book = make_the_book(
-        $property_id,
+        $listing_id,
         $owner_id,
         $booking_guest_no,
         $early_bird_percent,
@@ -127,24 +128,18 @@ function wpestate_child_ajax_add_booking_instant($is_timeshare_user = false, $pr
         $taxes_value
     );
 
-    $booking_id        = $make_the_book['booking_id'];
-    $price             = $make_the_book['price'];
-    $reservation_array = $make_the_book['reservation_array'];
-    $booking_array     = $make_the_book['booking_array'];
-    $property_author   = $make_the_book['property_author'];
-
     return [
-        'reservation_array'   => $reservation_array,
-        'property_id'         => $property_id,
-        'booking_array'       => $booking_array,
+        'reservation_array'   => $make_the_book['reservation_array'],
+        'property_id'         => $listing_id,
+        'booking_array'       => $make_the_book['booking_array'],
         'extra_options_array' => $extra_options_array,
         'rental_type'         => $rental_type,
         'booking_type'        => $booking_type,
         'booking_guest_no'    => $booking_guest_no,
-        'booking_id'          => $booking_id,
-        'price'               => $price,
+        'booking_id'          => $make_the_book['booking_id'],
+        'price'               => $make_the_book['price'],
         'owner_id'            => $owner_id,
-        'property_author'     => $property_author,
+        'property_author'     => $make_the_book['property_author'],
         'early_bird_percent'  => $early_bird_percent,
         'early_bird_days'     => $early_bird_days,
         'taxes_value'         => $taxes_value,

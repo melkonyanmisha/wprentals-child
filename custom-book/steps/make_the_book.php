@@ -86,11 +86,8 @@ function make_the_book($property_id, $owner_id, $booking_guest_no, $early_bird_p
     );
     $price         = $booking_array['total_price'];
 
-//  todo@@@ get customized price
-//    $price = timeshare_discount_price_calc($price, $fromdate, $to_date);
-//    var_dump(99999);
-//    var_dump($price);
-//    exit;
+    //todo@@@ get customized price
+    $price = timeshare_discount_price_calc($price, $fromdate, $to_date);
 
     // updating the booking detail
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
