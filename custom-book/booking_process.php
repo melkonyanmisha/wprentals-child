@@ -144,7 +144,5 @@ function wpestate_child_ajax_add_booking_instant($listing_id ,$is_timeshare_user
         'early_bird_days'     => $early_bird_days,
         'taxes_value'         => $taxes_value,
         'extra_pay_options'   => $extra_pay_options,
-
-
     ];
 }
