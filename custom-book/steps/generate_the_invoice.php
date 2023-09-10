@@ -135,7 +135,7 @@ function generate_the_invoice(
     $is_featured   = '';
     $is_upgrade    = '';
     $paypal_tax_id = '';
-
+//var_dump($booking_array); exit;
     $invoice_id = wpestate_booking_insert_invoice(
         $billing_for,
         $type,

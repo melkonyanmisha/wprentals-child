@@ -191,9 +191,9 @@ function get_booked_days_count(string $from_date, string $to_date)
     return $interval->days;
 }
 
-function get_timeshare_discount_price_percent()
+function get_timeshare_session_info(): array
 {
-    return $_SESSION['price_percent'] ?? 100;
+    return $_SESSION['timeshare'];
 }
 
 /**
@@ -211,15 +211,17 @@ function timeshare_discount_price_calc(
     string $to_date,
     bool $calc_by_force = false
 ): float {
-
     //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
-//    return $price;
+    if ($price == 0) {
+        return $price;
+    }
 
     // Calculation available during booking by timeshare users and in dashboards of administrator and timeshare user.
     // $calc_by_force used by administrators to show customized price in "My Bookings" page
     if ( ! $calc_by_force && ! current_user_is_timeshare()) {
         return $price;
     }
+
 
     $timeshare_price_calc_data   = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
     $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
@@ -240,31 +242,43 @@ function timeshare_discount_price_calc(
 
     //Case for Less than 2 months and All Season
     if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
-        $price_percent             = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
-        $_SESSION['price_percent'] = $price_percent;
+        $price_percent                          = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
+        $_SESSION['timeshare']['price_percent'] = $price_percent;
 
 
         if ($timeshare_package_duration >= $booked_days_count) {
             $price = $price * $price_percent / 100;
         } else {
+            //todo need to make function which will be add to session only percent and after this
+            // make calculation seperatly to avoid issues
+
             // Divide price calculation by part
-            $price_per_day = $price / $booked_days_count;
+            $price_per_day_before_discount = $price / $booked_days_count;
 
             // Price for Timeshare user depends on available days of package duration
-            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day * $price_percent / 100;
+            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $price_percent / 100;
             $remaining_days                     = $booked_days_count - $timeshare_package_duration;
             // Calculate as Standard client(Guest)
-            $remaining_days_price = $price_per_day * $remaining_days;
+            $remaining_days_price = $price_per_day_before_discount * $remaining_days;
 
             // Calculated Total Price
-            $price = $discounted_price_by_available_days + $remaining_days_price;
+            $price                        = $discounted_price_by_available_days + $remaining_days_price;
+            $price_per_day_after_discount = $price / $booked_days_count;
+
+            $_SESSION['timeshare']['booked_days_count'] = $booked_days_count;
+//var_dump(111111);
+//var_dump($price);
+//var_dump($booked_days_count);
+//var_dump($price_per_day_after_discount);
+//var_dump($_SESSION);
+//exit;
 
             ///todo@@@ need to minus days from package duration
 
 //            var_dump(11111);
 //            var_dump('total price is .... '. $price);
 //            var_dump('$booked_days_count is.... ' . $booked_days_count);
-//            var_dump('$price_per_day is' . $price_per_day);
+//            var_dump('$price_per_day_before_discount is' . $price_per_day_before_discount);
 //            var_dump('$discounted_price_by_available_days is' . $discounted_price_by_available_days);
 //            var_dump('$remaining_days_price is' . $remaining_days_price);
 //            var_dump($price);
