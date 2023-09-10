@@ -12,12 +12,36 @@ function check_has_room_category(int $listing_id)
 
     if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
         foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
-            $current_category_parent_term = get_term($current_category_parent_term_id, 'property_category');
-
+            $current_category_parent_term  = get_term($current_category_parent_term_id, 'property_category');
             $category_parent_terms_slugs[] = $current_category_parent_term->slug;
         }
 
         if (in_array('room', $category_parent_terms_slugs)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+/**
+ * @param int $listing_id
+ *
+ * @return bool
+ */
+function check_has_room_group(int $listing_id)
+{
+    $category_terms            = wp_get_post_terms($listing_id, 'property_action_category');
+    $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
+
+    if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
+        foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
+            $current_category_parent_term  = get_term($current_category_parent_term_id, 'property_action_category');
+            $category_parent_terms_slugs[] = $current_category_parent_term->slug;
+        }
+
+        if (in_array('room-group', $category_parent_terms_slugs)) {
             return true;
         }
     }
@@ -79,7 +103,7 @@ function get_all_listings_in_group(int $listing_id): array
 }
 
 /**
- * Get reservation data for all listings in current group
+ * Retrieve reservation data for all listings in current group
  *
  * @param array $all_listings_ids_in_group
  *
@@ -150,7 +174,7 @@ function timeshare_get_discount_months_diff(string $from_date): string
 function timeshare_discount_price_calc(float $price, string $fromdate, string $to_date): float
 {
     //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
-return $price;
+    return $price;
     if ( ! current_user_is_timeshare()) {
         return $price;
     }
@@ -287,7 +311,7 @@ function wpestate_ajax_check_booking_valability()
             $reservation_grouped_array[] = wpestate_get_booking_dates($listing_id);
         }
     }
-//var_dump($reservation_grouped_array); exit;
+
     foreach ($reservation_grouped_array as $reservation_array) {
         if (is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
             print 'stop array_key_exists';
@@ -326,12 +350,137 @@ function wpestate_ajax_check_booking_valability()
     die();
 }
 
-
 function wpestate_ajax_add_booking_instant()
 {
-//    todo@@@ booking continue
-//    var_dump(99999);
-//    exit;
+    if (current_user_is_timeshare() && check_has_room_group($_POST['listing_edit'])) {
+        $from_date                     = new DateTime($_POST['fromdate']);
+        $from_date_unix                = $from_date->getTimestamp();
+        $group_ids_by_room_group_order = get_group_ids_by_room_group_order();
+
+
+        $group_data_to_book = get_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
+//        var_dump(c);
+//var_dump($_POST);
+//        var_dump($group_data_to_book);
+//        exit;
+
+        if ( ! empty($group_data_to_book['rooms_ids'])) {
+            foreach ($group_data_to_book['rooms_ids'] as $room_id) {
+//        todo@@@@ need to continue and modify wpestate_child_ajax_add_booking_instant() function
+
+//                wpestate_child_ajax_add_booking_instant(true, $room_id);
+            }
+        }
+    } else {
+        wpestate_child_ajax_add_booking_instant();
+    }
+}
+
+/**
+ * Get array of group IDs with ascending by Group Order
+ *
+ * @return array
+ */
+function get_group_ids_by_room_group_order(): array
+{
+    global $wpdb;
+    $group_with_max_room_group_order = get_group_with_max_room_group_order();
+
+    // Initialize an array to store the Group IDs
+    $group_ids_by_order = [];
+
+    if ( ! empty($group_with_max_room_group_order->order)) {
+        // Loop through the max Group Order
+        for ($order = 1; $order <= $group_with_max_room_group_order->order; $order++) {
+            // Custom database query to retrieve term IDs with the current Group Order'
+            $term_id = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT term_id FROM {$wpdb->termmeta} WHERE meta_key = %s AND meta_value = %d",
+                    ROOM_GROUP_ORDER,
+                    $order
+                )
+            );
+
+            if ($term_id) {
+                $group_ids_by_order[] = $term_id;
+            }
+        }
+    }
+
+    return $group_ids_by_order;
+}
+
+/**
+ * Retrieve group data to book for timeshare user
+ *
+ * @param array $group_ids_by_room_group_order
+ * @param int $from_date_unix
+ *
+ * @return array
+ */
+function get_group_data_to_book(array $group_ids_by_room_group_order, int $from_date_unix): array
+{
+    $group_data_to_book = [];
+
+    if ( ! empty($group_ids_by_room_group_order)) {
+        foreach ($group_ids_by_room_group_order as $current_group_id) {
+            if ( ! empty($group_data_to_book)) {
+                break;
+            }
+
+            foreach (get_reservation_grouped_array_by_group_id($current_group_id) as $room_id => $reservation_array) {
+                if (is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
+                    break;
+                }
+
+                $group_data_to_book['group_id']    = $current_group_id;
+                $group_data_to_book['rooms_ids'][] = $room_id;
+            }
+        }
+    }
+
+    return $group_data_to_book;
+}
+
+
+/**
+ * Retrieve reservation data for all listings by Group ID
+ *
+ * @param int $group_id
+ *
+ * @return array
+ */
+function get_reservation_grouped_array_by_group_id(int $group_id): array
+{
+    $taxonomy  = 'property_action_category';
+    $post_type = 'estate_property';
+
+    $args  = array(
+        'post_type' => $post_type,
+        'tax_query' => array(
+            array(
+                'taxonomy' => $taxonomy,
+                'field'    => 'term_id',
+                'terms'    => $group_id,
+            ),
+        )
+    );
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        $all_listings_ids_in_group = [];
+        foreach ($query->posts as $post) {
+            $all_listings_ids_in_group[] = $post->ID;
+        }
+
+        return get_reservation_grouped_array($all_listings_ids_in_group);;
+    }
+
+    return [];
+}
+
+function wpestate_child_ajax_add_booking_instant($is_timeshare_user = false, $property_id = false)
+{
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
     $current_user  = wp_get_current_user();
     $allowded_html = array();
@@ -371,6 +520,7 @@ function wpestate_ajax_add_booking_instant()
         }
     }
 
+//    todo@@@ booking continue..need to change $property_id if it called from wpestate_ajax_add_booking_instant()
 
     $property_id     = intval($_POST['listing_edit']);
     $instant_booking = floatval(get_post_meta($property_id, 'instant_booking', true));
@@ -410,7 +560,6 @@ function wpestate_ajax_add_booking_instant()
 
     $booking_type = wprentals_return_booking_type($property_id);
     $rental_type  = wprentals_get_option('wp_estate_item_rental_type');
-
 
     // STEP1 -make the book
 
@@ -479,7 +628,7 @@ function wpestate_ajax_add_booking_instant()
 //    var_dump($price);
 //    exit;
 
-    // updating the booking detisl
+    // updating the booking detail
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
     update_post_meta($booking_id, 'booking_taxes', $booking_array['taxes']);
     update_post_meta($booking_id, 'service_fee', $booking_array['service_fee']);
@@ -494,35 +643,10 @@ function wpestate_ajax_add_booking_instant()
     $property_author = wpsestate_get_author($property_id);
 
     if ($userID != $property_author) {
-        $add_booking_details = array(
-
-            "booking_status"       => $status,
-            "original_property_id" => $property_id,
-
-            "book_author"               => $userID,
-            "owner_id"                  => $owner_id,
-            "booking_from_date"         => $fromdate,
-            "booking_to_date"           => $to_date,
-            "booking_invoice_no"        => 0,
-            "booking_pay_ammount"       => $booking_array['deposit'],
-            "booking_guests"            => $booking_guest_no,
-            "extra_options"             => $extra_options,
-            "security_deposit"          => $booking_array['security_deposit'],
-            "full_pay_invoice_id"       => 0,
-            "to_be_paid"                => $booking_array['deposit'],
-            "youearned"                 => $booking_array['youearned'],
-            "service_fee"               => $booking_array['service_fee'],
-            "booking_taxes"             => $booking_array['taxes'],
-            "total_price"               => $booking_array['total_price'],
-            "custom_price_array"        => $booking_array['custom_price_array'],
-            "submission_curency_status" => esc_html(wprentals_get_option('wp_estate_submission_curency', '')),
-            "balance"                   => $booking_array['balance']
-        );
         // update on API if is the case
 
         if ($booking_array['balance'] > 0) {
             update_post_meta($booking_id, 'booking_status_full', 'waiting');
-            $add_booking_details['booking_status_full'] = 'waiting';
         }
     }
 
@@ -737,6 +861,15 @@ function wpestate_ajax_add_booking_instant()
         0,
         1
     );
+
+    var_dump($invoice_id);
+    var_dump($total_price_show);
+    var_dump($invoice_price);
+    var_dump($wpestate_currency);
+    var_dump($wpestate_where_currency);
+
+    exit;
+
     $depozit_show            = wpestate_show_price_booking_for_invoice(
         $depozit,
         $wpestate_currency,
@@ -809,7 +942,10 @@ function wpestate_ajax_add_booking_instant()
 
     // strip details generation
     $is_stripe_live = esc_html(wprentals_get_option('wp_estate_enable_stripe', ''));
+var_dump($booking_from_date);
+var_dump( wpestate_convert_dateformat_reverse($booking_from_date));
 
+exit;
     print '
             <div class="create_invoice_form">
                    <h3>' . esc_html__('Invoice INV', 'wprentals') . $invoice_id . '</h3>

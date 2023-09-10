@@ -21,10 +21,34 @@ if ( ! defined('ROOM_GROUP_ORDER')) {
     define('ROOM_GROUP_ORDER', 'room_group_order');
 }
 
+//Meta Key
+if ( ! defined('TIMESHARE_USER_DATA')) {
+    define('TIMESHARE_USER_DATA', 'timeshare_user_data');
+}
+
+//The Timeshare user package duration
+if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
+    define('TIMESHARE_PACKAGE_DURATION', 'timeshare_package_duration');
+}
+
+//Default value for TIMESHARE_PACKAGE_DURATION if it not set in DB
+if ( ! defined('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE')) {
+    define('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE', 7);
+}
+
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
+
+
+
+//require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
+
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/main_functions.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/generate_the_invoice.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make_the_book.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/show_the_money.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking_process.php';
 
 
 // Exit if accessed directly
@@ -311,10 +335,12 @@ function check_is_listing_page(int $post_id): bool
     return get_post_type($post_id) === 'estate_property';
 }
 
+
+
 /**
- * @return string
+ * @return object|int|mixed|stdClass|string|WP_Term
  */
-function get_group_slug_with_max_room_group_order()
+function get_group_with_max_room_group_order(): object
 {
     $args = array(
         'taxonomy'   => 'property_action_category',
@@ -324,20 +350,24 @@ function get_group_slug_with_max_room_group_order()
 
     $terms = get_terms($args);
 
-    $max_current_group_order  = 0;
-    $term_slug_with_max_order = '';
+    $max_current_group_order = 0;
+    $term_with_max_order     = new stdClass();
 
     foreach ($terms as $term) {
         $term_order = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
 
         if ($term_order && is_numeric($term_order)) {
             $term_order = intval($term_order);
+
             if ($term_order > $max_current_group_order) {
-                $max_current_group_order  = $term_order;
-                $term_slug_with_max_order = $term->slug;
+                $max_current_group_order    = $term_order;
+                $term_with_max_order        = $term;
+                $term_with_max_order->order = $term_order;
             }
         }
     }
 
-    return $term_slug_with_max_order;
+    return $term_with_max_order;
 }
+
+
