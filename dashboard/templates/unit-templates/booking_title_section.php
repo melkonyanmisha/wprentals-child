@@ -30,15 +30,6 @@ if ($booking_status === 'confirmed') {
 $prices_to_customize = [
     'item_price' => floatval(get_post_meta($invoice_no, 'item_price', true)),
 ];
-
-foreach ($prices_to_customize as $current_price_type => $current_price) {
-    $prices_customized[$current_price_type] = timeshare_discount_price_calc(
-        floatval($current_price),
-        $booking_from_date,
-        $booking_to_date,
-        true
-    );
-}
 ?>
 
 <div class="prop-info">
@@ -68,7 +59,7 @@ foreach ($prices_to_customize as $current_price_type => $current_price) {
             </span>
             <?php
             echo wpestate_show_price_booking(
-                $prices_customized['item_price'],
+                floatval(get_post_meta($invoice_no, 'item_price', true)),
                 $wpestate_currency,
                 $wpestate_where_currency,
                 1

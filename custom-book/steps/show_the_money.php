@@ -39,52 +39,33 @@ function show_the_money(
     $wp_estate_book_down           = get_post_meta($invoice_id, 'invoice_percent', true);
     $wp_estate_book_down_fixed_fee = get_post_meta($invoice_id, 'invoice_percent_fixed_fee', true);
     $invoice_price                 = floatval(get_post_meta($invoice_id, 'item_price', true));
-
-    // todo@@@ get customized price
-    $prices_to_customize = [
-        'invoice_price'               => $invoice_price,
-        'default_price'               => $default_price,
-        'price_per_weekeend'          => $price_per_weekeend,
-        'inter_price'                 => $booking_array['inter_price'],
-        'total_extra_price_per_guest' => $booking_array['total_extra_price_per_guest'],
-        'cleaning_fee'                => $booking_array['cleaning_fee']
-    ];
-
-    foreach ($prices_to_customize as $current_price_type => $current_price) {
-        $prices_customized[$current_price_type] = timeshare_discount_price_calc(
-            floatval($current_price),
-            $fromdate,
-            $to_date
-        );
-    }
-
     $include_expeses = esc_html(wprentals_get_option('wp_estate_include_expenses', ''));
 
     if ($include_expeses == 'yes') {
-        $total_price_comp = $prices_customized['invoice_price'];
+        $total_price_comp = $invoice_price;
     } else {
-        $total_price_comp = $prices_customized['invoice_price'] - $booking_array['city_fee'] - $prices_customized['cleaning_fee'];
+        $total_price_comp = $invoice_price - $booking_array['city_fee'] - $booking_array['cleaning_fee'];
     }
 
     $depozit = wpestate_calculate_deposit($wp_estate_book_down, $wp_estate_book_down_fixed_fee, $total_price_comp);
-    $balance = $prices_customized['invoice_price'] - $depozit;
+    $balance = $invoice_price - $depozit;
 
     $price_show              = wpestate_show_price_booking_for_invoice(
-        $prices_customized['default_price'],
+        $default_price,
         $wpestate_currency,
         $wpestate_where_currency,
         0,
         1
     );
     $price_per_weekeend_show = wpestate_show_price_booking_for_invoice(
-        $prices_customized['price_per_weekeend'],
+        $price_per_weekeend,
         $wpestate_currency,
         $wpestate_where_currency,
         0,
         1
     );
     $total_price_show        = wpestate_show_price_booking_for_invoice(
-        $prices_customized['invoice_price'],
+        $invoice_price,
         $wpestate_currency,
         $wpestate_where_currency,
         0,
@@ -112,21 +93,21 @@ function show_the_money(
         1
     );
     $cleaning_fee_show       = wpestate_show_price_booking_for_invoice(
-        $prices_customized['cleaning_fee'],
+        $booking_array['cleaning_fee'],
         $wpestate_currency,
         $wpestate_where_currency,
         0,
         1
     );
     $inter_price_show        = wpestate_show_price_booking_for_invoice(
-        $prices_customized['inter_price'],
+        $booking_array['inter_price'],
         $wpestate_currency,
         $wpestate_where_currency,
         0,
         1
     );
     $total_guest             = wpestate_show_price_booking_for_invoice(
-        $prices_customized['total_extra_price_per_guest'],
+        $booking_array['total_extra_price_per_guest'],
         $wpestate_currency,
         $wpestate_where_currency,
         1,
@@ -328,14 +309,14 @@ function show_the_money(
                 </div>
 
                 <?php
-                if ($booking_array['has_guest_overload'] != 0 && $prices_customized['total_extra_price_per_guest'] != 0) { ?>
+                if ($booking_array['has_guest_overload'] != 0 && $booking_array['total_extra_price_per_guest'] != 0) { ?>
 
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('Extra Guests', 'wprentals'); ?>
                         </span>
                         <span class="inv_data" id="extra-guests"
-                              data-extra-guests="<?= esc_attr($prices_customized['total_extra_price_per_guest']); ?>">
+                              data-extra-guests="<?= esc_attr($booking_array['total_extra_price_per_guest']); ?>">
                             <?= $total_guest; ?>
                         </span>
                         <span class="inv_exp">
@@ -353,7 +334,7 @@ function show_the_money(
                     <?php
                 }
 
-                if ($prices_customized['cleaning_fee'] != 0 && $prices_customized['cleaning_fee'] != '') {
+                if ($booking_array['cleaning_fee'] != 0 && $booking_array['cleaning_fee'] != '') {
                     ?>
 
                     <div class="invoice_row invoice_content">
@@ -361,7 +342,7 @@ function show_the_money(
                             <?= esc_html__('Cleaning fee', 'wprentals'); ?>
                         </span>
                         <span class="inv_data" id="cleaning-fee"
-                              data-cleaning-fee="<?= esc_attr($prices_customized['cleaning_fee']); ?>">
+                              data-cleaning-fee="<?= esc_attr($booking_array['cleaning_fee']); ?>">
                             <?= $cleaning_fee_show; ?>
                         </span>
                     </div>
@@ -462,7 +443,7 @@ function show_the_money(
                        <strong><?= esc_html__('Total', 'wprentals'); ?></strong>
                    </span>
                     <span class="inv_data" id="total_amm"
-                          data-total="<?= esc_attr($prices_customized['invoice_price']); ?>">
+                          data-total="<?= esc_attr($invoice_price); ?>">
                         <?= $total_price_show; ?>
                     </span>
                     </br>

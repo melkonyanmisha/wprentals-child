@@ -191,6 +191,11 @@ function get_booked_days_count(string $from_date, string $to_date)
     return $interval->days;
 }
 
+function get_timeshare_discount_price_percent()
+{
+    return $_SESSION['price_percent'] ?? 100;
+}
+
 /**
  * @param float $price
  * @param string $from_date
@@ -206,6 +211,7 @@ function timeshare_discount_price_calc(
     string $to_date,
     bool $calc_by_force = false
 ): float {
+
     //todo@@@@ also need to keep in mind calculation by Timeshare user package duration
 //    return $price;
 
@@ -234,7 +240,9 @@ function timeshare_discount_price_calc(
 
     //Case for Less than 2 months and All Season
     if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
-        $price_percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
+        $price_percent             = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
+        $_SESSION['price_percent'] = $price_percent;
+
 
         if ($timeshare_package_duration >= $booked_days_count) {
             $price = $price * $price_percent / 100;
@@ -279,8 +287,7 @@ function timeshare_discount_price_calc(
 //    var_dump($discount_months_diff);
 //    var_dump($necessarily_timeshare_price_calc_data);
 //    exit;
-
-    return ceil($price);
+    return $price;
 }
 
 /**
@@ -533,5 +540,3 @@ function get_reservation_grouped_array_by_group_id(int $group_id): array
 
     return [];
 }
-
-
