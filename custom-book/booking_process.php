@@ -87,14 +87,19 @@ function steps_after_book($booking_instant_data)
     die();
 }
 
-function wpestate_child_ajax_add_booking_instant($listing_id ,$is_timeshare_user, $is_cottage )
+/**
+ * @param int $listing_id
+ * @param bool $is_timeshare_user
+ * @param bool $is_cottage
+ *
+ * @return array|void
+ * @throws Exception
+ */
+function wpestate_child_ajax_add_booking_instant(int $listing_id , bool $is_timeshare_user, bool $is_cottage )
 {
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
     $allowded_html    = array();
     $booking_guest_no = isset($_POST['booking_guest_no']) ? intval($_POST['booking_guest_no']) : 0;
-
-//    todo@@@ booking continue..need to change $listing_id if it called from wpestate_ajax_add_booking_instant()
-
     $instant_booking = floatval(get_post_meta($listing_id, 'instant_booking', true));
 
     if ($instant_booking != 1) {
@@ -117,9 +122,14 @@ function wpestate_child_ajax_add_booking_instant($listing_id ,$is_timeshare_user
     $booking_type = wprentals_return_booking_type($listing_id);
     $rental_type  = wprentals_get_option('wp_estate_item_rental_type');
 
-    // STEP1 -make the book
+    $allowded_html = [];
+    $from_date      = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+    $to_date       = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+    $discount_percent = get_discount_percent($from_date,  $to_date);
 
+    // STEP1 -make the book
     $make_the_book = make_the_book(
+        $discount_percent,
         $listing_id,
         $owner_id,
         $booking_guest_no,
@@ -127,6 +137,9 @@ function wpestate_child_ajax_add_booking_instant($listing_id ,$is_timeshare_user
         $early_bird_days,
         $taxes_value
     );
+
+    //Set discount percent
+    set_discount_info_to_session(get_current_user_id(), $make_the_book['booking_id'], intval($discount_percent), $from_date, $to_date);
 
     return [
         'reservation_array'   => $make_the_book['reservation_array'],

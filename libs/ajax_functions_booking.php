@@ -1927,10 +1927,12 @@ if( !function_exists('wpestate_booking_insert_invoice') ):
         $submission_curency_status = wpestate_curency_submission_pick();
         update_post_meta($post_id, 'invoice_currency', $submission_curency_status);
 
+        //todo@@ set custom default discounted default price
+        $timeshare_session_info = get_timeshare_session_info();
+        $booked_days_count = $timeshare_session_info[$user_id][$pack_id]['booked_days_count'];
+        $price_per_day_after_discount = $price / $booked_days_count;
 
-
-        $default_price  = get_post_meta($property_id, 'property_price', true);
-        update_post_meta($post_id, 'default_price', $default_price);
+        update_post_meta($post_id, 'default_price', $price_per_day_after_discount);
 
         $week_price = floatval   ( get_post_meta($property_id, 'property_price_per_week', true) );
         update_post_meta($post_id, 'week_price', $week_price);
