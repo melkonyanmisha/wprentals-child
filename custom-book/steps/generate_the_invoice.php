@@ -30,44 +30,8 @@ function generate_the_invoice(
     // fill up the details array to display
     $wpestate_currency       = esc_html(wprentals_get_option('wp_estate_currency_label_main', ''));
     $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
-
-
-//    // Set customized price
-//    if ( ! empty($booking_array)) {
-//        foreach ($booking_array as $key => $detail) {
-//            if ( ! empty($detail) && $detail[0] === 'Subtotal') {
-//                $details[$key][1] = $price;
-//            }
-//        }
-//    }
-//
-
-//    $prices_to_customize = [
-//        'default_price' => $booking_array['default_price'] ?? 0,
-//        'week_price' => $booking_array['week_price']?? 0,
-//        'month_price' => $booking_array['month_price']?? 0,
-//        'total_price' => $booking_array['total_price']?? 0,
-//        'inter_price' => $booking_array['inter_price']?? 0,
-//        'inter_price' => $booking_array['inter_price']?? 0,
-//
-//    ];
-////
-//    foreach ($prices_to_customize as $current_price_type => $current_price) {
-//        $prices_customized[$current_price_type] = timeshare_discount_price_calc(
-//            floatval($current_price),
-//            $fromdate,
-//            $to_date
-//        );
-//    }
-
-//    var_dump('generate the invoice');
-////    var_dump($details);
-//    var_dump($price);
-//    var_dump($booking_array);
-//    exit;
-
-
     $details[] = array(esc_html__('Subtotal', 'wprentals'), $booking_array['inter_price']);
+
     if (is_array($extra_options_array) && ! empty ($extra_options_array)) {
         $extra_pay_options          = (get_post_meta($property_id, 'extra_pay_options', true));
         $options_array_explanations = array(
@@ -135,7 +99,7 @@ function generate_the_invoice(
     $is_featured   = '';
     $is_upgrade    = '';
     $paypal_tax_id = '';
-//var_dump($booking_array); exit;
+
     $invoice_id = wpestate_booking_insert_invoice(
         $billing_for,
         $type,

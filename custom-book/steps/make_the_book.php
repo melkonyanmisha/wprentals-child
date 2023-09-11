@@ -1,7 +1,14 @@
 <?php
 
-function make_the_book($property_id, $owner_id, $booking_guest_no, $early_bird_percent, $early_bird_days, $taxes_value)
-{
+function make_the_book(
+    $discount_percent,
+    $property_id,
+    $owner_id,
+    $booking_guest_no,
+    $early_bird_percent,
+    $early_bird_days,
+    $taxes_value
+) {
     $current_user  = wp_get_current_user();
     $userID        = $current_user->ID;
     $allowded_html = [];
@@ -84,70 +91,41 @@ function make_the_book($property_id, $owner_id, $booking_guest_no, $early_bird_p
         $extra_options_array
     );
 
-    //todo@@@ get customized price
-var_dump(11111);
-var_dump($booking_array);
+    // Get customized prices
     $prices_to_customize = [
-//        'deposit' => $booking_array['deposit']?? 0,
-//        'taxes' => $booking_array['taxes']?? 0,
-//        'service_fee' => $booking_array['service_fee']?? 0,
-//        'default_price' => $booking_array['default_price'] ?? 0,
-//        'week_price' => $booking_array['week_price']?? 0,
-//        'month_price' => $booking_array['month_price']?? 0,
-        'total_price' => $booking_array['total_price']?? 0,
-        'inter_price' => $booking_array['inter_price']?? 0,
-//        'cleaning_fee' => $booking_array['cleaning_fee']?? 0,
-//        'security_deposit' => $booking_array['security_deposit']?? 0,
+        'deposit'          => $booking_array['deposit'] ?? 0,
+        'taxes'            => $booking_array['taxes'] ?? 0,
+        'service_fee'      => $booking_array['service_fee'] ?? 0,
+        'default_price'    => $booking_array['default_price'] ?? 0,
+        'week_price'       => $booking_array['week_price'] ?? 0,
+        'month_price'      => $booking_array['month_price'] ?? 0,
+        'total_price'      => $booking_array['total_price'] ?? 0,
+        'inter_price'      => $booking_array['inter_price'] ?? 0,
+        'cleaning_fee'     => $booking_array['cleaning_fee'] ?? 0,
+        'security_deposit' => $booking_array['security_deposit'] ?? 0,
     ];
 
-    foreach ($booking_array['custom_price_array'] as $current_day => $current_price){
-        $booking_array['custom_price_array'][$current_day] = timeshare_discount_price_calc(
-            floatval($current_price),
-            $fromdate,
-            $to_date
-        );
-    }
-
-//
     foreach ($prices_to_customize as $current_price_type => $current_price) {
         $prices_customized[$current_price_type] = timeshare_discount_price_calc(
+            $discount_percent,
             floatval($current_price),
             $fromdate,
             $to_date
         );
     }
 
+    foreach ($booking_array['custom_price_array'] as $current_day => $current_price) {
+        $booking_array['custom_price_array'][$current_day] = timeshare_discount_price_calc(
+            $discount_percent,
+            floatval($current_price),
+            $fromdate,
+            $to_date
+        );
+    }
 
     // Merge arrays to set customized prices
     $booking_array = array_merge($booking_array, $prices_customized);
-
-    var_dump($prices_customized); exit;
-
-//    var_dump(11111);
-//    var_dump($booking_array); exit;
-//    $price_per_day = floatval(get_post_meta($invoice_id, 'default_price', true));
-    // Set changed price
-    update_post_meta($invoice_id, 'default_price', $booking_array['default_price']);
-
-//    var_dump(111111);
-//    var_dump($invoice_id);
-//    var_dump( floatval(get_post_meta($invoice_id, 'default_price', true)));
-//    var_dump($booking_array);
-////    var_dump($prices_customized);
-//
-//    exit;
-
-//    var_dump('make_the_book');
-//    var_dump($details);
-
-//    var_dump($booking_id);
-//    var_dump(get_timeshare_discount_price_percent());
-//    var_dump($booking_array);
-//    var_dump($prices_customized);
-//    exit;
-
     $price         = $booking_array['total_price'];
-
 
     // updating the booking detail
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
