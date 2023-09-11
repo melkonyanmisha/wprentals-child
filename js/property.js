@@ -21,19 +21,26 @@ if(control_vars_property.custom_price!==''){
     price_array     = JSON.parse (control_vars_property.custom_price);
 }
 
-// booking_array=[];
+//Start customization
+
+// let booking_array=[];
 // if( control_vars_property.booking_array!=='' && control_vars_property.booking_array.length!==0 ){
 //     booking_array   = JSON.parse (control_vars_property.booking_array);
 // }
 
-//todo@@@ start customization
 let booking_array = {};
-
-for (const listingId in property_vars?.reservationGroupedData) {
-    if (!Array.isArray(property_vars.reservationGroupedData[listingId])) {
-        Object.assign(booking_array, property_vars.reservationGroupedData[listingId]);
+if (Object.keys(property_vars.reservationGroupedData).length) {
+    for (const listingId in property_vars.reservationGroupedData) {
+        if (!Array.isArray(property_vars.reservationGroupedData[listingId])) {
+            Object.assign(booking_array, property_vars.reservationGroupedData[listingId]);
+        }
+    }
+} else {
+    if (control_vars_property.booking_array !== '' && control_vars_property.booking_array.length !== 0) {
+        booking_array = JSON.parse(control_vars_property.booking_array);
     }
 }
+
 //todo@@@ end customization
 
 
@@ -422,7 +429,7 @@ function wpestate_booking_show_booked(date){
 
 function wpestate_show_price_Daterangepicker(date){
     "use strict";
- 
+
     var display_price       =   '';
     var received_date       =   new Date(date);
     var today               =   Math.floor(Date.now() / 1000);
@@ -569,11 +576,11 @@ function show_booking_costs() {
 
 
         guest_no            =   parseInt( jQuery('#booking_guest_no_wrapper').attr('data-value'),10);
-        
+
         if(jQuery('.booking_form_request .guest_no_hidden').length>0){
             guest_no            =   parseInt( jQuery('.booking_form_request .guest_no_hidden').val(),10);
         }
-      
+
         jQuery('.cost_row_extra input').each(function(){
             jQuery(this).prop("checked", false);
         });
@@ -685,7 +692,7 @@ jQuery(document).ready(function ($) {
             $('#listing_description .panel-body').css('max-height','129px');
             $('#listing_description .panel-body').css('overflow','hidden');
             wpestate_redo_listing_sidebar();
-           
+
 
         }else{
             sidebar_padding=$('.listingsidebar').css('margin-top');
@@ -696,11 +703,11 @@ jQuery(document).ready(function ($) {
 
             if ( !jQuery('#primary').hasClass('listing_type_1') ){
                 new_margin = $('.property_header').outerHeight() - 390;
-                
+
                 var current_padding = parseInt( $('#primary').css('margin-top'),10);
                 current_padding=current_padding-new_margin;
                 $('#primary').css('margin-top',current_padding+'px');
-                   
+
             }
 
         }
@@ -806,11 +813,11 @@ jQuery(document).ready(function ($) {
             var  maxguest =parseInt( jQuery('#submit_booking_front_instant').attr('data-maxguest'),10);
             var  maxoverload=parseInt( jQuery('#submit_booking_front_instant').attr('data-max-overlooad') , 10);
         }
-        
+
         maxguest=maxguest+maxoverload;
 
 
-       
+
 
         if ( prop_id === booking_prop_id &&  property_vars.logged_in==="yes" ){
             if(booking_start_date_cookie!==''){
@@ -843,61 +850,61 @@ jQuery(document).ready(function ($) {
                 booking_started=1;
                 show_booking_costs();
             }
-            
-          
-            
-            
-            
+
+
+
+
+
             if(adult_guest_int!==''){
                 jQuery('.steper_value_adults').text(adult_guest_int);
                 jQuery(( "input[name='adults_fvalue]" )).val(adult_guest_int);
-                
+
             }
-            
+
             if(children_guest_int!==''){
                 jQuery('.steper_value_childs').text(children_guest_int);
                 jQuery(( "input[name='childs_fvalue]" )).val(children_guest_int);
             }
-            
+
             if(infant_guest_int!==''){
                 jQuery('.steper_value_infants').text(infant_guest_int);
                 jQuery(( "input[name='infants_fvalue]" )).val(infant_guest_int);
-                
+
             }
-            
+
             if(jQuery('.on_booking_control0').length == 0 ){
                 var temp_total = adult_guest_int;
             }else{
-                var temp_total = adult_guest_int + children_guest_int; 
+                var temp_total = adult_guest_int + children_guest_int;
             }
-         
-            
-            
+
+
+
             if(temp_total>=maxguest){
                 var section_wrapper = jQuery('.wpestate_guest_no_buttons');
                 wpestate_block_unblock_plus_buttons(section_wrapper,'block');
             }
-            
-            
+
+
             if(label_to_return!==''){
                 jQuery('.wpestate_guest_no_control_info').text(label_to_return);
             }
-            
+
             if(guest_no_hidden!==''){
                 jQuery('.booking_form_request .guest_no_hidden').val(guest_no_hidden);
             }
-            
+
             if(booking_start_date_cookie!=='' && booking_end_date_cookie!=='' && guest_no_hidden!==''){
                 booking_started=1;
                 show_booking_costs();
             }
-            
-        
+
+
 
             if(jQuery('#start_hour_no_wrapper').length>0 && booking_start_date_cookie!=='' && booking_start_hour_cookie!=='' && booking_end_hour_cookie!==''  ){
               show_booking_costs();
             }
-            
+
 
 
         }
@@ -1224,14 +1231,14 @@ function wpestate_booking_form_currency_convert_back(display_price){
 
         var guest_number, guest_overload,guestfromone,max_guest;
         if (!check_booking_form()  || booking_error === 1) {
-    
+
             wprentals_restore_button(button);
             return;
         }
 
         guest_number = jQuery('#booking_guest_no_wrapper').attr('data-value');
         guest_number = parseInt(guest_number,10);
-        
+
         if(jQuery('.guest_no_hidden').length>0){
             guest_number            =   parseInt( wrapper_button.find('.guest_no_hidden').val(),10);
         }
@@ -1398,8 +1405,8 @@ function wpestate_contact_client_actions(){
     jQuery('.contact_client_reservation').on('click',function () {
         var booking_id, agent_id,property_id;
         agent_id    =   0;
-        booking_id  =   jQuery(this).attr('data-bookid');     
-        jQuery('#submit_message_to_client_dashboard').attr('data-bookid',booking_id); 
+        booking_id  =   jQuery(this).attr('data-bookid');
+        jQuery('#submit_message_to_client_dashboard').attr('data-bookid',booking_id);
         wpestate_show_contact_owner_form(booking_id, agent_id);
     });
 }
@@ -1591,7 +1598,7 @@ function wpestate_sending_message_to_client(){
             button.prop('disabled', false);
             return;
         }
-       
+
 
         var nonce = jQuery('#wprentals_submit_mess_front_nonce').val();
 
@@ -1616,7 +1623,7 @@ function wpestate_sending_message_to_client(){
                         button.text(property_vars.send_mess);
                         button.prop('disabled', false);
                         jQuery("#booking_mes_mess").val('');
-                     
+
 
                 }, 2000);
 
