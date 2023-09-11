@@ -99,8 +99,6 @@ function make_the_book(
         'default_price'    => $booking_array['default_price'] ?? 0,
         'week_price'       => $booking_array['week_price'] ?? 0,
         'month_price'      => $booking_array['month_price'] ?? 0,
-        'total_price'      => $booking_array['total_price'] ?? 0,
-        'inter_price'      => $booking_array['inter_price'] ?? 0,
         'cleaning_fee'     => $booking_array['cleaning_fee'] ?? 0,
         'security_deposit' => $booking_array['security_deposit'] ?? 0,
     ];
@@ -123,9 +121,14 @@ function make_the_book(
         );
     }
 
+
     // Merge arrays to set customized prices
     $booking_array = array_merge($booking_array, $prices_customized);
-    $price         = $booking_array['total_price'];
+
+    //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
+    $booking_array['inter_price'] = $booking_array['count_days'] * reset($booking_array['custom_price_array']);
+    $booking_array['total_price'] = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
+    $booking_array['youearned']   = $booking_array['total_price'];
 
     // updating the booking detail
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
@@ -149,7 +152,7 @@ function make_the_book(
 
     return [
         'booking_id'        => $booking_id,
-        'price'             => $price,
+        'price'             => $booking_array['total_price'],
         'reservation_array' => $reservation_array,
         'booking_array'     => $booking_array,
         'property_author'   => $property_author,

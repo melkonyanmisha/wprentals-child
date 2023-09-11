@@ -3,38 +3,36 @@
 function wpestate_ajax_add_booking_instant()
 {
     $booking_instant_data = [];
-    $listing_id = intval($_POST['listing_edit']);
-    
-    
+    $listing_id           = intval($_POST['listing_edit']);
+
+
     if (current_user_is_timeshare()) {
-        $from_date                     = new DateTime($_POST['fromdate']);
-        $from_date_unix                = $from_date->getTimestamp();
-        $group_ids_by_room_group_order = get_group_ids_by_room_group_order();
+        $from_date      = new DateTime($_POST['fromdate']);
+        $from_date_unix = $from_date->getTimestamp();
 
-
-        $group_data_to_book = get_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
-//        var_dump(c);
-//var_dump($_POST);
-//        var_dump($group_data_to_book);
+//        var_dump($_POST);
+//        var_dump(check_has_room_group($_POST['listing_edit']));
 //        exit;
 
-        //Case for Rooms
-        if (check_has_room_group($_POST['listing_edit']) && ! empty($group_data_to_book['rooms_ids'])) {
-            foreach ($group_data_to_book['rooms_ids'] as $room_id) {
+        //Case for Rooms. Timeshare users can book only grouped rooms
+        if (check_has_room_group($_POST['listing_edit'])) {
+            $group_ids_by_room_group_order = get_group_ids_by_room_group_order();
+            $group_data_to_book            = get_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
+
+            if ( ! empty($group_data_to_book['rooms_ids'])) {
+                foreach ($group_data_to_book['rooms_ids'] as $room_id) {
 //        todo@@@@ need to continue and modify wpestate_child_ajax_add_booking_instant() function
 
-                wpestate_child_ajax_add_booking_instant($room_id, true, false);
+//                wpestate_child_ajax_add_booking_instant($room_id, true);
+                }
             }
         } else {
             //Case for Cottages
-//            var_dump(44444); exit;
-            $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id, true, true);
+            steps_after_book(wpestate_child_ajax_add_booking_instant($listing_id, true));
         }
     } else {
-        wpestate_child_ajax_add_booking_instant($listing_id, false, false  );
+        steps_after_book(wpestate_child_ajax_add_booking_instant($listing_id, false));
     }
-
-    steps_after_book($booking_instant_data);
 }
 
 function steps_after_book($booking_instant_data)
@@ -90,17 +88,16 @@ function steps_after_book($booking_instant_data)
 /**
  * @param int $listing_id
  * @param bool $is_timeshare_user
- * @param bool $is_cottage
  *
  * @return array|void
  * @throws Exception
  */
-function wpestate_child_ajax_add_booking_instant(int $listing_id , bool $is_timeshare_user, bool $is_cottage )
+function wpestate_child_ajax_add_booking_instant(int $listing_id, bool $is_timeshare_user)
 {
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
     $allowded_html    = array();
     $booking_guest_no = isset($_POST['booking_guest_no']) ? intval($_POST['booking_guest_no']) : 0;
-    $instant_booking = floatval(get_post_meta($listing_id, 'instant_booking', true));
+    $instant_booking  = floatval(get_post_meta($listing_id, 'instant_booking', true));
 
     if ($instant_booking != 1) {
         die();
@@ -122,10 +119,10 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id , bool $is_time
     $booking_type = wprentals_return_booking_type($listing_id);
     $rental_type  = wprentals_get_option('wp_estate_item_rental_type');
 
-    $allowded_html = [];
-    $from_date      = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
-    $to_date       = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
-    $discount_percent = get_discount_percent($from_date,  $to_date);
+    $allowded_html    = [];
+    $from_date        = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+    $to_date          = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+    $discount_percent = get_discount_percent($from_date, $to_date);
 
     // STEP1 -make the book
     $make_the_book = make_the_book(
@@ -138,8 +135,14 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id , bool $is_time
         $taxes_value
     );
 
+//    var_dump($make_the_book);
+
     //Set discount percent
-    set_discount_info_to_session(get_current_user_id(), $make_the_book['booking_id'], intval($discount_percent), $from_date, $to_date);
+    set_discount_info_to_session(
+        get_current_user_id(),
+        intval($discount_percent),
+        $make_the_book
+    );
 
     return [
         'reservation_array'   => $make_the_book['reservation_array'],
@@ -158,4 +161,107 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id , bool $is_time
         'taxes_value'         => $taxes_value,
         'extra_pay_options'   => $extra_pay_options,
     ];
+}
+
+
+function wpestate_booking_insert_invoice(
+    $billing_for,
+    $type,
+    $pack_id,
+    $date,
+    $user_id,
+    $is_featured,
+    $is_upgrade,
+    $paypal_tax_id,
+    $details,
+    $price,
+    $author_id = ''
+) {
+    $price = (double)round(floatval($price), 2);
+
+    $post = array(
+        'post_title'  => 'Invoice ',
+        'post_status' => 'publish',
+        'post_type'   => 'wpestate_invoice',
+
+    );
+
+    if ($author_id != '') {
+        $post['post_author'] = intval($author_id);
+    }
+
+    $post_id = wp_insert_post($post);
+
+
+    update_post_meta($post_id, 'invoice_type', $billing_for);
+    update_post_meta($post_id, 'biling_type', $type);
+    update_post_meta($post_id, 'item_id', $pack_id);
+
+    update_post_meta($post_id, 'item_price', $price);
+    update_post_meta($post_id, 'purchase_date', $date);
+    update_post_meta($post_id, 'buyer_id', $user_id);
+    update_post_meta($post_id, 'txn_id', '');
+    update_post_meta($post_id, 'renting_details', $details);
+    update_post_meta($post_id, 'invoice_status', 'issued');
+    update_post_meta($post_id, 'invoice_percent', floatval(wprentals_get_option('wp_estate_book_down', '')));
+    update_post_meta(
+        $post_id,
+        'invoice_percent_fixed_fee',
+        floatval(wprentals_get_option('wp_estate_book_down_fixed_fee', ''))
+    );
+
+    $service_fee_fixed_fee = floatval(wprentals_get_option('wp_estate_service_fee_fixed_fee', ''));
+    $service_fee           = floatval(wprentals_get_option('wp_estate_service_fee', ''));
+    update_post_meta($post_id, 'service_fee_fixed_fee', $service_fee_fixed_fee);
+    update_post_meta($post_id, 'service_fee', $service_fee);
+
+    $property_id = get_post_meta($pack_id, 'booking_id', true);
+
+    update_post_meta($post_id, 'for_property', $property_id);
+    update_post_meta($post_id, 'rented_by', get_post_field('post_author', $pack_id));
+
+
+    update_post_meta($post_id, 'prop_taxed', floatval(get_post_meta($property_id, 'property_taxes', true)));
+
+    //$submission_curency_status = esc_html( wprentals_get_option('wp_estate_submission_curency','') );
+    $submission_curency_status = wpestate_curency_submission_pick();
+    update_post_meta($post_id, 'invoice_currency', $submission_curency_status);
+
+    //todo@@ set custom default discounted default price
+    $timeshare_session_info = get_timeshare_session_info();
+
+    //Price per day after discount
+    if ( ! empty($timeshare_session_info[$user_id][$pack_id]['booking_instant']['booking_array']['custom_price_array'])) {
+        //Get the first value(first day price) of assoc array
+        $price_per_day = reset(
+            $timeshare_session_info[$user_id][$pack_id]['booking_instant']['booking_array']['custom_price_array']
+        );
+    } else {
+        //Get original price
+        $price_per_day = get_post_meta($property_id, 'property_price', true);
+    }
+
+    update_post_meta($post_id, 'default_price', $price_per_day);
+
+    $week_price = floatval(get_post_meta($property_id, 'property_price_per_week', true));
+    update_post_meta($post_id, 'week_price', $week_price);
+
+    $month_price = floatval(get_post_meta($property_id, 'property_price_per_month', true));
+    update_post_meta($post_id, 'month_price', $month_price);
+
+    $cleaning_fee = floatval(get_post_meta($property_id, 'cleaning_fee', true));
+    update_post_meta($post_id, 'cleaning_fee', $cleaning_fee);
+
+    $city_fee = floatval(get_post_meta($property_id, 'city_fee', true));
+    update_post_meta($post_id, 'city_fee', $city_fee);
+
+
+    $my_post = array(
+        'ID'         => $post_id,
+        'post_title' => 'Invoice ' . $post_id,
+    );
+
+    wp_update_post($my_post);
+
+    return $post_id;
 }
