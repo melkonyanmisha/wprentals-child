@@ -94,12 +94,12 @@ function make_the_book(
     // Get customized prices
     $prices_to_customize = [
         'deposit'          => $booking_array['deposit'] ?? 0,
-        'taxes'            => $booking_array['taxes'] ?? 0,
-        'service_fee'      => $booking_array['service_fee'] ?? 0,
+//        'taxes'            => $booking_array['taxes'] ?? 0,
+//        'service_fee'      => $booking_array['service_fee'] ?? 0,
         'default_price'    => $booking_array['default_price'] ?? 0,
         'week_price'       => $booking_array['week_price'] ?? 0,
         'month_price'      => $booking_array['month_price'] ?? 0,
-        'cleaning_fee'     => $booking_array['cleaning_fee'] ?? 0,
+//        'cleaning_fee'     => $booking_array['cleaning_fee'] ?? 0,
         'security_deposit' => $booking_array['security_deposit'] ?? 0,
     ];
 
