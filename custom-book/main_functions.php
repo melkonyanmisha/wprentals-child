@@ -202,7 +202,7 @@ function get_timeshare_session_info(): array
 /**
  * Set necessarily data into the Session
  *
- * @param int $client_id
+ * @param int $buyer_id
  * @param int $booking_id
  * @param int $percent
  * @param string $from_date
@@ -210,17 +210,15 @@ function get_timeshare_session_info(): array
  *
  * @return void
  */
-function set_discount_info_to_session(
-    int $client_id,
-    int $booking_id,
-    int $percent,
-    string $from_date,
-    string $to_date
-): void {
-    $booked_days_count = get_booked_days_count($from_date, $to_date);
 
-    $_SESSION['timeshare'][$client_id][$booking_id]['price_percent']     = $percent;
-    $_SESSION['timeshare'][$client_id][$booking_id]['booked_days_count'] = $booked_days_count;
+function set_discount_info_to_session(
+    int $buyer_id,
+    int $percent,
+    $booking_array
+): void {
+    $booking_id = $booking_array['booking_id'];
+    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant'] = $booking_array;
+    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']['price_percent'] = $percent;
 }
 
 /**
@@ -317,7 +315,7 @@ function timeshare_discount_price_calc(
         $price = $discounted_price_by_available_days + $remaining_days_price;
     }
 
-    return $price;
+    return ceil($price);
 }
 
 /**
