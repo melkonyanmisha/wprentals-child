@@ -160,13 +160,19 @@ function timeshare_get_discount_months_diff(string $from_date): string
 
     if ($interval_by_months < 2) {
         $key_discount_months_diff = 'less_two';
-    } elseif ($interval_by_months > 2 && $interval_by_months < 4) {
+    } elseif ($interval_by_months <= 4) {
         $key_discount_months_diff = 'two_four_before';
-    } elseif ($interval_by_months > 4 && $interval_by_months < 6) {
+    } elseif ($interval_by_months <= 6) {
         $key_discount_months_diff = 'four_six_before';
     } else {
         $key_discount_months_diff = 'more_six';
     }
+
+//    /todo@@@@
+//    var_dump($from_date);
+//    var_dump($interval_by_months);
+//    var_dump($key_discount_months_diff);
+//    exit;
 
     return $key_discount_months_diff;
 }
@@ -216,10 +222,43 @@ function set_discount_info_to_session(
     int $percent,
     $booking_array
 ): void {
-    $booking_id = $booking_array['booking_id'];
-    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant'] = $booking_array;
+    $booking_id                                                                        = $booking_array['booking_id'];
+    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']                  = $booking_array;
     $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']['price_percent'] = $percent;
 }
+
+/**
+ * Retrieve week days in array
+ *
+ * @param string $from_date_converted
+ * @param string $to_date_converted
+ *
+ * @return array
+ * @throws Exception
+ */
+function get_week_days_list(string $from_date_converted, string $to_date_converted): array
+{
+    $date1 = new DateTime($from_date_converted);
+    $date2 = new DateTime($to_date_converted);
+
+    $interval  = new DateInterval('P1D'); // 1 day interval
+    $dateRange = new DatePeriod($date1, $interval, $date2);
+
+    $week_days_list = [];
+    foreach ($dateRange as $date) {
+        $current_week_day                  = strtolower($date->format('l')); // 'l' returns the full day name
+        $week_days_list[$current_week_day] = '';
+    }
+
+    return $week_days_list;
+}
+
+//get_discount_percent('24-02-04', '24-02-25');
+//todo@@@@ need remove..... year mont day
+//get_discount_percent('24-03-13', '24-03-18');
+
+//for special
+//get_discount_percent('24-12-31', '25-01-06');
 
 /**
  * Retrieve calculated price
@@ -231,7 +270,7 @@ function set_discount_info_to_session(
  * @return int|mixed
  * @throws Exception
  */
-function get_discount_percent(string $from_date, string $to_date, bool $force = false)
+function get_discount_percent(string $from_date, string $to_date, bool $force = false): float
 {
     $percent = 100;
 
@@ -240,7 +279,7 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
     }
 
     $timeshare_price_calc_data = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
-
+//var_dump($timeshare_price_calc_data); exit;
     if ( ! ($timeshare_price_calc_data)) {
         return $percent;
     }
@@ -251,17 +290,93 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
     $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
     $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
 
+//    var_dump($necessarily_timeshare_price_calc_data); exit;
 
-    //Case for Less than 2 months and All Season
+    //Case for All Season(now exist in "Less than 2 months")
     if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
         $percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
     } else {
-        //Case for Low, Normal, Hot, Very Hot, Special
-//        todo@@@ continue to get the daily_percent or weekly_percent
+        $from_date_obj         = new DateTime($from_date_converted);
+        $to_date_obj           = new DateTime($to_date_converted);
+        $from_to_interval      = $from_date_obj->diff($to_date_obj);
+        $interval_days         = $from_to_interval->days;
+        $booked_week_days_list = get_week_days_list($from_date_converted, $to_date_converted);
 
+
+//var_dump($necessarily_timeshare_price_calc_data); exit;
+        foreach ($necessarily_timeshare_price_calc_data as $season => $season_info) {
+            // Case when successfully calculated the percent
+            if ($percent !== 100) {
+                break;
+            }
+
+            if ( ! empty($season_info['date_range'])) {
+                foreach ($season_info['date_range'] as $current_date_range_info) {
+                    $current_date_range_from = new DateTime($current_date_range_info['from']);
+                    $current_date_range_to   = new DateTime($current_date_range_info['to']);
+
+
+                    // Case, when booked start date exists between dates of current Season.
+                    if ($from_date_obj >= $current_date_range_from && $from_date_obj <= $current_date_range_to) {
+//                        var_dump(111111);
+//                        var_dump($discount_months_diff);
+//                        var_dump($percent);
+//                        var_dump($interval_days);
+//                        var_dump($from_date_converted);
+//                        var_dump($to_date_converted);
+//                        var_dump($necessarily_timeshare_price_calc_data);
+//                        exit;
+
+
+                        if ($season_info['discount_mode']['mode'] === 'always') {
+                            $percent = $season_info['discount_mode']['always_percent'] ?? $percent;
+                        } else {
+//                            var_dump(8888);
+//                            var_dump($interval_days);
+//                            var_dump($season_info);
+//                            exit;
+
+
+                            // Case when booked less than a week
+                            if ($interval_days <= 7 && ! empty($season_info['discount_mode']['weeks'])) {
+                                foreach ($season_info['discount_mode']['weeks'] as $current_week) {
+                                    foreach ($booked_week_days_list as $week_day => $bool) {
+                                        if (isset($current_week[$week_day])) {
+                                            $booked_week_days_list[$week_day] = floatval(
+                                                $current_week['daily_percent']
+                                            );
+                                        }
+                                    }
+                                }
+
+                                // Calculate the sum of values(percents)
+                                $percent = array_sum($booked_week_days_list);
+
+                                break;
+                            } else {
+                                // Case when booked more than 7days
+                                $percent = floatval($season_info['discount_mode']['weekly_percent']);
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
     }
 
-    return $percent;
+    //todo@@@ need to make restriction for special. in booking proceess
+//    var_dump(22222222);
+//    var_dump($discount_months_diff);
+//    var_dump('$percent is..... ' . $percent);
+//    var_dump($booked_week_days_list);
+//    var_dump($from_date_converted);
+//    var_dump($to_date_converted);
+//    var_dump($necessarily_timeshare_price_calc_data);
+//    exit;
+
+    return floatval($percent);
 }
 
 /**
