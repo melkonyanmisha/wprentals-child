@@ -94,6 +94,8 @@ function make_the_book(
 
 
     //#### Start of prices customization
+    $booking_array['discount_percent'] = $discount_percent;
+
 
     $booking_array['inter_price'] = timeshare_discount_price_calc(
         $discount_percent,
