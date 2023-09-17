@@ -50,6 +50,7 @@ function wpestate_child_super_invoice_details($invoice_id, $width_logo = '')
     $booking_guests    = floatval(get_post_meta($bookid, 'booking_guests', true));
     $extra_options     = get_post_meta($bookid, 'extra_options', true);
     $booking_type      = wprentals_return_booking_type($booking_prop);
+    $booked_days_count = get_booked_days_count($booking_from_date, $booking_to_date);
 
     $extra_options_array = array();
     if ($extra_options != '') {
@@ -68,10 +69,15 @@ function wpestate_child_super_invoice_details($invoice_id, $width_logo = '')
         $manual_expenses
     );
 
+    //#### Start of prices customization
+
     //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
-    $booking_array['inter_price'] = $booking_array['count_days'] * reset($booking_array['custom_price_array']);
-    $booking_array['total_price'] = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
-    $booking_array['youearned']   = $booking_array['total_price'];
+    $booking_array['default_price'] = reset($booking_array['custom_price_array']);
+    $booking_array['total_price']   = $booking_array['inter_price'] + $booked_days_count * $booking_array['cleaning_fee'];
+    $booking_array['deposit']       = $booking_array['total_price'];
+    $booking_array['youearned']     = $booking_array['total_price'];
+
+    //#### End of prices customization
 
     $price_per_weekeend = floatval(get_post_meta($booking_prop, 'price_per_weekeend', true));
     $total_price        = floatval(get_post_meta($invoice_id, 'item_price', true));
