@@ -9,13 +9,14 @@ function make_the_book(
     $early_bird_days,
     $taxes_value
 ) {
-    $current_user  = wp_get_current_user();
-    $userID        = $current_user->ID;
-    $allowded_html = [];
-    $comment       = isset($_POST['comment']) ? wp_kses($_POST['comment'], $allowded_html) : '';
-    $status        = isset ($_POST['confirmed']) && intval($_POST['confirmed']) == 1 ? 'confirmed' : 'pending';
-    $fromdate      = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
-    $to_date       = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+    $current_user      = wp_get_current_user();
+    $userID            = $current_user->ID;
+    $allowded_html     = [];
+    $comment           = isset($_POST['comment']) ? wp_kses($_POST['comment'], $allowded_html) : '';
+    $status            = isset ($_POST['confirmed']) && intval($_POST['confirmed']) == 1 ? 'confirmed' : 'pending';
+    $from_date         = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+    $to_date           = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+    $booked_days_count = get_booked_days_count($from_date, $to_date);
 
     $booking_adults  = isset($_POST['booking_adults']) ? intval($_POST['booking_adults']) : 0;
     $booking_childs  = isset($_POST['booking_childs']) ? intval($_POST['booking_childs']) : 0;
@@ -51,9 +52,9 @@ function make_the_book(
     update_post_meta($booking_id, 'booking_status', $status);
     update_post_meta($booking_id, 'booking_id', $property_id);
     update_post_meta($booking_id, 'owner_id', $owner_id);
-    update_post_meta($booking_id, 'booking_from_date', $fromdate);
+    update_post_meta($booking_id, 'booking_from_date', $from_date);
     update_post_meta($booking_id, 'booking_to_date', $to_date);
-    update_post_meta($booking_id, 'booking_from_date_unix', strtotime($fromdate));
+    update_post_meta($booking_id, 'booking_from_date_unix', strtotime($from_date));
     update_post_meta($booking_id, 'booking_to_date_unix', strtotime($to_date));
     update_post_meta($booking_id, 'booking_invoice_no', 0);
     update_post_meta($booking_id, 'booking_pay_ammount', 0);
@@ -85,50 +86,33 @@ function make_the_book(
         $booking_guest_no,
         $invoice_id,
         $property_id,
-        $fromdate,
+        $from_date,
         $to_date,
         $booking_id,
         $extra_options_array
     );
 
-    // Get customized prices
-    $prices_to_customize = [
-        'deposit'          => $booking_array['deposit'] ?? 0,
-//        'taxes'            => $booking_array['taxes'] ?? 0,
-//        'service_fee'      => $booking_array['service_fee'] ?? 0,
-        'default_price'    => $booking_array['default_price'] ?? 0,
-        'week_price'       => $booking_array['week_price'] ?? 0,
-        'month_price'      => $booking_array['month_price'] ?? 0,
-//        'cleaning_fee'     => $booking_array['cleaning_fee'] ?? 0,
-        'security_deposit' => $booking_array['security_deposit'] ?? 0,
-    ];
 
-    foreach ($prices_to_customize as $current_price_type => $current_price) {
-        $prices_customized[$current_price_type] = timeshare_discount_price_calc(
-            $discount_percent,
-            floatval($current_price),
-            $fromdate,
-            $to_date
-        );
-    }
+    //#### Start of prices customization
 
-    foreach ($booking_array['custom_price_array'] as $current_day => $current_price) {
-        $booking_array['custom_price_array'][$current_day] = timeshare_discount_price_calc(
-            $discount_percent,
-            floatval($current_price),
-            $fromdate,
-            $to_date
-        );
-    }
-
-
-    // Merge arrays to set customized prices
-    $booking_array = array_merge($booking_array, $prices_customized);
+    $booking_array['inter_price'] = timeshare_discount_price_calc(
+        $discount_percent,
+        floatval($booking_array['inter_price']),
+        $from_date,
+        $to_date
+    );
 
     //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
-    $booking_array['inter_price'] = $booking_array['count_days'] * reset($booking_array['custom_price_array']);
-    $booking_array['total_price'] = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
-    $booking_array['youearned']   = $booking_array['total_price'];
+    $booking_array['default_price'] = $booking_array['inter_price'] / $booked_days_count;
+    $booking_array['total_price']   = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
+    $booking_array['deposit']       = $booking_array['total_price'];
+    $booking_array['youearned']     = $booking_array['total_price'];
+
+    foreach ($booking_array['custom_price_array'] as $current_day => $current_price) {
+        $booking_array['custom_price_array'][$current_day] = $booking_array['default_price'];
+    }
+
+    //#### End of prices customization
 
     // updating the booking detail
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);

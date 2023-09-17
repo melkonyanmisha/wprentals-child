@@ -135,8 +135,6 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id, bool $is_times
         $taxes_value
     );
 
-//    var_dump($make_the_book);
-
     //Set discount percent
     set_discount_info_to_session(
         get_current_user_id(),
@@ -162,7 +160,6 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id, bool $is_times
         'extra_pay_options'   => $extra_pay_options,
     ];
 }
-
 
 function wpestate_booking_insert_invoice(
     $billing_for,
@@ -192,11 +189,9 @@ function wpestate_booking_insert_invoice(
 
     $post_id = wp_insert_post($post);
 
-
     update_post_meta($post_id, 'invoice_type', $billing_for);
     update_post_meta($post_id, 'biling_type', $type);
     update_post_meta($post_id, 'item_id', $pack_id);
-
     update_post_meta($post_id, 'item_price', $price);
     update_post_meta($post_id, 'purchase_date', $date);
     update_post_meta($post_id, 'buyer_id', $user_id);
@@ -219,15 +214,13 @@ function wpestate_booking_insert_invoice(
 
     update_post_meta($post_id, 'for_property', $property_id);
     update_post_meta($post_id, 'rented_by', get_post_field('post_author', $pack_id));
-
-
     update_post_meta($post_id, 'prop_taxed', floatval(get_post_meta($property_id, 'property_taxes', true)));
 
     //$submission_curency_status = esc_html( wprentals_get_option('wp_estate_submission_curency','') );
     $submission_curency_status = wpestate_curency_submission_pick();
     update_post_meta($post_id, 'invoice_currency', $submission_curency_status);
 
-    //todo@@ set custom default discounted default price
+    //Retrieve booking data from the Session
     $timeshare_session_info = get_timeshare_session_info();
 
     //Price per day after discount
