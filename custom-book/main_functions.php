@@ -198,6 +198,8 @@ function get_booked_days_count(string $from_date, string $to_date)
 }
 
 /**
+ * Retrieve booking data from the Session
+ *
  * @return array
  */
 function get_timeshare_session_info(): array
@@ -206,7 +208,7 @@ function get_timeshare_session_info(): array
 }
 
 /**
- * Set necessarily data into the Session
+ * Set booking data into the Session
  *
  * @param int $buyer_id
  * @param int $booking_id
@@ -315,7 +317,18 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
                     $current_date_range_from = new DateTime($current_date_range_info['from']);
                     $current_date_range_to   = new DateTime($current_date_range_info['to']);
 
-
+//                    var_dump(111111);
+//                    var_dump($discount_months_diff);
+//                    var_dump($percent);
+//                    var_dump($interval_days);
+//                    var_dump($from_date_converted);
+//                    var_dump($to_date_converted);
+//                    var_dump( $current_date_range_from);
+//                    var_dump( $current_date_range_to);
+//                    var_dump($from_date_obj >= $current_date_range_from);
+//                    var_dump($from_date_obj <= $current_date_range_to);
+//                    var_dump($timeshare_price_calc_data);
+//                    exit;
                     // Case, when booked start date exists between dates of current Season.
                     if ($from_date_obj >= $current_date_range_from && $from_date_obj <= $current_date_range_to) {
 //                        var_dump(111111);
@@ -324,6 +337,8 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
 //                        var_dump($interval_days);
 //                        var_dump($from_date_converted);
 //                        var_dump($to_date_converted);
+//                        var_dump($from_date_obj >= $current_date_range_from);
+//                        var_dump($from_date_obj <= $current_date_range_to);
 //                        var_dump($necessarily_timeshare_price_calc_data);
 //                        exit;
 
@@ -366,7 +381,7 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
         }
     }
 
-    //todo@@@ need to make restriction for special. in booking proceess
+//    todo@@@ need to make restriction for special. in booking proceess
 //    var_dump(22222222);
 //    var_dump($discount_months_diff);
 //    var_dump('$percent is..... ' . $percent);
@@ -425,9 +440,16 @@ function timeshare_discount_price_calc(
         $remaining_days                     = $booked_days_count - $timeshare_package_duration;
         // Calculate as Standard client(Guest)
         $remaining_days_price = $price_per_day_before_discount * $remaining_days;
-
         // Calculated Total Price
         $price = $discounted_price_by_available_days + $remaining_days_price;
+
+
+//        var_dump($price);
+//        var_dump($remaining_days_price);
+//        var_dump($booked_days_count);
+//        var_dump($discounted_price_by_available_days);
+//        var_dump($price_per_day_before_discount);
+//        exit;
     }
 
     return ceil($price);
@@ -542,7 +564,10 @@ function wpestate_ajax_check_booking_valability(): void
     }
 
     foreach ($reservation_grouped_array as $reservation_array) {
-        if (is_array($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
+        if (is_array($reservation_array) && ! empty($reservation_array) && array_key_exists(
+                $from_date_unix,
+                $reservation_array
+            )) {
             print 'stop array_key_exists';
             die();
         }
@@ -556,19 +581,27 @@ function wpestate_ajax_check_booking_valability(): void
     // checking booking avalability
     if ($wprentals_is_per_hour == 2) {
         foreach ($reservation_grouped_array as $reservation_array) {
-            if (wprentals_check_hour_booking_overlap_reservations($from_date_unix, $to_date_unix, $reservation_array)) {
+            if (is_array(
+                    $reservation_array
+                ) && ! empty($reservation_array) && wprentals_check_hour_booking_overlap_reservations(
+                    $from_date_unix,
+                    $to_date_unix,
+                    $reservation_array
+                )) {
                 print 'stop hour';
                 die();
             }
         }
     } else {
         foreach ($reservation_grouped_array as $reservation_array) {
-            if (wprentals_check_booking_overlap_reservations(
-                $from_date,
-                $from_date_unix,
-                $to_date_unix,
-                $reservation_array
-            )) {
+            if (is_array(
+                    $reservation_array
+                ) && ! empty($reservation_array) && wprentals_check_booking_overlap_reservations(
+                    $from_date,
+                    $from_date_unix,
+                    $to_date_unix,
+                    $reservation_array
+                )) {
                 print 'stop';
                 die();
             }
