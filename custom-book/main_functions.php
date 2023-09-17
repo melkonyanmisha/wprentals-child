@@ -286,9 +286,10 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
     $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
     $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
 
+    //todo@@@@ need continue for special ---??---
     //Case for All Season(now exist in "Less than 2 months")
-    if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
-        $percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
+    if (isset($necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'])) {
+        $percent = $necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'];
     } else {
         $from_date_obj                 = new DateTime($from_date_converted);
         $to_date_obj                   = new DateTime($to_date_converted);

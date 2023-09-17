@@ -16,7 +16,9 @@ function wpestate_ajax_add_booking_instant()
 
         //Case for Rooms. Timeshare users can book only grouped rooms
         if (check_has_room_group($_POST['listing_edit'])) {
+            //Array of group IDs with ascending by Group Order
             $group_ids_by_room_group_order = get_group_ids_by_room_group_order();
+            // Single available group by ASC order
             $group_data_to_book            = get_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
 
             if ( ! empty($group_data_to_book['rooms_ids'])) {
