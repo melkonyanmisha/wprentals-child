@@ -251,7 +251,7 @@ function get_week_days_list(string $from_date_converted, string $to_date_convert
 
 //get_discount_percent('24-02-04', '24-02-25');
 //todo@@@@ need remove..... year mont day
-get_discount_percent('24-10-01', '24-10-10');
+//get_discount_percent('24-10-01', '24-10-10');
 //get_discount_percent('24-10-01', '24-10-05');
 
 //for special
