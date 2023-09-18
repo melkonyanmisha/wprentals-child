@@ -92,7 +92,6 @@ function make_the_book(
         $extra_options_array
     );
 
-
     //#### Start of prices customization
     $booking_array['discount_percent'] = $discount_percent;
 
