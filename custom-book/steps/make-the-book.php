@@ -93,26 +93,25 @@ function make_the_book(
     );
 
     //#### Start of prices customization
-    $booking_array['discount_percent'] = $discount_percent;
+    if (current_user_is_timeshare()) {
+        $booking_array['discount_percent'] = $discount_percent;
+        $booking_array['inter_price']      = timeshare_discount_price_calc(
+            $discount_percent,
+            floatval($booking_array['inter_price']),
+            $from_date,
+            $to_date
+        );
 
+        //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
+        $booking_array['default_price'] = $booking_array['inter_price'] / $booked_days_count;
+        $booking_array['total_price']   = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
+        $booking_array['deposit']       = $booking_array['total_price'];
+        $booking_array['youearned']     = $booking_array['total_price'];
 
-    $booking_array['inter_price'] = timeshare_discount_price_calc(
-        $discount_percent,
-        floatval($booking_array['inter_price']),
-        $from_date,
-        $to_date
-    );
-
-    //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
-    $booking_array['default_price'] = $booking_array['inter_price'] / $booked_days_count;
-    $booking_array['total_price']   = $booking_array['inter_price'] + $booking_array['cleaning_fee'];
-    $booking_array['deposit']       = $booking_array['total_price'];
-    $booking_array['youearned']     = $booking_array['total_price'];
-
-    foreach ($booking_array['custom_price_array'] as $current_day => $current_price) {
-        $booking_array['custom_price_array'][$current_day] = $booking_array['default_price'];
+        foreach ($booking_array['custom_price_array'] as $current_day => $current_price) {
+            $booking_array['custom_price_array'][$current_day] = $booking_array['default_price'];
+        }
     }
-
     //#### End of prices customization
 
     // updating the booking detail

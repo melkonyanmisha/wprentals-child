@@ -192,17 +192,17 @@ function get_booked_days_count(string $from_date, string $to_date)
 }
 
 /**
- * Retrieve booking data from the Session
+ * Retrieve Timeshare user booking data from the Session
  *
  * @return array
  */
-function get_timeshare_session_info(): array
+function get_session_timeshare_booking_data(): array
 {
-    return $_SESSION['timeshare'];
+    return current_user_is_timeshare() && ! empty($_SESSION['timeshare']) ? $_SESSION['timeshare'] : [];
 }
 
 /**
- * Set booking data into the Session
+ * Set Timeshare user booking data into the SESSION
  *
  * @param int $buyer_id
  * @param int $booking_id
@@ -213,14 +213,16 @@ function get_timeshare_session_info(): array
  * @return void
  */
 
-function set_discount_info_to_session(
+function set_session_timeshare_booking_data(
     int $buyer_id,
     int $percent,
     $booking_array
 ): void {
-    $booking_id                                                                        = $booking_array['booking_id'];
-    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']                  = $booking_array;
-    $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']['price_percent'] = $percent;
+    if (current_user_is_timeshare()) {
+        $booking_id                                                                        = $booking_array['booking_id'];
+        $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']                  = $booking_array;
+        $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']['price_percent'] = $percent;
+    }
 }
 
 /**
