@@ -25,14 +25,19 @@ function wpestate_ajax_add_booking_instant()
                 foreach ($group_data_to_book['rooms_ids'] as $room_id) {
 //        todo@@@@ need to continue and modify wpestate_child_ajax_add_booking_instant() function
 
-//                wpestate_child_ajax_add_booking_instant($room_id, true);
+//                    $booking_instant_data[] = wpestate_child_ajax_add_booking_instant($room_id, true);
                 }
+//                var_dump($booking_instant_data); exit;
+
             }
         } else {
             //Case for Cottages
             steps_after_book(wpestate_child_ajax_add_booking_instant($listing_id, true));
         }
     } else {
+//        $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id, false);
+//        steps_after_book($booking_instant_data);
+
         steps_after_book(wpestate_child_ajax_add_booking_instant($listing_id, false));
     }
 }
@@ -137,8 +142,8 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id, bool $is_times
         $taxes_value
     );
 
-    //Set discount percent
-    set_discount_info_to_session(
+    // Set Timeshare user booking data into the SESSION
+    set_session_timeshare_booking_data(
         get_current_user_id(),
         intval($discount_percent),
         $make_the_book
@@ -222,10 +227,10 @@ function wpestate_booking_insert_invoice(
     $submission_curency_status = wpestate_curency_submission_pick();
     update_post_meta($post_id, 'invoice_currency', $submission_curency_status);
 
-    //Retrieve booking data from the Session
-    $timeshare_session_info = get_timeshare_session_info();
+    // Retrieve Timeshare user booking data from the Session
+    $timeshare_session_info = get_session_timeshare_booking_data();
 
-    //Price per day after discount
+    // Price per day after discount
     if ( ! empty($timeshare_session_info[$user_id][$pack_id]['booking_instant']['booking_array']['custom_price_array'])) {
         //Get the first value(first day price) of assoc array
         $price_per_day = reset(
@@ -249,7 +254,6 @@ function wpestate_booking_insert_invoice(
 
     $city_fee = floatval(get_post_meta($property_id, 'city_fee', true));
     update_post_meta($post_id, 'city_fee', $city_fee);
-
 
     $my_post = array(
         'ID'         => $post_id,
