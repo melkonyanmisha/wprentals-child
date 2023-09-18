@@ -392,6 +392,7 @@ function wpestate_chid_print_create_form_invoice(
                 $first_name         = get_the_author_meta('first_name', $post_author_id);
                 $last_name          = get_the_author_meta('last_name', $post_author_id);
                 $user_email         = get_the_author_meta('user_email', $post_author_id);
+                $user_billing_phone = get_the_author_meta('billing_phone', $post_author_id);
                 $user_mobile        = get_the_author_meta('mobile', $post_author_id);
                 $payment_info       = get_the_author_meta('payment_info', $post_author_id);
                 $paypal_payments_to = get_the_author_meta('paypal_payments_to', $post_author_id);
@@ -403,11 +404,23 @@ function wpestate_chid_print_create_form_invoice(
                         <?= esc_html(get_the_title($booking_prop)); ?>
                     </a>
                 </span>
+
                 <span class="date_duration invoice_date_renter_name_wrapper">
                     <span class="invoice_data_legend">
                         <?= esc_html__('Rented by', 'wprentals') . ':'; ?>
                     </span>
-                    <?= $first_name . ' ' . $last_name; ?>
+                    <?php
+                    if (current_user_is_admin()) { ?>
+                        <a href="<?= get_edit_user_link($post_author_id); ?>">
+                            <?php
+                            esc_html_e($first_name . ' ' . $last_name);
+                            ?>
+                        </a>
+                        <?php
+                    } else {
+                        esc_html_e($first_name . ' ' . $last_name);
+                    } ?>
+
                 </span>
                 <span class="date_duration invoice_date_renter_email_wrapper">
                     <span class="invoice_data_legend">
@@ -417,7 +430,7 @@ function wpestate_chid_print_create_form_invoice(
                 </span>
                 <span class="date_duration invoice_date_renter_phone_wrapper">
                     <span class="invoice_data_legend"><?= esc_html__('Phone', 'wprentals') . ':'; ?></span>
-                    <?= $user_mobile; ?>
+                    <?= $user_billing_phone ?? $user_mobile; ?>
                 </span>
                 <span class="date_duration invoice_date_renter_payment_info_wrapper">
                     <span class="invoice_data_legend"><?= esc_html__('Payment Info', 'wprentals') . ':'; ?> </span>
@@ -566,7 +579,7 @@ function wpestate_chid_print_create_form_invoice(
                                 <?= esc_html__('Balance', 'wprentals-core') . ':'; ?>
                             </span>
                             <span class="inv_depozit"><?= $balance_show; ?></span>
-                        <?php
+                            <?php
                         } else {
                             echo $invoice_saved;
                         } ?>
