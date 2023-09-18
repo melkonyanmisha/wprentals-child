@@ -80,7 +80,7 @@ if (current_user_is_admin()) {
     $room_category_id    = get_room_category_id_by_slug();
     $cottage_category_id = get_cottage_category_id_by_slug();
 
-    //During the booking process Guest users can only see images for 1 unit per category
+    //During the booking process Customer users can only see images for 1 unit per category
     while ($prop_selection->have_posts()): $prop_selection->the_post();
 
         // Get the custom categories (terms) for the post

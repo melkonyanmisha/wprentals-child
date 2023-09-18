@@ -446,7 +446,7 @@ function timeshare_discount_price_calc(
             $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
 
             $remaining_days = $booked_days_count - $timeshare_package_duration;
-            // Calculate as Standard client(Guest)
+            // Calculate as for a standard user(Customer)
             $remaining_days_price = $price_per_day_before_discount * $remaining_days;
             // Calculated Total Price
             $price = $discounted_price_by_available_days + $remaining_days_price;
