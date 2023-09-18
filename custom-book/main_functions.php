@@ -168,12 +168,6 @@ function timeshare_get_discount_months_diff(string $from_date): string
         $key_discount_months_diff = 'more_six';
     }
 
-//    /todo@@@@
-//    var_dump($from_date);
-//    var_dump($interval_by_months);
-//    var_dump($key_discount_months_diff);
-//    exit;
-
     return $key_discount_months_diff;
 }
 
@@ -248,8 +242,8 @@ function get_week_days_list(string $from_date_converted, string $to_date_convert
 
     $week_days_list = [];
     foreach ($dateRange as $date) {
-        $current_week_day                  = strtolower($date->format('l')); // 'l' returns the full day name
-        $week_days_list[$current_week_day] = '';
+        $current_week_day = strtolower($date->format('l')); // 'l' returns the full day name
+        $week_days_list[] = $current_week_day;
     }
 
     return $week_days_list;
@@ -257,7 +251,8 @@ function get_week_days_list(string $from_date_converted, string $to_date_convert
 
 //get_discount_percent('24-02-04', '24-02-25');
 //todo@@@@ need remove..... year mont day
-//get_discount_percent('24-03-13', '24-03-18');
+//get_discount_percent('24-10-01', '24-10-10');
+//get_discount_percent('24-10-01', '24-10-05');
 
 //for special
 //get_discount_percent('24-12-31', '25-01-06');
@@ -274,114 +269,120 @@ function get_week_days_list(string $from_date_converted, string $to_date_convert
  */
 function get_discount_percent(string $from_date, string $to_date, bool $force = false): float
 {
-    $percent = 100;
+    try {
+        $percent = 100;
 
-    if ( ! $force && ! current_user_is_timeshare()) {
-        return $percent;
-    }
+        if ( ! $force && ! current_user_is_timeshare()) {
+            return $percent;
+        }
 
-    $timeshare_price_calc_data = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
-//var_dump($timeshare_price_calc_data); exit;
-    if ( ! ($timeshare_price_calc_data)) {
-        return $percent;
-    }
+        $timeshare_price_calc_data = json_decode(get_option(TIMESHARE_PRICE_CALC_DATA), true);
 
-    $from_date_converted = convert_date_format($from_date);
-    $to_date_converted   = convert_date_format($to_date);
+        if ( ! ($timeshare_price_calc_data)) {
+            return $percent;
+        }
 
-    $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
-    $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
+        $from_date_converted                   = convert_date_format($from_date);
+        $to_date_converted                     = convert_date_format($to_date);
+        $discount_months_diff                  = timeshare_get_discount_months_diff($from_date_converted);
+        $necessarily_timeshare_price_calc_data = $timeshare_price_calc_data[$discount_months_diff] ?? [];
 
-//    var_dump($necessarily_timeshare_price_calc_data); exit;
+        //Case for All Season(now exist in "Less than 2 months")
+        if (isset($necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'])) {
+            $percent = $necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'];
+        } else {
+            $from_date_obj                 = new DateTime($from_date_converted);
+            $to_date_obj                   = new DateTime($to_date_converted);
+            $from_to_interval              = $from_date_obj->diff($to_date_obj);
+            $interval_days                 = $from_to_interval->days;
+            $booked_week_days_list         = get_week_days_list($from_date_converted, $to_date_converted);
+            $booked_week_days_percent_info = [];
 
-    //Case for All Season(now exist in "Less than 2 months")
-    if (isset($necessarily_timeshare_price_calc_data['all']['yearly_percent'])) {
-        $percent = $necessarily_timeshare_price_calc_data['all']['yearly_percent'];
-    } else {
-        $from_date_obj         = new DateTime($from_date_converted);
-        $to_date_obj           = new DateTime($to_date_converted);
-        $from_to_interval      = $from_date_obj->diff($to_date_obj);
-        $interval_days         = $from_to_interval->days;
-        $booked_week_days_list = get_week_days_list($from_date_converted, $to_date_converted);
+            foreach ($necessarily_timeshare_price_calc_data as $season => $season_info) {
+                // The case when successfully calculated the percent
+                if ($percent !== 100) {
+                    break;
+                }
 
+                if ( ! empty($season_info['date_range'])) {
+                    foreach ($season_info['date_range'] as $current_date_range_info) {
+                        $current_date_range_from = new DateTime($current_date_range_info['from']);
+                        $current_date_range_to   = new DateTime($current_date_range_info['to']);
 
-//var_dump($necessarily_timeshare_price_calc_data); exit;
-        foreach ($necessarily_timeshare_price_calc_data as $season => $season_info) {
-            // Case when successfully calculated the percent
-            if ($percent !== 100) {
-                break;
-            }
+                        // The case, when booked start date exists between dates of current Season.
+                        if ($from_date_obj >= $current_date_range_from && $from_date_obj <= $current_date_range_to) {
+                            // The case when try to book special
+                            if ($season === 'special') {
+                                $current_date_range_interval      = $current_date_range_from->diff(
+                                    $current_date_range_to
+                                );
+                                $current_date_range_interval_days = $current_date_range_interval->days;
 
-            if ( ! empty($season_info['date_range'])) {
-                foreach ($season_info['date_range'] as $current_date_range_info) {
-                    $current_date_range_from = new DateTime($current_date_range_info['from']);
-                    $current_date_range_to   = new DateTime($current_date_range_info['to']);
+                                // The booking interval of the Special season should be equal or longer than the Start
+                                // and End days from the config. See {domain}/wp-admin/users.php?page=timeshare-users-page
+                                if ($from_date_converted !== $current_date_range_info['from'] || $interval_days < $current_date_range_interval_days) {
+                                    throw new Exception(
+                                        "The start date for the current Special season should be " . $current_date_range_info['from'] . " and the minimum booking days count should be not less than $current_date_range_interval_days days"
+                                    );
+                                }
+                            }
 
-//                    var_dump(111111);
-//                    var_dump($discount_months_diff);
-//                    var_dump($percent);
-//                    var_dump($interval_days);
-//                    var_dump($from_date_converted);
-//                    var_dump($to_date_converted);
-//                    var_dump( $current_date_range_from);
-//                    var_dump( $current_date_range_to);
-//                    var_dump($from_date_obj >= $current_date_range_from);
-//                    var_dump($from_date_obj <= $current_date_range_to);
-//                    var_dump($timeshare_price_calc_data);
-//                    exit;
-                    // Case, when booked start date exists between dates of current Season.
-                    if ($from_date_obj >= $current_date_range_from && $from_date_obj <= $current_date_range_to) {
-//                        var_dump(111111);
-//                        var_dump($discount_months_diff);
-//                        var_dump($percent);
-//                        var_dump($interval_days);
-//                        var_dump($from_date_converted);
-//                        var_dump($to_date_converted);
-//                        var_dump($from_date_obj >= $current_date_range_from);
-//                        var_dump($from_date_obj <= $current_date_range_to);
-//                        var_dump($necessarily_timeshare_price_calc_data);
-//                        exit;
+                            if ($season_info['discount_mode']['mode'] === 'always') {
+                                $percent = $season_info['discount_mode']['always_percent'] ?? $percent;
+                            } else {
+                                $discount_percent = 0;
 
-
-                        if ($season_info['discount_mode']['mode'] === 'always') {
-                            $percent = $season_info['discount_mode']['always_percent'] ?? $percent;
-                        } else {
-//                            var_dump(8888);
-//                            var_dump($interval_days);
-//                            var_dump($season_info);
-//                            exit;
-
-
-                            // Case when booked less than a week
-                            if ($interval_days <= 7 && ! empty($season_info['discount_mode']['weeks'])) {
-                                foreach ($season_info['discount_mode']['weeks'] as $current_week) {
-                                    foreach ($booked_week_days_list as $week_day => $bool) {
-                                        if (isset($current_week[$week_day])) {
-                                            $booked_week_days_list[$week_day] = floatval(
+                                foreach ($booked_week_days_list as $key => $current_day) {
+                                    foreach ($season_info['discount_mode']['weeks'] as $current_week) {
+                                        if (array_key_exists(
+                                                $current_day,
+                                                $current_week
+                                            ) && $current_week[$current_day]) {
+                                            $booked_week_days_percent_info[$key]['day']     = $current_day;
+                                            $booked_week_days_percent_info[$key]['percent'] = floatval(
                                                 $current_week['daily_percent']
                                             );
                                         }
                                     }
                                 }
 
-                                // Calculate the sum of values(percents)
-                                $percent = array_sum($booked_week_days_list);
+                                // Case when booked less than a week
+                                if ($interval_days <= 7 && ! empty($season_info['discount_mode']['weeks'])) {
+                                    // Calculate the sum of percents
+                                    foreach ($booked_week_days_percent_info as $current_percent_info) {
+                                        $discount_percent += $current_percent_info['percent'];
+                                    }
 
-                                break;
-                            } else {
-                                // Case when booked more than 7days
-                                $percent = floatval($season_info['discount_mode']['weekly_percent']);
+                                    $percent = $discount_percent;
+                                } else {  // The case when booked more than 7days.
+                                    $remaining_days                  = $interval_days - 7;
+                                    $remaining_days_discount_percent = 0;
+
+                                    // First part of percent. Get a week percent e.g. from tuesday to monday
+                                    $weekly_percent = floatval($season_info['discount_mode']['weekly_percent']);
+
+                                    //Second part of percent. Get percent by days, e.g. for remaining tuesday and wednesday
+                                    $booked_week_remaining_days_percent_info = array_slice(
+                                        $booked_week_days_percent_info,
+                                        -$remaining_days
+                                    );
+
+                                    // Calculate the sum of percents
+                                    foreach ($booked_week_remaining_days_percent_info as $current_percent_info) {
+                                        $remaining_days_discount_percent += $current_percent_info['percent'];
+                                    }
+
+                                    $percent = $weekly_percent + $remaining_days_discount_percent;
+                                }
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
 
-//    todo@@@ need to make restriction for special. in booking proceess
 //    var_dump(22222222);
 //    var_dump($discount_months_diff);
 //    var_dump('$percent is..... ' . $percent);
@@ -390,6 +391,9 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
 //    var_dump($to_date_converted);
 //    var_dump($necessarily_timeshare_price_calc_data);
 //    exit;
+    } catch (Exception|Error $e) {
+        wp_die('Error: ' . $e->getMessage());
+    }
 
     return floatval($percent);
 }
@@ -410,46 +414,43 @@ function timeshare_discount_price_calc(
     string $to_date,
     bool $calc_by_force = false
 ): float {
-    if ($price == 0) {
-        return $price;
-    }
+    try {
+        if ($price == 0) {
+            return $price;
+        }
 
-    // Calculation available during booking by timeshare users and in dashboards of administrator and timeshare user.
-    // $calc_by_force used by administrators to show customized price in "My Bookings" page
-    if ( ! $calc_by_force && ! current_user_is_timeshare()) {
-        return $price;
-    }
+        // Calculation available during booking by timeshare users and in dashboards of administrator and timeshare user.
+        // $calc_by_force used by administrators to show customized price in "My Bookings" page
+        if ( ! $calc_by_force && ! current_user_is_timeshare()) {
+            return $price;
+        }
 
-    $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
-    $timeshare_user_data_decoded = ! empty($timeshare_user_data_encoded) ? json_decode(
-        $timeshare_user_data_encoded[0],
-        true
-    ) : [];
-    $timeshare_package_duration  = ! empty($timeshare_user_data_decoded) ? $timeshare_user_data_decoded[TIMESHARE_PACKAGE_DURATION] : TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE;
-    $booked_days_count           = get_booked_days_count($from_date, $to_date);
+        $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
+        $timeshare_user_data_decoded = ! empty($timeshare_user_data_encoded) ? json_decode(
+            $timeshare_user_data_encoded[0],
+            true
+        ) : [];
+        $timeshare_package_duration  = ! empty($timeshare_user_data_decoded) ? $timeshare_user_data_decoded[TIMESHARE_PACKAGE_DURATION] : TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE;
+        $booked_days_count           = get_booked_days_count($from_date, $to_date);
 
-    // Case when trying to book less than a timeshare package duration
-    if ($timeshare_package_duration >= $booked_days_count) {
-        $price = $price * $discount_percent / 100;
-    } else {
-        // Divide price calculation by part
-        $price_per_day_before_discount = $price / $booked_days_count;
+        // Case when trying to book less than a timeshare package duration
+        if ($timeshare_package_duration >= $booked_days_count) {
+            $price = $price * $discount_percent / 100;
+        } else {
+            // Divide price calculation by part
+            $price_per_day_before_discount = $price / $booked_days_count;
 
-        // Price for Timeshare user depends on available days of package duration
-        $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
-        $remaining_days                     = $booked_days_count - $timeshare_package_duration;
-        // Calculate as Standard client(Guest)
-        $remaining_days_price = $price_per_day_before_discount * $remaining_days;
-        // Calculated Total Price
-        $price = $discounted_price_by_available_days + $remaining_days_price;
+            // Price for Timeshare user depends on available days of package duration
+            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
 
-
-//        var_dump($price);
-//        var_dump($remaining_days_price);
-//        var_dump($booked_days_count);
-//        var_dump($discounted_price_by_available_days);
-//        var_dump($price_per_day_before_discount);
-//        exit;
+            $remaining_days = $booked_days_count - $timeshare_package_duration;
+            // Calculate as Standard client(Guest)
+            $remaining_days_price = $price_per_day_before_discount * $remaining_days;
+            // Calculated Total Price
+            $price = $discounted_price_by_available_days + $remaining_days_price;
+        }
+    } catch (Exception|Error $e) {
+        wp_die('Error: ' . $e->getMessage());
     }
 
     return ceil($price);
