@@ -40,15 +40,12 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/rec
 require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 
-
-
-//require_once WPRENTALS_CHILD_THEME_PATH . 'custom_book_functions.php';
 // Booking Process
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/main_functions.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/generate_the_invoice.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make_the_book.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/show_the_money.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking_process.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/utils.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/generate-the-invoice.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make-the-book.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/show-the-money.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking-process.php';
 
 
 // User Dashboard
