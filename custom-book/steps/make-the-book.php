@@ -92,6 +92,10 @@ function make_the_book(
         $extra_options_array
     );
 
+    //To fix the bug from wpestate_booking_price(). Without it will always return same dates for from_date and to_date
+    $booking_array['from_date'] = new DateTime($from_date);
+    $booking_array['to_date']   = new DateTime($to_date);
+
     //#### Start of prices customization
     if (current_user_is_timeshare()) {
         $booking_array['discount_percent'] = $discount_percent;
