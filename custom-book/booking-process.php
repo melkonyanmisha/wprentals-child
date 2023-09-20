@@ -24,7 +24,6 @@ function wpestate_ajax_add_booking_instant()
                     $booking_instant_rooms_group_data[] = wpestate_child_ajax_add_booking_instant($room_id);
                 }
 
-                $generated_invoices_list = [];
                 // To summarize prices
                 $booking_array_summed_prices = [
                     'default_price'      => 0,
@@ -55,10 +54,6 @@ function wpestate_ajax_add_booking_instant()
                                     } else {
                                         $booking_array_summed_prices[$price_type][$current_day] = $current_day_price;
                                     }
-//                                    var_dump(44444);
-//                                    var_dump($current_day);
-//                                    var_dump($current_day_price);
-//                                    var_dump( $booking_array_summed_prices[$price_type]); exit;
                                 }
                             }
                         }
@@ -73,24 +68,25 @@ function wpestate_ajax_add_booking_instant()
 
                 // Generate the invoice only for first room from group
                 $generated_invoice_first_room = generate_the_invoice_step($booking_instant_data_first_room);
+                update_necessary_metas($booking_instant_data_first_room, $generated_invoice_first_room);
                 show_the_money_step($booking_instant_data_first_room, $generated_invoice_first_room);
-                update_necessary_metas($booking_instant_current_room_data, $generated_invoice_first_room);
                 //todo@@@@ continue need to fix invoice generation. depends on set_session_timeshare_booking_data()
-//                var_dump($generated_invoices_list);
 //                var_dump($booking_instant_rooms_group_data);
 //                var_dump($booking_array_summed_prices);
 //
 //                exit;
             }
         } else {
-            //Case for Cottages
+            //The case for Cottages
             $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id);
             $generated_invoice    = generate_the_invoice_step($booking_instant_data);
             update_necessary_metas($booking_instant_data, $generated_invoice);
             show_the_money_step($booking_instant_data, $generated_invoice);
         }
     } else {
-        $generated_invoice = generate_the_invoice_step($booking_instant_data);
+        // The case for Customer user
+        $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id);
+        $generated_invoice    = generate_the_invoice_step($booking_instant_data);
         update_necessary_metas($booking_instant_data, $generated_invoice);
         show_the_money_step($booking_instant_data, $generated_invoice);
     }
