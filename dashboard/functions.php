@@ -4,7 +4,7 @@
  * Handle ajax request add_action('wp_ajax_wpestate_show_confirmed_booking', 'wpestate_show_confirmed_booking' );
  * @return void
  */
-function wpestate_show_confirmed_booking()
+function wpestate_show_confirmed_booking(): void
 {
     check_ajax_referer('wprentals_booking_confirmed_actions_nonce', 'security');
     $current_user = wp_get_current_user();
@@ -36,199 +36,165 @@ function wpestate_show_confirmed_booking()
 }
 
 /**
- * @param $invoice_id
- * @param $width_logo
+ * @param int $invoice_id
+ * @param string $width_logo
  *
  * @return void
  */
-function wpestate_child_super_invoice_details($invoice_id, $width_logo = '')
+function wpestate_child_super_invoice_details(int $invoice_id, string $width_logo = ''):void
 {
-    $bookid            = esc_html(get_post_meta($invoice_id, 'item_id', true));
-    $booking_from_date = esc_html(get_post_meta($bookid, 'booking_from_date', true));
-    $booking_prop      = esc_html(get_post_meta($bookid, 'booking_id', true)); // property_id
-    $booking_to_date   = esc_html(get_post_meta($bookid, 'booking_to_date', true));
-    $booking_guests    = floatval(get_post_meta($bookid, 'booking_guests', true));
-    $extra_options     = get_post_meta($bookid, 'extra_options', true);
-    $booking_type      = wprentals_return_booking_type($booking_prop);
-    $booked_days_count = get_booked_days_count($booking_from_date, $booking_to_date);
+    try {
+        $bookid            = esc_html(get_post_meta($invoice_id, 'item_id', true));
+        $booking_from_date = esc_html(get_post_meta($bookid, 'booking_from_date', true));
+        $booking_prop      = intval(get_post_meta($bookid, 'booking_id', true)); // property_id
+        $booking_to_date   = esc_html(get_post_meta($bookid, 'booking_to_date', true));
+        $booking_guests    = intval(get_post_meta($bookid, 'booking_guests', true));
+        $booking_type      = wprentals_return_booking_type($booking_prop);
 
-    $extra_options_array = array();
-    if ($extra_options != '') {
-        $extra_options_array = explode(',', $extra_options);
+        $booking_array     = [];
+        $booking_full_data = json_decode(get_post_meta($invoice_id, 'booking_full_data', true), true);
+
+        if ( ! empty($booking_full_data['booking_instant_data']['make_the_book']['booking_array'])) {
+            $booking_array = $booking_full_data['booking_instant_data']['make_the_book']['booking_array'];
+        }
+
+        if (empty($booking_array)) {
+            throw new Exception('Empty $booking_array');
+        }
+
+        $price_per_weekeend      = floatval(get_post_meta($booking_prop, 'price_per_weekeend', true));
+        $total_price             = floatval(get_post_meta($invoice_id, 'item_price', true));
+        $wpestate_currency       = esc_html(get_post_meta($invoice_id, 'invoice_currency', true));
+        $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
+        $details                 = get_post_meta($invoice_id, 'renting_details', true);
+
+        $default_price = $booking_array['default_price'];
+        $depozit       = floatval(get_post_meta($invoice_id, 'depozit_paid', true));
+        $balance       = $total_price - $depozit;
+
+        $price_show              = wpestate_show_price_booking_for_invoice(
+            $default_price,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+        $price_per_weekeend_show = wpestate_show_price_booking_for_invoice(
+            $price_per_weekeend,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+        $total_price_show        = wpestate_show_price_booking_for_invoice(
+            $total_price,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+        $depozit_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
+            $depozit,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+        $balance_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
+            $balance,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+        $guest_price             = wpestate_show_price_booking_for_invoice(
+            $booking_array['extra_price_per_guest'],
+            $wpestate_currency,
+            $wpestate_where_currency,
+            1,
+            1
+        );
+
+        $invoice_saved = esc_html(get_post_meta($invoice_id, 'invoice_type', true));
+
+        wpestate_chid_print_create_form_invoice(
+            $guest_price,
+            $booking_guests,
+            $invoice_id,
+            $invoice_saved,
+            $booking_from_date,
+            $booking_to_date,
+            $booking_array,
+            $price_show,
+            $details,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            $total_price,
+            $total_price_show,
+            $depozit_show,
+            $balance_show,
+            $booking_prop,
+            $price_per_weekeend_show,
+            $booking_type,
+            $width_logo
+        );
+    } catch (Exception|Error $e) {
+        wp_die('Error: ' . $e->getMessage());
     }
-
-    $manual_expenses = get_post_meta($invoice_id, 'manual_expense', true);
-    $booking_array   = wpestate_booking_price(
-        $booking_guests,
-        $invoice_id,
-        $booking_prop,
-        $booking_from_date,
-        $booking_to_date,
-        $bookid,
-        $extra_options_array,
-        $manual_expenses
-    );
-
-    //#### Start of prices customization
-
-    //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
-    $booking_array['default_price'] = reset($booking_array['custom_price_array']);
-    $booking_array['total_price']   = $booking_array['inter_price'] + $booked_days_count * $booking_array['cleaning_fee'];
-    $booking_array['deposit']       = $booking_array['total_price'];
-    $booking_array['youearned']     = $booking_array['total_price'];
-
-    //#### End of prices customization
-
-    $price_per_weekeend = floatval(get_post_meta($booking_prop, 'price_per_weekeend', true));
-    $total_price        = floatval(get_post_meta($invoice_id, 'item_price', true));
-    $default_price      = $booking_array['default_price'];
-
-    $wpestate_currency       = esc_html(get_post_meta($invoice_id, 'invoice_currency', true));
-    $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
-    $details                 = get_post_meta($invoice_id, 'renting_details', true);
-
-    $depozit = floatval(get_post_meta($invoice_id, 'depozit_paid', true));
-    $balance = $total_price - $depozit;
-
-    $price_show              = wpestate_show_price_booking_for_invoice(
-        $default_price,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-    $price_per_weekeend_show = wpestate_show_price_booking_for_invoice(
-        $price_per_weekeend,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-    $total_price_show        = wpestate_show_price_booking_for_invoice(
-        $total_price,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-    $depozit_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
-        $depozit,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-    $balance_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
-        $balance,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-    $guest_price             = wpestate_show_price_booking_for_invoice(
-        $booking_array['extra_price_per_guest'],
-        $wpestate_currency,
-        $wpestate_where_currency,
-        1,
-        1
-    );
-
-    $invoice_saved = esc_html(get_post_meta($invoice_id, 'invoice_type', true));
-
-    wpestate_chid_print_create_form_invoice(
-        $guest_price,
-        $booking_guests,
-        $invoice_id,
-        $invoice_saved,
-        $booking_from_date,
-        $booking_to_date,
-        $booking_array,
-        $price_show,
-        $details,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        $total_price,
-        $total_price_show,
-        $depozit_show,
-        $balance_show,
-        $booking_prop,
-        $price_per_weekeend_show,
-        $booking_type,
-        $width_logo
-    );
 }
 
 /**
  * Original function location is wp-content/plugins/wprentals-core/post-types/invoices.php => wpestate_print_create_form_invoice()
  *
- * @param $guest_price
- * @param $booking_guests
- * @param $invoice_id
- * @param $invoice_saved
- * @param $booking_from_date
- * @param $booking_to_date
- * @param $booking_array
- * @param $price_show
- * @param $details
- * @param $wpestate_currency
- * @param $wpestate_where_currency
- * @param $total_price
- * @param $total_price_show
- * @param $depozit_show
- * @param $balance_show
- * @param $booking_prop
- * @param $price_per_weekeend_show
- * @param $booking_type
- * @param $width_logo
+ * @param string $guest_price
+ * @param int $booking_guests
+ * @param int $invoice_id
+ * @param string $invoice_saved
+ * @param string $booking_from_date
+ * @param string $booking_to_date
+ * @param array $booking_array
+ * @param string $price_show
+ * @param array $details
+ * @param string $wpestate_currency
+ * @param string $wpestate_where_currency
+ * @param float $total_price
+ * @param string $total_price_show
+ * @param string $depozit_show
+ * @param string $balance_show
+ * @param int $booking_prop
+ * @param string $price_per_weekeend_show
+ * @param string $booking_type
+ * @param string $width_logo
  *
  * @return void
  */
 function wpestate_chid_print_create_form_invoice(
-    $guest_price,
-    $booking_guests,
-    $invoice_id,
-    $invoice_saved,
-    $booking_from_date,
-    $booking_to_date,
-    $booking_array,
-    $price_show,
-    $details,
-    $wpestate_currency,
-    $wpestate_where_currency,
-    $total_price,
-    $total_price_show,
-    $depozit_show,
-    $balance_show,
-    $booking_prop,
-    $price_per_weekeend_show,
-    $booking_type,
-    $width_logo = ''
+    string $guest_price,
+    int $booking_guests,
+    int $invoice_id,
+    string $invoice_saved,
+    string $booking_from_date,
+    string $booking_to_date,
+    array $booking_array,
+    string $price_show,
+    array $details,
+    string $wpestate_currency,
+    string $wpestate_where_currency,
+    float $total_price,
+    string $total_price_show,
+    string $depozit_show,
+    string $balance_show,
+    int $booking_prop,
+    string $price_per_weekeend_show,
+    string $booking_type,
+    string $width_logo = ''
 ) {
-    $rental_type          = esc_html(wprentals_get_option('wp_estate_item_rental_type', ''));
-    $invoice_deposit_tobe = floatval(get_post_meta($invoice_id, 'depozit_to_be_paid', true));
-    $depozit_show         = wpestate_show_price_booking_for_invoice(
-        $invoice_deposit_tobe,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
-
-    $balance      = get_post_meta($invoice_id, 'balance', true);
-    $balance_show = wpestate_show_price_booking_for_invoice(
-        $balance,
-        $wpestate_currency,
-        $wpestate_where_currency,
-        0,
-        1
-    );
+    $rental_type  = esc_html(wprentals_get_option('wp_estate_item_rental_type', ''));
     $current_user = wp_get_current_user();
     $userID       = $current_user->ID;
-    $owner_see    = 0;
 
     if (wpsestate_get_author($booking_prop) == $userID) {
         $total_label = esc_html__('User Pays', 'wprentals-core');
-        $owner_see   = 1;
     } else {
         $total_label = esc_html__('You Pay', 'wprentals-core');
     }
@@ -450,6 +416,7 @@ function wpestate_chid_print_create_form_invoice(
                 </div>
 
                 <?php
+
                 if (is_array($details)) {
                     foreach ($details as $detail) {
                         if ($detail[1] != 0) { ?>
