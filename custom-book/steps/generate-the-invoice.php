@@ -1,22 +1,42 @@
 <?php
 
+/**
+ * @param array $reservation_array
+ * @param int $property_id
+ * @param array $booking_array
+ * @param array $extra_options_array
+ * @param string $rental_type
+ * @param string $booking_type
+ * @param int $booking_guest_no
+ * @param int $booking_id
+ * @param float $price
+ * @param int $owner_id
+ * @param int $property_author
+ * @param float $early_bird_percent
+ * @param float $early_bird_days
+ * @param float $taxes_value
+ * @param array $extra_pay_options
+ *
+ * @return array
+ */
 function generate_the_invoice(
-    $reservation_array,
-    $property_id,
-    $booking_array,
-    $extra_options_array,
-    $rental_type,
-    $booking_type,
-    $booking_guest_no,
-    $booking_id,
-    $price,
-    $owner_id,
-    $property_author,
-    $early_bird_percent,
-    $early_bird_days,
-    $taxes_value,
-    $extra_pay_options
-) {
+    array $reservation_array,
+    int $property_id,
+    array $booking_array,
+    array $extra_options_array,
+    string $rental_type,
+    string $booking_type,
+    int $booking_guest_no,
+    int $booking_id,
+    float $price,
+    int $owner_id,
+    int $property_author,
+    float $early_bird_percent,
+    float $early_bird_days,
+    float $taxes_value,
+    array $extra_pay_options
+): array {
+
     $options_array_explanations = [];
     $current_user               = wp_get_current_user();
     $userID                     = $current_user->ID;
@@ -30,10 +50,9 @@ function generate_the_invoice(
     // fill up the details array to display
     $wpestate_currency       = esc_html(wprentals_get_option('wp_estate_currency_label_main', ''));
     $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
-    $details[] = array(esc_html__('Subtotal', 'wprentals'), $booking_array['inter_price']);
+    $details[]               = array(esc_html__('Subtotal', 'wprentals'), $booking_array['inter_price']);
 
     if (is_array($extra_options_array) && ! empty ($extra_options_array)) {
-        $extra_pay_options          = (get_post_meta($property_id, 'extra_pay_options', true));
         $options_array_explanations = array(
             0 => esc_html__('Single Fee', 'wprentals'),
             1 => ucfirst(wpestate_show_labels('per_night', $rental_type, $booking_type)),

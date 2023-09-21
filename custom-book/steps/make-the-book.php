@@ -1,14 +1,28 @@
 <?php
 
+/**
+ * Make the booking
+ *
+ * @param float $discount_percent
+ * @param int $property_id
+ * @param int $owner_id
+ * @param int $booking_guest_no
+ * @param float $early_bird_percent
+ * @param float $early_bird_days
+ * @param float $taxes_value
+ *
+ * @return array
+ * @throws Exception
+ */
 function make_the_book(
-    $discount_percent,
-    $property_id,
-    $owner_id,
-    $booking_guest_no,
-    $early_bird_percent,
-    $early_bird_days,
-    $taxes_value
-) {
+    float $discount_percent,
+    int $property_id,
+    int $owner_id,
+    int $booking_guest_no,
+    float $early_bird_percent,
+    float $early_bird_days,
+    float $taxes_value
+): array {
     $current_user      = wp_get_current_user();
     $userID            = $current_user->ID;
     $allowded_html     = [];
@@ -92,10 +106,6 @@ function make_the_book(
         $extra_options_array
     );
 
-    //To fix the bug from wpestate_booking_price(). Without it will always return same dates for from_date and to_date
-    $booking_array['from_date'] = new DateTime($from_date);
-    $booking_array['to_date']   = new DateTime($to_date);
-
     //#### Start of prices customization
     if (current_user_is_timeshare()) {
         $booking_array['discount_percent'] = $discount_percent;
@@ -116,8 +126,6 @@ function make_the_book(
             $booking_array['custom_price_array'][$current_day] = $booking_array['default_price'];
         }
     }
-
-
     //#### End of prices customization
 
     update_post_meta($booking_id, 'youearned', $booking_array['youearned']);
