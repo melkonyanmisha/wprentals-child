@@ -705,7 +705,7 @@ function get_reservation_grouped_array_by_group_id(int $group_id): array
             $all_listings_ids_in_group[] = $post->ID;
         }
 
-        return get_reservation_grouped_array($all_listings_ids_in_group);;
+        return get_reservation_grouped_array($all_listings_ids_in_group);
     }
 
     return [];

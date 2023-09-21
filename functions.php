@@ -44,7 +44,7 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.p
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/utils.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/generate-the-invoice.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make-the-book.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/show-the-money.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/render-booking-confirm-popup.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking-process.php';
 
 

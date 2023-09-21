@@ -1,6 +1,14 @@
 <?php
 
-function wpestate_ajax_add_booking_instant()
+/**
+ *  Custom booking function. Works after ajax request
+ *  add_action( 'wp_ajax_nopriv_wpestate_ajax_add_booking_instant', 'wpestate_ajax_add_booking_instant' );
+ *  add_action( 'wp_ajax_wpestate_ajax_add_booking_instant', 'wpestate_ajax_add_booking_instant' );
+ *
+ * @return void
+ * @throws Exception
+ */
+function wpestate_ajax_add_booking_instant(): void
 {
     $listing_id       = intval($_POST['listing_edit']);
     $allowded_html    = [];
@@ -9,7 +17,7 @@ function wpestate_ajax_add_booking_instant()
     $discount_percent = get_discount_percent($from_date, $to_date);
 
     if (current_user_is_timeshare()) {
-        //Case for Rooms. Timeshare users can book only grouped rooms
+        //The case for Rooms. Timeshare users can book only grouped rooms
         if (check_has_room_group($_POST['listing_edit'])) {
             group_booking($_POST['fromdate'], $discount_percent);
         } else {
@@ -22,7 +30,14 @@ function wpestate_ajax_add_booking_instant()
     }
 }
 
-function group_booking(string $from_date, $discount_percent)
+/**
+ * @param string $from_date
+ * @param float $discount_percent
+ *
+ * @return void
+ * @throws Exception
+ */
+function group_booking(string $from_date, float $discount_percent): void
 {
     $from_date      = new DateTime($from_date);
     $from_date_unix = $from_date->getTimestamp();
@@ -37,7 +52,14 @@ function group_booking(string $from_date, $discount_percent)
 
         // STEP 1 - Start booking
         foreach ($group_data_to_book['rooms_ids'] as $room_id) {
-            $booking_instant_rooms_group_data[] = wpestate_child_ajax_add_booking_instant($room_id);
+            $booking_instant_data = wpestate_child_ajax_add_booking_instant($room_id);
+            if ( ! empty($booking_instant_data)) {
+                $booking_instant_rooms_group_data[] = $booking_instant_data;
+            }
+        }
+
+        if (empty($booking_instant_rooms_group_data)) {
+            wp_die('Error: Empty $booking_instant_rooms_group_data');
         }
 
         // To summarize prices
@@ -58,17 +80,19 @@ function group_booking(string $from_date, $discount_percent)
 
         foreach ($booking_instant_rooms_group_data as $booking_instant_current_room_data) {
             foreach ($booking_array_summed_prices as $price_type => $price) {
-                // Summarize prices
-                if ( ! is_array($price)) {
-                    $booking_array_summed_prices[$price_type] += $booking_instant_current_room_data['make_the_book']['booking_array'][$price_type];
-                } else {
-                    // Summarize prices by per day
-                    if ($price_type === 'custom_price_array' && ! empty($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
-                        foreach ($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type] as $current_day => $current_day_price) {
-                            if (isset($booking_array_summed_prices[$price_type][$current_day])) {
-                                $booking_array_summed_prices[$price_type][$current_day] += $current_day_price;
-                            } else {
-                                $booking_array_summed_prices[$price_type][$current_day] = $current_day_price;
+                if (isset($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
+                    // Summarize prices
+                    if ( ! is_array($price)) {
+                        $booking_array_summed_prices[$price_type] += $booking_instant_current_room_data['make_the_book']['booking_array'][$price_type];
+                    } else {
+                        // Summarize prices by per day
+                        if ($price_type === 'custom_price_array' && ! empty($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
+                            foreach ($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type] as $current_day => $current_day_price) {
+                                if (isset($booking_array_summed_prices[$price_type][$current_day])) {
+                                    $booking_array_summed_prices[$price_type][$current_day] += $current_day_price;
+                                } else {
+                                    $booking_array_summed_prices[$price_type][$current_day] = $current_day_price;
+                                }
                             }
                         }
                     }
@@ -104,28 +128,39 @@ function group_booking(string $from_date, $discount_percent)
             true
         );
 
-        // STEP 3 - show me the money
-        show_the_money_step($booking_instant_data_first_room_summarized, $generated_invoice_first_room);
+        // STEP 3 - Display confirmation popup
+        display_booking_confirm_popup($booking_instant_data_first_room_summarized, $generated_invoice_first_room);
     }
 }
 
-function single_booking($listing_id, $discount_percent)
+/**
+ * Booking single room for Customer and single cottage for all users
+ *
+ * @param int $listing_id
+ * @param float $discount_percent
+ *
+ * @return void
+ * @throws Exception
+ */
+function single_booking(int $listing_id, float $discount_percent): void
 {
     // STEP 1 - Start booking
     $booking_instant_data = wpestate_child_ajax_add_booking_instant($listing_id);
 
-    // Set Timeshare user booking data into the SESSION
-    set_session_timeshare_booking_data(
-        get_current_user_id(),
-        intval($discount_percent),
-        $booking_instant_data['make_the_book']
-    );
+    if ( ! empty($booking_instant_data)) {
+        // Set Timeshare user booking data into the SESSION
+        set_session_timeshare_booking_data(
+            get_current_user_id(),
+            intval($discount_percent),
+            $booking_instant_data['make_the_book']
+        );
 
-    // STEP 2 - generate the invoice
-    $generated_invoice = generate_the_invoice_step($booking_instant_data);
-    update_necessary_metas(['booking_instant_data' => $booking_instant_data], $generated_invoice, false);
-    // STEP 3 - show me the money
-    show_the_money_step($booking_instant_data, $generated_invoice);
+        // STEP 2 - generate the invoice
+        $generated_invoice = generate_the_invoice_step($booking_instant_data);
+        update_necessary_metas(['booking_instant_data' => $booking_instant_data], $generated_invoice, false);
+        // STEP 3 - show me the money
+        display_booking_confirm_popup($booking_instant_data, $generated_invoice);
+    }
 }
 
 /**
@@ -133,10 +168,10 @@ function single_booking($listing_id, $discount_percent)
  *
  * @param int $listing_id
  *
- * @return array|void
+ * @return array
  * @throws Exception
  */
-function wpestate_child_ajax_add_booking_instant(int $listing_id)
+function wpestate_child_ajax_add_booking_instant(int $listing_id): array
 {
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
     $allowded_html    = array();
@@ -144,7 +179,7 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id)
     $instant_booking  = floatval(get_post_meta($listing_id, 'instant_booking', true));
 
     if ($instant_booking != 1) {
-        die();
+        return [];
     }
 
     $owner_id           = wpsestate_get_author($listing_id);
@@ -152,8 +187,9 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id)
     $early_bird_days    = floatval(get_post_meta($listing_id, 'early_bird_days', true));
     $taxes_value        = floatval(get_post_meta($listing_id, 'property_taxes', true));
     $extra_pay_options  = get_post_meta($listing_id, 'extra_pay_options', true);
-    $extra_options      = wp_kses($_POST['extra_options'], $allowded_html);
-    $extra_options      = rtrim($extra_options, ",");
+
+    $extra_options = wp_kses($_POST['extra_options'], $allowded_html);
+    $extra_options = rtrim($extra_options, ",");
 
     $extra_options_array = array();
     if ($extra_options != '') {
@@ -189,7 +225,7 @@ function wpestate_child_ajax_add_booking_instant(int $listing_id)
         'early_bird_percent'  => $early_bird_percent,
         'early_bird_days'     => $early_bird_days,
         'taxes_value'         => $taxes_value,
-        'extra_pay_options'   => $extra_pay_options,
+        'extra_pay_options'   => $extra_pay_options != '' ? $extra_pay_options : [],
     ];
 }
 
@@ -225,16 +261,16 @@ function generate_the_invoice_step(array $booking_instant_data)
 }
 
 /**
- * Show me the money
+ * Display booking confirmation popup
  *
  * @param $booking_instant_data
  * @param $generated_invoice
  *
  * @return void
  */
-function show_the_money_step($booking_instant_data, $generated_invoice)
+function display_booking_confirm_popup($booking_instant_data, $generated_invoice)
 {
-    echo show_the_money(
+    echo render_booking_confirm_popup(
         $generated_invoice['invoice_id'],
         $booking_instant_data['make_the_book']['booking_id'],
         $booking_instant_data['property_id'],
@@ -245,12 +281,10 @@ function show_the_money_step($booking_instant_data, $generated_invoice)
         $generated_invoice['options_array_explanations'],
         $booking_instant_data['extra_pay_options']
     );
-
-    die();
 }
 
 /**
- * @param $booking_instant_data
+ * @param $booking_full_data
  * @param $generated_invoice
  * @param $is_group_booking //To separate group booking from a standard single booking
  *
@@ -283,6 +317,3 @@ function update_necessary_metas($booking_full_data, $generated_invoice, $is_grou
         json_encode($booking_full_data)
     );
 }
-
-
-

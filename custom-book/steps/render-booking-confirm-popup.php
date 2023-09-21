@@ -1,32 +1,33 @@
 <?php
 
 /**
- * Output of invoice markup
+ * Render booking confirmation popup
  *
- * @param $invoice_id
- * @param $booking_id
- * @param $booking_array
- * @param $rental_type
- * @param $booking_type
- * @param $extra_options_array
- * @param $options_array_explanations
- * @param $extra_pay_options
+ * @param int $invoice_id
+ * @param int $booking_id
+ * @param int $property_id
+ * @param array $booking_array
+ * @param int $rental_type
+ * @param int $booking_type
+ * @param array $extra_options_array
+ * @param array $options_array_explanations
+ * @param array $extra_pay_options
  *
  * @return false|string|void
  */
-function show_the_money(
-    $invoice_id,
-    $booking_id,
-    $property_id,
-    $booking_array,
-    $rental_type,
-    $booking_type,
-    $extra_options_array,
-    $options_array_explanations,
-    $extra_pay_options
+function render_booking_confirm_popup(
+    int $invoice_id,
+    int $booking_id,
+    int $property_id,
+    array $booking_array,
+    int $rental_type,
+    int $booking_type,
+    array $extra_options_array,
+    array $options_array_explanations,
+    array $extra_pay_options
 ) {
-    $current_user  = wp_get_current_user();
-    $userID        = $current_user->ID;
+    $current_user            = wp_get_current_user();
+    $userID                  = $current_user->ID;
     $wpestate_currency       = esc_html(get_post_meta($invoice_id, 'invoice_currency', true));
     $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
     $default_price           = $booking_array['default_price'];
@@ -49,7 +50,7 @@ function show_the_money(
     $wp_estate_book_down           = get_post_meta($invoice_id, 'invoice_percent', true);
     $wp_estate_book_down_fixed_fee = get_post_meta($invoice_id, 'invoice_percent_fixed_fee', true);
     $invoice_price                 = $booking_array['total_price'];
-    $include_expeses = esc_html(wprentals_get_option('wp_estate_include_expenses', ''));
+    $include_expeses               = esc_html(wprentals_get_option('wp_estate_include_expenses', ''));
 
     if ($include_expeses == 'yes') {
         $total_price_comp = $invoice_price;
@@ -117,11 +118,7 @@ function show_the_money(
         1
     );
 
-//    var_dump($inter_price_show);
-//    var_dump($booking_array);
-//    exit;
-
-    $total_guest             = wpestate_show_price_booking_for_invoice(
+    $total_guest = wpestate_show_price_booking_for_invoice(
         $booking_array['total_extra_price_per_guest'],
         $wpestate_currency,
         $wpestate_where_currency,
@@ -237,15 +234,6 @@ function show_the_money(
                         <?php
                     }
                 } ?>
-
-<!--                <span class="date_duration invoice_date_property_name_wrapper">-->
-<!--                    <span class="invoice_data_legend">-->
-<!--                        --><?php //= esc_html__('Property', 'wprentals') . ':'; ?>
-<!--                    </span>-->
-<!--                    <a href="--><?php //= esc_url(get_permalink($property_id)); ?><!--" target="_blank">-->
-<!--                        --><?php //= esc_html(get_the_title($property_id)); ?>
-<!--                    </a>-->
-<!--                </span>-->
 
             </div>
             <div class="invoice_details">
