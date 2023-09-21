@@ -788,7 +788,9 @@ function wpestate_booking_insert_invoice(
 
     // Retrieve Timeshare user booking data from the Session
     $timeshare_session_info = get_session_timeshare_booking_data();
-
+    //todo@@@
+//var_dump(111111);
+//var_dump($timeshare_session_info[$user_id][$pack_id]); exit;
     // Price per day after discount
     if ( ! empty($timeshare_session_info[$user_id][$pack_id]['booking_instant']['booking_array']['custom_price_array'])) {
         //Get the first value(first day price) of assoc array

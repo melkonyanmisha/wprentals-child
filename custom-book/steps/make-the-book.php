@@ -116,15 +116,19 @@ function make_the_book(
             $booking_array['custom_price_array'][$current_day] = $booking_array['default_price'];
         }
     }
+
+
     //#### End of prices customization
 
-    // updating the booking detail
+    update_post_meta($booking_id, 'youearned', $booking_array['youearned']);
+    // Don't remove. Used to display the invoice details from wp dashboard
+    update_post_meta($booking_id, 'you_earn', $booking_array['youearned']);
+    update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
     update_post_meta($booking_id, 'to_be_paid', $booking_array['deposit']);
     update_post_meta($booking_id, 'booking_taxes', $booking_array['taxes']);
     update_post_meta($booking_id, 'service_fee', $booking_array['service_fee']);
     update_post_meta($booking_id, 'taxes', $booking_array['taxes']);
     update_post_meta($booking_id, 'service_fee', $booking_array['service_fee']);
-    update_post_meta($booking_id, 'youearned', $booking_array['youearned']);
     update_post_meta($booking_id, 'custom_price_array', $booking_array['custom_price_array']);
     update_post_meta($booking_id, 'balance', $booking_array['balance']);
     update_post_meta($booking_id, 'total_price', $booking_array['total_price']);
