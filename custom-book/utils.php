@@ -5,7 +5,7 @@
  *
  * @return bool
  */
-function check_has_room_category(int $listing_id)
+function check_has_room_category(int $listing_id): bool
 {
     $category_terms            = wp_get_post_terms($listing_id, 'property_category');
     $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
@@ -24,13 +24,12 @@ function check_has_room_category(int $listing_id)
     return false;
 }
 
-
 /**
  * @param int $listing_id
  *
  * @return bool
  */
-function check_has_room_group(int $listing_id)
+function check_has_room_group(int $listing_id): bool
 {
     $category_terms            = wp_get_post_terms($listing_id, 'property_action_category');
     $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
@@ -152,11 +151,11 @@ function convert_date_format(string $dateString): string
  */
 function timeshare_get_discount_months_diff(string $from_date): string
 {
-    $current_date       = date('Y-m-d');
-    $current_date_obj   = new DateTime($current_date);
-    $from_date_obj      = new DateTime($from_date);
-    $interval_obj       = $from_date_obj->diff($current_date_obj);
-    $interval_by_months = $interval_obj->m + 12 * $interval_obj->y;
+    $current_date              = date('Y-m-d');
+    $current_date_obj          = new DateTime($current_date);
+    $from_date_obj_increasable = new DateTime($from_date);
+    $interval_obj              = $from_date_obj_increasable->diff($current_date_obj);
+    $interval_by_months        = $interval_obj->m + 12 * $interval_obj->y;
 
     if ($interval_by_months < 2) {
         $key_discount_months_diff = 'less_two';
@@ -205,19 +204,13 @@ function get_session_timeshare_booking_data(): array
  * Set Timeshare user booking data into the SESSION
  *
  * @param int $buyer_id
- * @param int $booking_id
  * @param int $percent
- * @param string $from_date
- * @param string $to_date
+ * @param array $booking_array
  *
  * @return void
  */
-
-function set_session_timeshare_booking_data(
-    int $buyer_id,
-    int $percent,
-    $booking_array
-): void {
+function set_session_timeshare_booking_data(int $buyer_id, int $percent, array $booking_array): void
+{
     if (current_user_is_timeshare()) {
         $booking_id                                                                        = $booking_array['booking_id'];
         $_SESSION['timeshare'][$buyer_id][$booking_id]['booking_instant']                  = $booking_array;
@@ -274,8 +267,7 @@ function generateBookedDaysInfo(string $from_date_converted, string $to_date_con
  * @param string $to_date
  * @param bool $force
  *
- * @return int|mixed
- * @throws Exception
+ * @return float
  */
 function get_discount_percent(string $from_date, string $to_date, bool $force = false): float
 {
@@ -301,9 +293,9 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
         if (isset($necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'])) {
             $percent = $necessarily_timeshare_price_calc_data['all']['discount_mode']['yearly_percent'];
         } else {
-            $from_date_obj                  = new DateTime($from_date_converted);
+            $from_date_obj_increasable      = new DateTime($from_date_converted);
             $to_date_obj                    = new DateTime($to_date_converted);
-            $from_to_interval               = $from_date_obj->diff($to_date_obj);
+            $from_to_interval               = $from_date_obj_increasable->diff($to_date_obj);
             $interval_days                  = $from_to_interval->days;
             $booked_days_info               = generateBookedDaysInfo($from_date_converted, $to_date_converted);
             $booked_days_with_percents_info = [];
@@ -320,7 +312,7 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
                         $current_date_range_to   = new DateTime($current_date_range_info['to']);
 
                         // The case, when booked start date exists between dates of current Season.
-                        if ($from_date_obj >= $current_date_range_from && $from_date_obj <= $current_date_range_to) {
+                        if ($from_date_obj_increasable >= $current_date_range_from && $from_date_obj_increasable <= $current_date_range_to) {
                             if ($season_info['discount_mode']['mode'] === 'always') {
                                 $percent = $season_info['discount_mode']['always_percent'] ?? $percent;
                             } else {
@@ -391,15 +383,6 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
                 }
             }
         }
-
-//    var_dump(22222222);
-//    var_dump($discount_months_diff);
-//    var_dump('$percent is..... ' . $percent);
-//    var_dump($booked_days_info);
-//    var_dump($from_date_converted);
-//    var_dump($to_date_converted);
-//    var_dump($necessarily_timeshare_price_calc_data);
-//    exit;
     } catch (Exception|Error $e) {
         wp_die('Error: ' . $e->getMessage());
     }
@@ -408,16 +391,18 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
 }
 
 /**
+ * Calculate new price
+ *
+ * @param float $discount_percent
  * @param float $price
  * @param string $from_date
  * @param string $to_date
  * @param bool $calc_by_force
  *
  * @return float
- * @throws Exception
  */
 function timeshare_discount_price_calc(
-    $discount_percent,
+    float $discount_percent,
     float $price,
     string $from_date,
     string $to_date,
@@ -726,30 +711,42 @@ function get_reservation_grouped_array_by_group_id(int $group_id): array
     return [];
 }
 
+/**
+ * @param string $billing_for
+ * @param string $type
+ * @param int $pack_id
+ * @param string $date
+ * @param int $user_id
+ * @param string $is_featured
+ * @param string $is_upgrade
+ * @param string $paypal_tax_id
+ * @param array $details
+ * @param float $price
+ * @param int $author_id
+ *
+ * @return int|WP_Error
+ */
 function wpestate_booking_insert_invoice(
-    $billing_for,
-    $type,
-    $pack_id,
-    $date,
-    $user_id,
-    $is_featured,
-    $is_upgrade,
-    $paypal_tax_id,
-    $details,
-    $price,
-    $author_id = ''
+    string $billing_for,
+    string $type,
+    int $pack_id,
+    string $date,
+    int $user_id,
+    string $is_featured,
+    string $is_upgrade,
+    string $paypal_tax_id,
+    array $details,
+    float $price,
+    int $author_id = 0
 ) {
-    $price = (double)round(floatval($price), 2);
-
     $post = array(
         'post_title'  => 'Invoice ',
         'post_status' => 'publish',
         'post_type'   => 'wpestate_invoice',
-
     );
 
-    if ($author_id != '') {
-        $post['post_author'] = intval($author_id);
+    if ($author_id) {
+        $post['post_author'] = $author_id;
     }
 
     $post_id = wp_insert_post($post);
@@ -763,7 +760,6 @@ function wpestate_booking_insert_invoice(
     update_post_meta($post_id, 'txn_id', '');
     update_post_meta($post_id, 'renting_details', $details);
     update_post_meta($post_id, 'invoice_status', 'issued');
-
     update_post_meta($post_id, 'invoice_percent', floatval(wprentals_get_option('wp_estate_book_down', '')));
     update_post_meta(
         $post_id,
@@ -788,9 +784,7 @@ function wpestate_booking_insert_invoice(
 
     // Retrieve Timeshare user booking data from the Session
     $timeshare_session_info = get_session_timeshare_booking_data();
-    //todo@@@
-//var_dump(111111);
-//var_dump($timeshare_session_info[$user_id][$pack_id]); exit;
+
     // Price per day after discount
     if ( ! empty($timeshare_session_info[$user_id][$pack_id]['booking_instant']['booking_array']['custom_price_array'])) {
         //Get the first value(first day price) of assoc array
@@ -824,4 +818,484 @@ function wpestate_booking_insert_invoice(
     wp_update_post($my_post);
 
     return $post_id;
+}
+
+/**
+ * Original function location is wp-content/themes/wprentals/libs/help_functions.php => wpestate_booking_price()
+ *
+ * @param int $curent_guest_no
+ * @param int $invoice_id
+ * @param int $property_id
+ * @param string $from_date
+ * @param string $to_date
+ * @param int $bookid
+ * @param $extra_options_array
+ * @param $manual_expenses
+ *
+ * @return array
+ * @throws Exception
+ */
+function wpestate_booking_price(
+    int $curent_guest_no,
+    int $invoice_id,
+    int $property_id,
+    string $from_date,
+    string $to_date,
+    int $bookid = 0,
+    // Not declared to avoid issues. Bug in parent theme maybe coming a string, but correct is array
+    $extra_options_array = [],
+    // Not declared to avoid issues. Bug in parent theme maybe coming a string, but correct is array
+    $manual_expenses = []
+): array {
+    // Try to get booking_full_data from DB.
+    $booking_full_data = json_decode(get_post_meta($invoice_id, 'booking_full_data', true), true);
+
+    // The case when booking process successfully finished and created an invoice
+    if ( ! empty($booking_full_data['booking_instant_data']['make_the_book']['booking_array'])) {
+        // Retrieve and return the booking_array
+        return $booking_full_data['booking_instant_data']['make_the_book']['booking_array'];
+    }
+
+    $wprentals_is_per_hour = wprentals_return_booking_type($property_id);
+    $price_array           = wpml_custom_price_adjust($property_id);
+    $mega                  = wpml_mega_details_adjust($property_id);
+    $price_per_weekeend    = floatval(get_post_meta($property_id, 'price_per_weekeend', true));
+    $setup_weekend_status  = esc_html(wprentals_get_option('wp_estate_setup_weekend', ''));
+    $include_expeses       = esc_html(wprentals_get_option('wp_estate_include_expenses', ''));
+    $booking_from_date     = $from_date;
+    $booking_to_date       = $to_date;
+    $total_guests          = floatval(get_post_meta($bookid, 'booking_guests', true));
+    $classic_period_days   = wprentals_return_standart_days_period();
+
+    $numberDays = 1;
+    if ($invoice_id == 0) {
+        $price_per_day        = floatval(get_post_meta($property_id, 'property_price', true));
+        $week_price           = floatval(get_post_meta($property_id, 'property_price_per_week', true));
+        $month_price          = floatval(get_post_meta($property_id, 'property_price_per_month', true));
+        $cleaning_fee         = floatval(get_post_meta($property_id, 'cleaning_fee', true));
+        $city_fee             = floatval(get_post_meta($property_id, 'city_fee', true));
+        $cleaning_fee_per_day = floatval(get_post_meta($property_id, 'cleaning_fee_per_day', true));
+        $city_fee_per_day     = floatval(get_post_meta($property_id, 'city_fee_per_day', true));
+        $city_fee_percent     = floatval(get_post_meta($property_id, 'city_fee_percent', true));
+        $security_deposit     = floatval(get_post_meta($property_id, 'security_deposit', true));
+        $early_bird_percent   = floatval(get_post_meta($property_id, 'early_bird_percent', true));
+        $early_bird_days      = floatval(get_post_meta($property_id, 'early_bird_days', true));
+    } else {
+        $price_per_day        = floatval(get_post_meta($invoice_id, 'default_price', true));
+        $week_price           = floatval(get_post_meta($invoice_id, 'week_price', true));
+        $month_price          = floatval(get_post_meta($invoice_id, 'month_price', true));
+        $cleaning_fee         = floatval(get_post_meta($invoice_id, 'cleaning_fee', true));
+        $city_fee             = floatval(get_post_meta($invoice_id, 'city_fee', true));
+        $cleaning_fee_per_day = floatval(get_post_meta($invoice_id, 'cleaning_fee_per_day', true));
+        $city_fee_per_day     = floatval(get_post_meta($invoice_id, 'city_fee_per_day', true));
+        $city_fee_percent     = floatval(get_post_meta($invoice_id, 'city_fee_percent', true));
+        $security_deposit     = floatval(get_post_meta($invoice_id, 'security_deposit', true));
+        $early_bird_percent   = floatval(get_post_meta($invoice_id, 'early_bird_percent', true));
+        $early_bird_days      = floatval(get_post_meta($invoice_id, 'early_bird_days', true));
+    }
+
+    $from_date_obj = new DateTime($booking_from_date);
+    // Duplicated the new DateTime($booking_from_date) to avoid issues after using wprentals_increase_time_unit()
+    $from_date_obj_increasable = new DateTime($booking_from_date);
+    $from_date_unix            = $from_date_obj_increasable->getTimestamp();
+    $date_checker              = strtotime(date("Y-m-d 00:00", $from_date_unix));
+    $from_date_discount        = $from_date_obj_increasable->getTimestamp();
+    $to_date_obj               = new DateTime($booking_to_date);
+    $to_date_unix              = $to_date_obj->getTimestamp();
+    $total_price               = 0;
+    $inter_price               = 0;
+    $has_custom                = 0;
+    $usable_price              = 0;
+    $has_wkend_price           = 0;
+    $cover_weekend             = 0;
+    $custom_period_quest       = 0;
+    $custom_price_array        = array();
+    $timeDiff                  = abs(strtotime($booking_to_date) - strtotime($booking_from_date));
+
+    if ($wprentals_is_per_hour == 2) {
+        //per h
+        $count_days = wprentals_compute_no_of_hours($booking_from_date, $booking_to_date, $property_id);
+    } else {
+        //per day
+        $count_days = $timeDiff / 86400;  // 86400 seconds in one day
+    }
+
+    $count_days = intval($count_days);
+
+    //check extra price per guest
+    ///////////////////////////////////////////////////////////////////////////
+    $extra_price_per_guest       = floatval(get_post_meta($property_id, 'extra_price_per_guest', true));
+    $price_per_guest_from_one    = floatval(get_post_meta($property_id, 'price_per_guest_from_one', true));
+    $overload_guest              = floatval(get_post_meta($property_id, 'overload_guest', true));
+    $guestnumber                 = floatval(get_post_meta($property_id, 'guest_no', true));
+    $booking_start_hour_string   = get_post_meta($property_id, 'booking_start_hour', true);
+    $booking_end_hour_string     = get_post_meta($property_id, 'booking_end_hour', true);
+    $booking_start_hour          = intval($booking_start_hour_string);
+    $booking_end_hour            = intval($booking_end_hour_string);
+    $has_guest_overload          = 0;
+    $total_extra_price_per_guest = 0;
+    $extra_guests                = 0;
+
+    if ($price_per_guest_from_one == 0) {
+        ///////////////////////////////////////////////////////////////
+        //  per day math
+        ////////////////////////////////////////////////////////////////
+        //period_price_per_month,period_price_per_week
+        //discoutn prices for month and week
+        ///////////////////////////////////////////////////////////////////////////
+        if ($count_days >= $classic_period_days['week_days'] && $week_price != 0) { // if more than 7 days booked
+            $price_per_day = $week_price;
+        }
+
+        if ($count_days >= $classic_period_days['month_days'] && $month_price != 0) {
+            $price_per_day = $month_price;
+        }
+
+        //custom prices - check the first day
+        ///////////////////////////////////////////////////////////////////////////
+        if (isset($price_array[$date_checker])) {
+            $has_custom                         = 1;
+            $custom_price_array [$date_checker] = $price_array[$date_checker];
+        }
+
+        if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend']) && $mega[$date_checker]['period_price_per_weekeend'] != 0) {
+            $has_wkend_price = 1;
+        }
+
+        if ($overload_guest == 1) {  // if we allow overload
+            if ($curent_guest_no > $guestnumber) {
+                $has_guest_overload = 1;
+                $extra_guests       = $curent_guest_no - $guestnumber;
+                if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend'])) {
+                    $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $custom_period_quest         = 1;
+                } else {
+                    $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $extra_price_per_guest;
+                }
+            }
+        }
+
+        if ($price_per_weekeend != 0) {
+            $has_wkend_price = 1;
+        }
+
+        $usable_price = wpestate_return_custom_price(
+            $date_checker,
+            $mega,
+            $price_per_weekeend,
+            $price_array,
+            $price_per_day,
+            $count_days
+        );
+        $total_price  = $total_price + $usable_price;
+
+        $inter_price                        = $inter_price + $usable_price;
+        $custom_price_array [$date_checker] = $usable_price;
+        $from_date_unix_first_day           = $from_date_obj_increasable->getTimestamp();
+        $from_date_obj_increasable          = wprentals_increase_time_unit(
+            $wprentals_is_per_hour,
+            $from_date_obj_increasable
+        );
+        $from_date_unix                     = $from_date_obj_increasable->getTimestamp();
+        $date_checker                       = strtotime(date("Y-m-d 00:00", $from_date_unix));
+        $weekday                            = date('N', $from_date_unix_first_day); // 1-7
+        if (wpestate_is_cover_weekend($weekday, $has_wkend_price, $setup_weekend_status)) {
+            $cover_weekend = 1;
+        }
+
+        // loop trough the dates
+        //////////////////////////////////////////////////////////////////////////
+        while ($from_date_unix < $to_date_unix) {
+            $skip_a_beat = 1;
+            if ($wprentals_is_per_hour == 2) { //is per h
+                $current_hour = $from_date_obj_increasable->format('H');
+
+                if ($booking_start_hour_string == '' && $booking_end_hour_string == '') {
+                    $skip_a_beat = 1;
+                } else {
+                    if ($booking_end_hour > $current_hour && $booking_start_hour <= $current_hour) {
+                        $skip_a_beat = 1;
+                    } else {
+                        $skip_a_beat = 0;
+                    }
+                }
+            }
+
+            if ($skip_a_beat == 1) {
+                $numberDays++;
+                if (isset($price_array[$date_checker])) {
+                    $has_custom = 1;
+                }
+
+                if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend']) && $mega[$date_checker]['period_price_per_weekeend'] != 0) {
+                    $has_wkend_price = 1;
+                }
+
+                if ($overload_guest == 1) {  // if we allow overload
+                    if ($curent_guest_no > $guestnumber) {
+                        $has_guest_overload = 1;
+                        $extra_guests       = $curent_guest_no - $guestnumber;
+                        if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend'])) {
+                            $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $mega[$date_checker]['period_extra_price_per_guest'];
+                            $custom_period_quest         = 1;
+                        } else {
+                            $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $extra_price_per_guest;
+                        }
+                    }
+                }
+
+                if ($price_per_weekeend != 0) {
+                    $has_wkend_price = 1;
+                }
+
+
+                $weekday = date('N', $from_date_unix); // 1-7
+                if (wpestate_is_cover_weekend($weekday, $has_wkend_price, $setup_weekend_status)) {
+                    $cover_weekend = 1;
+                }
+
+                $usable_price = wpestate_return_custom_price(
+                    $date_checker,
+                    $mega,
+                    $price_per_weekeend,
+                    $price_array,
+                    $price_per_day,
+                    $count_days
+                );
+                $total_price  = $total_price + $usable_price;
+
+                $inter_price                        = $inter_price + $usable_price;
+                $custom_price_array [$date_checker] = $usable_price;
+            }//end skip a beat
+
+
+            $from_date_obj_increasable = wprentals_increase_time_unit(
+                $wprentals_is_per_hour,
+                $from_date_obj_increasable
+            );
+            $from_date_unix            = $from_date_obj_increasable->getTimestamp();
+            $date_checker              = strtotime(date("Y-m-d 00:00", $from_date_unix));
+        }
+    } else {
+        $custom_period_quest = 0;
+
+        ///////////////////////////////////////////////////////////////
+        //  per guest math
+        ////////////////////////////////////////////////////////////////
+
+        if (isset($mega[$date_checker]['period_extra_price_per_guest'])) {
+            $total_price                        = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $inter_price                        = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $custom_price_array [$date_checker] = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $custom_period_quest                = 1;
+        } else {
+            $total_price = $curent_guest_no * $extra_price_per_guest;
+            $inter_price = $curent_guest_no * $extra_price_per_guest;
+        }
+
+        $from_date_obj_increasable = wprentals_increase_time_unit($wprentals_is_per_hour, $from_date_obj_increasable);
+        $from_date_unix            = $from_date_obj_increasable->getTimestamp();
+        $date_checker              = strtotime(date("Y-m-d 00:00", $from_date_unix));
+
+        while ($from_date_unix < $to_date_unix) {
+            $skip_a_beat = 1;
+            if ($wprentals_is_per_hour == 2) { //is per h
+                $current_hour = $from_date_obj_increasable->format('H');
+
+                if ($booking_start_hour_string == '' && $booking_end_hour_string == '') {
+                    $skip_a_beat = 1;
+                } else {
+                    if ($booking_end_hour > $current_hour && $booking_start_hour <= $current_hour) {
+                        $skip_a_beat = 1;
+                    } else {
+                        $skip_a_beat = 0;
+                    }
+                }
+            }
+
+            if ($skip_a_beat == 1) {
+                $numberDays++;
+
+                if (isset($mega[$date_checker]['period_extra_price_per_guest'])) {
+                    $total_price                        = $total_price + $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $inter_price                        = $inter_price + $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $custom_price_array [$date_checker] = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+
+
+                    $custom_period_quest = 1;
+                } else {
+                    $total_price = $total_price + $curent_guest_no * $extra_price_per_guest;
+                    $inter_price = $inter_price + $curent_guest_no * $extra_price_per_guest;
+                }
+            }
+
+            $from_date_obj_increasable = wprentals_increase_time_unit(
+                $wprentals_is_per_hour,
+                $from_date_obj_increasable
+            );
+            $from_date_unix            = $from_date_obj_increasable->getTimestamp();
+
+            if ($wprentals_is_per_hour != 2) {
+                $date_checker = $from_date_obj_increasable->getTimestamp();
+            }
+        }
+    }// end per guest math
+
+    $wp_estate_book_down           = floatval(wprentals_get_option('wp_estate_book_down', ''));
+    $wp_estate_book_down_fixed_fee = floatval(wprentals_get_option('wp_estate_book_down_fixed_fee', ''));
+
+    if (is_array($extra_options_array) && ! empty($extra_options_array)) {
+        $extra_pay_options = get_post_meta($property_id, 'extra_pay_options', true);
+
+        foreach ($extra_options_array as $key => $value) {
+            if (isset($extra_pay_options[$value][0])) {
+                $extra_option_value = wpestate_calculate_extra_options_value(
+                    $count_days,
+                    $total_guests,
+                    $extra_pay_options[$value][2],
+                    $extra_pay_options[$value][1]
+                );
+                $total_price        = $total_price + $extra_option_value;
+            }
+        }
+    }
+
+    if (is_array($manual_expenses) && ! empty($manual_expenses)) {
+        foreach ($manual_expenses as $key => $value) {
+            if (floatval($value[1]) != 0) {
+                $total_price = $total_price + floatval($value[1]);
+            }
+        }
+    }
+
+    // extra price per guest
+    if ($has_guest_overload == 1 && $total_extra_price_per_guest > 0) {
+        $total_price = $total_price + $total_extra_price_per_guest;
+    }
+
+    //early bird discount
+    ///////////////////////////////////////////////////////////////////////////
+    $early_bird_discount = wpestate_early_bird(
+        $property_id,
+        $early_bird_percent,
+        $early_bird_days,
+        $from_date_discount,
+        $total_price
+    );
+
+    if ($early_bird_discount > 0) {
+        $total_price = $total_price - $early_bird_discount;
+    }
+
+    //security depozit - refundable
+    ///////////////////////////////////////////////////////////////////////////
+    if (intval($security_deposit) != 0) {
+        $total_price = $total_price + $security_deposit;
+    }
+
+    $total_price_before_extra = $total_price;
+
+    //cleaning or city fee per day
+    ///////////////////////////////////////////////////////////////////////////
+
+    $cleaning_fee = wpestate_calculate_cleaning_fee(
+        $property_id,
+        $count_days,
+        $curent_guest_no,
+        $cleaning_fee,
+        $cleaning_fee_per_day
+    );
+    $city_fee     = wpestate_calculate_city_fee(
+        $property_id,
+        $count_days,
+        $curent_guest_no,
+        $city_fee,
+        $city_fee_per_day,
+        $city_fee_percent,
+        $inter_price
+    );
+
+    if ($cleaning_fee != 0 && $cleaning_fee != '') {
+        $total_price = $total_price + $cleaning_fee;
+    }
+
+    if ($city_fee != 0 && $city_fee != '') {
+        $total_price = $total_price + $city_fee;
+    }
+
+    if ($invoice_id == 0) {
+        $price_for_service_fee = $total_price - $security_deposit - floatval($city_fee) - floatval($cleaning_fee);
+        $service_fee           = wpestate_calculate_service_fee($price_for_service_fee, $invoice_id);
+    } else {
+        $service_fee = get_post_meta($invoice_id, 'service_fee', true);
+    }
+
+    if ($include_expeses == 'yes') {
+        $deposit = wpestate_calculate_deposit($wp_estate_book_down, $wp_estate_book_down_fixed_fee, $total_price);
+    } else {
+        $deposit = wpestate_calculate_deposit(
+            $wp_estate_book_down,
+            $wp_estate_book_down_fixed_fee,
+            $total_price_before_extra
+        );
+    }
+
+    if (intval($invoice_id) == 0) {
+        $you_earn = $total_price - $security_deposit - floatval($city_fee) - floatval($cleaning_fee) - $service_fee;
+        update_post_meta($bookid, 'you_earn', $you_earn);
+    } else {
+        $you_earn = get_post_meta($bookid, 'you_earn', true);
+    }
+
+    $taxes = 0;
+
+    if (intval($invoice_id) == 0) {
+        $taxes_value = floatval(get_post_meta($property_id, 'property_taxes', true));
+    } else {
+        $taxes_value = floatval(get_post_meta($invoice_id, 'prop_taxed', true));
+    }
+    if ($taxes_value > 0) {
+        $taxes = round($you_earn * $taxes_value / 100, 2);
+    }
+
+    if (intval($invoice_id) == 0) {
+        update_post_meta($bookid, 'custom_price_array', $custom_price_array);
+    } else {
+        $custom_price_array = get_post_meta($bookid, 'custom_price_array', true);
+    }
+
+    $balance                                     = $total_price - $deposit;
+    $return_array                                = array();
+    $return_array['book_type']                   = $wprentals_is_per_hour;
+    $return_array['default_price']               = $price_per_day;
+    $return_array['week_price']                  = $week_price;
+    $return_array['month_price']                 = $month_price;
+    $return_array['total_price']                 = $total_price;
+    $return_array['inter_price']                 = $inter_price;
+    $return_array['balance']                     = $balance;
+    $return_array['deposit']                     = $deposit;
+    $return_array['from_date']                   = $from_date_obj;
+    $return_array['to_date']                     = $to_date_obj;
+    $return_array['cleaning_fee']                = $cleaning_fee;
+    $return_array['city_fee']                    = $city_fee;
+    $return_array['has_custom']                  = $has_custom;
+    $return_array['custom_price_array']          = $custom_price_array;
+    $return_array['numberDays']                  = $numberDays;
+    $return_array['count_days']                  = $count_days;
+    $return_array['has_wkend_price']             = $has_wkend_price;
+    $return_array['has_guest_overload']          = $has_guest_overload;
+    $return_array['total_extra_price_per_guest'] = $total_extra_price_per_guest;
+    $return_array['extra_guests']                = $extra_guests;
+    $return_array['extra_price_per_guest']       = $extra_price_per_guest;
+    $return_array['price_per_guest_from_one']    = $price_per_guest_from_one;
+    $return_array['curent_guest_no']             = $curent_guest_no;
+    $return_array['cover_weekend']               = $cover_weekend;
+    $return_array['custom_period_quest']         = $custom_period_quest;
+    $return_array['security_deposit']            = $security_deposit;
+    $return_array['early_bird_discount']         = $early_bird_discount;
+    $return_array['taxes']                       = $taxes;
+    $return_array['service_fee']                 = $service_fee;
+    $return_array['youearned']                   = $you_earn;
+
+    return $return_array;
 }
