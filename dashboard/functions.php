@@ -2,6 +2,7 @@
 
 /**
  * Handle ajax request add_action('wp_ajax_wpestate_show_confirmed_booking', 'wpestate_show_confirmed_booking' );
+ *
  * @return void
  */
 function wpestate_show_confirmed_booking(): void
