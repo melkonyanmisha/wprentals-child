@@ -48,7 +48,6 @@ function check_has_room_group(int $listing_id): bool
     return false;
 }
 
-
 /**
  * Get listing ID's in single group
  *
@@ -455,6 +454,7 @@ function timeshare_discount_price_calc(
  * Run after ajax call
  * add_action('wp_ajax_wpestate_ajax_check_booking_valability', 'wpestate_ajax_check_booking_valability' );
  * add_action('wp_ajax_nopriv_wpestate_ajax_check_booking_valability', 'wpestate_ajax_check_booking_valability' );
+ *
  * @return void
  * @throws Exception
  */
@@ -634,7 +634,7 @@ function get_group_ids_by_room_group_order(): array
             );
 
             if ($term_id) {
-                $group_ids_by_order[] = $term_id;
+                $group_ids_by_order[] = intval($term_id);
             }
         }
     }
@@ -643,20 +643,20 @@ function get_group_ids_by_room_group_order(): array
 }
 
 /**
- * Retrieve group data to book for timeshare user
+ * Retrieve rooms group data to book for timeshare user
  *
  * @param array $group_ids_by_room_group_order
  * @param int $from_date_unix
  *
  * @return array
  */
-function get_group_data_to_book(array $group_ids_by_room_group_order, int $from_date_unix): array
+function get_rooms_group_data_to_book(array $group_ids_by_room_group_order, int $from_date_unix): array
 {
-    $group_data_to_book = [];
+    $rooms_group_data_to_book = [];
 
     if ( ! empty($group_ids_by_room_group_order)) {
         foreach ($group_ids_by_room_group_order as $current_group_id) {
-            if ( ! empty($group_data_to_book)) {
+            if ( ! empty($rooms_group_data_to_book)) {
                 break;
             }
 
@@ -665,13 +665,14 @@ function get_group_data_to_book(array $group_ids_by_room_group_order, int $from_
                     break;
                 }
 
-                $group_data_to_book['group_id']    = $current_group_id;
-                $group_data_to_book['rooms_ids'][] = $room_id;
+                $rooms_group_data_to_book['group_link']  = get_term_link($current_group_id);
+                $rooms_group_data_to_book['group_id']    = $current_group_id;
+                $rooms_group_data_to_book['rooms_ids'][] = $room_id;
             }
         }
     }
 
-    return $group_data_to_book;
+    return $rooms_group_data_to_book;
 }
 
 
