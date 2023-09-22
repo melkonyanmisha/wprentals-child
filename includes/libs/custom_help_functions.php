@@ -77,7 +77,6 @@ function booking_confirmation(
     string $user_email,
     int $is_stripe = 0
 ) {
-    $is_full_pay             = 0;
     $booking_details         = array();
     $booking_status          = get_post_meta($booking_id, 'booking_status', true);
     $is_full_instant_booking = get_post_meta($booking_id, 'is_full_instant', true);
@@ -85,8 +84,6 @@ function booking_confirmation(
 
     if ($booking_status != 'confirmed') {
         update_post_meta($booking_id, 'booking_status', 'confirmed');
-
-        $booking_details['booking_status'] = 'confirmed';
     } else {
         // confirmed_paid_full
         update_post_meta($booking_id, 'booking_status_full', 'confirmed');
@@ -134,17 +131,11 @@ function booking_confirmation(
 
     // 100% deposit
     $wp_estate_book_down = floatval(get_post_meta($invoice_id, 'invoice_percent', true));
-    $invoice_price       = floatval(get_post_meta($invoice_id, 'item_price', true));
 
     if ($wp_estate_book_down == 100) {
         update_post_meta($booking_id, 'booking_status_full', 'confirmed');
-        $booking_details['booking_status_full'] = 'confirmed';
-        $booking_details['balance']             = 0;
         update_post_meta($booking_id, 'balance', 0);
-
         update_post_meta($invoice_id, 'invoice_status_full', 'confirmed');
-        $invoice_details['invoice_status_full'] = 'confirmed';
-        $invoice_details['balance']             = 0;
         update_post_meta($invoice_id, 'balance', 0);
     }
     // end 100% deposit
@@ -334,6 +325,7 @@ function wpestate_show_booking_form(
             </div>
 
             <?php
+            // Social share. May be needed in the future
 //            echo wpestate_share_unit_desing($post_id);
             ?>
 
