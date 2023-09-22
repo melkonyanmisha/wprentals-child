@@ -305,15 +305,33 @@ function update_necessary_metas($booking_full_data, $generated_invoice, $is_grou
         update_post_meta($booking_instant_data['make_the_book']['booking_id'], 'is_full_instant', 1);
     }
 
-    // Save for invoice
+    // Save in invoice
     update_post_meta($invoice_id, 'is_group_booking', $is_group_booking);
     update_post_meta($invoice_id, 'booking_full_data', json_encode($booking_full_data));
 
-    // Save for booking
+    // Save in booking request
     update_post_meta($booking_instant_data['make_the_book']['booking_id'], 'is_group_booking', $is_group_booking);
     update_post_meta(
         $booking_instant_data['make_the_book']['booking_id'],
         'booking_full_data',
         json_encode($booking_full_data)
     );
+
+    if ($is_group_booking) {
+        if ( ! empty($booking_full_data['booking_instant_rooms_group_data'])) {
+            $rooms_group_booking_id_list = [];
+
+            foreach ($booking_full_data['booking_instant_rooms_group_data'] as $booking_instant_current_room_data) {
+                // Get all other room booking ids
+                $rooms_group_booking_id_list[] = $booking_instant_current_room_data['make_the_book']['booking_id'];
+            }
+
+            if ( ! empty($rooms_group_booking_id_list)) {
+                foreach ($rooms_group_booking_id_list as $current_room_booking_id) {
+                    // To avoid issues after booking in My Bookings page
+                    update_post_meta($current_room_booking_id, 'booking_invoice_no', $invoice_id);
+                }
+            }
+        }
+    }
 }

@@ -1,12 +1,209 @@
 <?php
 /**
- * Custom Help functions for overriding the parent theme functions
+ * Custom Help functions. For customizing functions from the wprentals/libs/help_functions.php
  */
 
 
-function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_class = '', $favorite_text = '', $is_shortcode = '') {
-    $rental_type = wprentals_get_option('wp_estate_item_rental_type');
-    $guest_list = wpestate_get_guest_dropdown('noany');
+/**
+ * Works after woocommerce checkout
+ *
+ * @param int $booking_id
+ * @param int $invoice_id
+ * @param int $userId
+ * @param float $depozit
+ * @param string $user_email
+ * @param int $is_stripe
+ *
+ * @return void
+ */
+function wpestate_booking_mark_confirmed(
+    int $booking_id,
+    int $invoice_id,
+    int $userId,
+    float $depozit,
+    string $user_email,
+    int $is_stripe = 0
+): void {
+    // The case when booked the group of rooms by Timeshare user
+    if (current_user_is_timeshare() && get_post_meta($booking_id, 'is_group_booking', true)) {
+        $booking_full_data_json = get_post_meta($booking_id, 'booking_full_data', true);
+
+        if ($booking_full_data_json) {
+            $booking_full_data = json_decode($booking_full_data_json, true);
+
+            if ( ! empty($booking_full_data['booking_instant_rooms_group_data'])) {
+                $rooms_group_booking_id_list = [];
+
+                foreach ($booking_full_data['booking_instant_rooms_group_data'] as $booking_instant_current_room_data) {
+                    // Get all other room booking ids
+                    $rooms_group_booking_id_list[] = $booking_instant_current_room_data['make_the_book']['booking_id'];
+                }
+
+                if ( ! empty($rooms_group_booking_id_list)) {
+                    foreach ($rooms_group_booking_id_list as $current_room_booking_id) {
+                        booking_confirmation(
+                            $current_room_booking_id,
+                            $invoice_id,
+                            $userId,
+                            $depozit,
+                            $user_email,
+                            $is_stripe
+                        );
+                    }
+                }
+            }
+        }
+    } else {
+        // The case when booked cottages by all users or booked single rooms by Customers
+        booking_confirmation($booking_id, $invoice_id, $userId, $depozit, $user_email, $is_stripe);
+    }
+}
+
+/**
+ * @param int $booking_id
+ * @param int $invoice_id
+ * @param int $userId
+ * @param float $depozit
+ * @param string $user_email
+ * @param int $is_stripe
+ *
+ * @return void
+ */
+function booking_confirmation(
+    int $booking_id,
+    int $invoice_id,
+    int $userId,
+    float $depozit,
+    string $user_email,
+    int $is_stripe = 0
+) {
+    $is_full_pay             = 0;
+    $booking_details         = array();
+    $booking_status          = get_post_meta($booking_id, 'booking_status', true);
+    $is_full_instant_booking = get_post_meta($booking_id, 'is_full_instant', true);
+    $is_full_instant_invoice = get_post_meta($invoice_id, 'is_full_instant', true);
+
+    if ($booking_status != 'confirmed') {
+        update_post_meta($booking_id, 'booking_status', 'confirmed');
+
+        $booking_details['booking_status'] = 'confirmed';
+    } else {
+        // confirmed_paid_full
+        update_post_meta($booking_id, 'booking_status_full', 'confirmed');
+        $booking_details['booking_status_full'] = 'confirmed';
+        $booking_details['balance']             = 0;
+        update_post_meta($booking_id, 'balance', 0);
+    }
+
+    if ($is_full_instant_booking == 1) {
+        update_post_meta($booking_id, 'booking_status_full', 'confirmed');
+        $booking_details['booking_status_full'] = 'confirmed';
+        $booking_details['balance']             = 0;
+        update_post_meta($booking_id, 'balance', 0);
+    }
+
+    if ($is_stripe == 1) {
+        $depozit = ($depozit / 100);
+    }
+
+    // reservation array
+    $curent_listng_id  = get_post_meta($booking_id, 'booking_id', true);
+    $reservation_array = wpestate_get_booking_dates($curent_listng_id);
+    update_post_meta($curent_listng_id, 'booking_dates', $reservation_array);
+
+    $invoice_details = array();
+    $invoice_status  = get_post_meta($invoice_id, 'invoice_status', true);
+
+    if ($invoice_status != 'confirmed') {
+        update_post_meta($invoice_id, 'depozit_paid', $depozit);
+        update_post_meta($invoice_id, 'invoice_status', 'confirmed');
+        $invoice_details['invoice_status'] = 'confirmed';
+    } else {
+        update_post_meta($invoice_id, 'invoice_status_full', 'confirmed');
+        $invoice_details['invoice_status_full'] = 'confirmed';
+        $invoice_details['balance']             = 0;
+        update_post_meta($invoice_id, 'balance', 0);
+    }
+
+    if ($is_full_instant_invoice == 1) {
+        update_post_meta($invoice_id, 'invoice_status_full', 'confirmed');
+        $invoice_details['invoice_status_full'] = 'confirmed';
+        $invoice_details['balance']             = 0;
+        update_post_meta($invoice_id, 'balance', 0);
+    }
+
+    // 100% deposit
+    $wp_estate_book_down = floatval(get_post_meta($invoice_id, 'invoice_percent', true));
+    $invoice_price       = floatval(get_post_meta($invoice_id, 'item_price', true));
+
+    if ($wp_estate_book_down == 100) {
+        update_post_meta($booking_id, 'booking_status_full', 'confirmed');
+        $booking_details['booking_status_full'] = 'confirmed';
+        $booking_details['balance']             = 0;
+        update_post_meta($booking_id, 'balance', 0);
+
+        update_post_meta($invoice_id, 'invoice_status_full', 'confirmed');
+        $invoice_details['invoice_status_full'] = 'confirmed';
+        $invoice_details['balance']             = 0;
+        update_post_meta($invoice_id, 'balance', 0);
+    }
+    // end 100% deposit
+
+    $woo_double_check = intval(get_post_meta($booking_id, 'woo_double_check', true));
+
+    if ($woo_double_check != 1) {
+        wpestate_send_booking_email("bookingconfirmeduser", $user_email);
+
+        ob_start();
+        wpestate_generate_trip_details($curent_listng_id, $invoice_id, $booking_id, 'email');
+        $message = ob_get_contents();
+        ob_end_clean();
+
+        $wpestate_send_your_trip_show_email = wprentals_get_option('wpestate_send_your_trip_show_email', '');
+        if (class_exists('WpestateEmail') && $wpestate_send_your_trip_show_email == 'yes') {
+            $WpestateEmail = WpestateEmail::get_instance();
+            $sending_Email = $WpestateEmail->wpestate_send_email_contact(
+                $user_email,
+                esc_html__('Your Trip Details', 'wprentals'),
+                $message
+            );
+        }
+
+        $receiver_id    = wpsestate_get_author($invoice_id);
+        $receiver_email = get_the_author_meta('user_email', $receiver_id);
+        $receiver_name  = get_the_author_meta('user_login', $receiver_id);
+        wpestate_send_booking_email("bookingconfirmed", $receiver_email);
+
+        // add messages to inbox
+        $subject     = esc_html__('Booking Confirmation', 'wprentals');
+        $description = esc_html__('A booking was confirmed', 'wprentals');
+        wpestate_add_to_inbox($userId, $userId, $receiver_id, $subject, $description, 1);
+
+        //marl as email sent for woo
+        update_post_meta($booking_id, 'woo_double_check', 1);
+    }
+}
+
+/**
+ * Render booking form in single listing page
+ *
+ * @param int $post_id
+ * @param array $wpestate_options
+ * @param string $favorite_class
+ * @param string $favorite_text
+ * @param int $is_shortcode
+ *
+ * @return string
+ */
+function wpestate_show_booking_form(
+    int $post_id,
+    array $wpestate_options = [],
+    string $favorite_class = '',
+    string $favorite_text = '',
+    int $is_shortcode = 0
+): string {
+    $rental_type     = wprentals_get_option('wp_estate_item_rental_type');
+    $guest_list      = wpestate_get_guest_dropdown('noany');
     $container_class = " col-md-4 ";
 
     if (isset($wpestate_options['sidebar_class'])) {
@@ -20,25 +217,29 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
     ob_start();
     ?>
 
-    <div class="booking_form_request is_shortcode<?php echo intval($is_shortcode); ?> <?php echo esc_attr($container_class); ?>" id="booking_form_request">
+    <div class="booking_form_request is_shortcode<?php
+    echo intval($is_shortcode); ?> <?php
+    echo esc_attr($container_class); ?>" id="booking_form_request">
 
         <?php
         if (wprentals_get_option('wp_estate_replace_booking_form', '') == 'yes') {
             print '<div id="booking_form_mobile_close">&times;</div>';
             wpestate_show_contact_form($post_id);
-
-        }else{
+        } else {
             ?>
             <div id="booking_form_request_mess"></div>
             <div id="booking_form_mobile_close">&times;</div>
-            <h3 ><?php esc_html_e('Book Now', 'wprentals'); ?></h3>
+            <h3><?php
+                esc_html_e('Book Now', 'wprentals'); ?></h3>
 
             <?php
             $book_type = wprentals_return_booking_type($post_id);
             ?>
 
             <div class="has_calendar calendar_icon">
-                <input type="text" id="start_date" placeholder="<?php echo wpestate_show_labels('check_in', $rental_type); ?>"  class="form-control calendar_icon" size="40" name="start_date"
+                <input type="text" id="start_date" placeholder="<?php
+                echo wpestate_show_labels('check_in', $rental_type); ?>" class="form-control calendar_icon" size="40"
+                       name="start_date"
                        value="<?php
                        if (isset($_GET['check_in_prop']) && $book_type == 1) {
                            echo sanitize_text_field($_GET['check_in_prop']);
@@ -49,22 +250,37 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
             <?php
             if (wprentals_return_booking_type($post_id) == 2) {
                 $booking_start_hour = get_post_meta($post_id, 'booking_start_hour', true);
-                $booking_end_hour = get_post_meta($post_id, 'booking_end_hour', true);
+                $booking_end_hour   = get_post_meta($post_id, 'booking_end_hour', true);
 
-                print wprentals_show_booking_form_per_hour_dropdown('start_hour', esc_html__('Start Hour', 'wprentals'), $booking_start_hour, $booking_end_hour, '');
-                print wprentals_show_booking_form_per_hour_dropdown('end_hour', esc_html__('End Hour', 'wprentals'), $booking_start_hour, $booking_end_hour, '');
+                print wprentals_show_booking_form_per_hour_dropdown(
+                    'start_hour',
+                    esc_html__('Start Hour', 'wprentals'),
+                    $booking_start_hour,
+                    $booking_end_hour,
+                    ''
+                );
+                print wprentals_show_booking_form_per_hour_dropdown(
+                    'end_hour',
+                    esc_html__('End Hour', 'wprentals'),
+                    $booking_start_hour,
+                    $booking_end_hour,
+                    ''
+                );
             } else {
                 ?>
 
                 <div class=" has_calendar calendar_icon">
-                    <input type="text" id="end_date"  placeholder="<?php echo wpestate_show_labels('check_out', $rental_type); ?>" class="form-control calendar_icon" size="40" name="end_date"
+                    <input type="text" id="end_date" placeholder="<?php
+                    echo wpestate_show_labels('check_out', $rental_type); ?>" class="form-control calendar_icon"
+                           size="40" name="end_date"
                            value="<?php
                            if (isset($_GET['check_out_prop'])) {
                                echo sanitize_text_field($_GET['check_out_prop']);
                            }
                            ?>">
                 </div>
-            <?php } ?>
+                <?php
+            } ?>
 
             <?php
             if ($rental_type == 0) {
@@ -72,9 +288,9 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
 
                 <div class=" has_calendar guest_icon ">
                     <?php
-                    if(wprentals_get_option('wp_estate_custom_guest_control','') =='yes'){
-                        echo wpestate_show_advanced_guest_form(esc_html__('Guests','wprentals'), '',$post_id);
-                    }else{
+                    if (wprentals_get_option('wp_estate_custom_guest_control', '') == 'yes') {
+                        echo wpestate_show_advanced_guest_form(esc_html__('Guests', 'wprentals'), '', $post_id);
+                    } else {
                         echo wpestate_show_booking_form_guest_dropdown($guest_list);
                     }
                     ?>
@@ -82,7 +298,7 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
                 <?php
             } else {
                 ?>
-                <input type="hidden" name="booking_guest_no"  value="1">
+                <input type="hidden" name="booking_guest_no" value="1">
                 <?php
             }
             // show extra options
@@ -90,22 +306,29 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
             ?>
 
             <p class="full_form " id="add_costs_here"></p>
-            <input type="hidden" id="listing_edit" name="listing_edit" value="<?php print intval($post_id); ?>" />
+            <input type="hidden" id="listing_edit" name="listing_edit" value="<?php
+            print intval($post_id); ?>"/>
 
 
-            <?php wpestate_show_booking_button($post_id); ?>
+            <?php
+            wpestate_show_booking_button($post_id); ?>
 
 
             <div class="third-form-wrapper">
                 <div class="col-md-6 reservation_buttons">
-                    <div id="add_favorites" class=" <?php print esc_attr($favorite_class); ?>"  data-postid="<?php echo esc_attr($post_id); ?>">
-                        <?php print trim($favorite_text); ?>
+                    <div id="add_favorites" class=" <?php
+                    print esc_attr($favorite_class); ?>" data-postid="<?php
+                    echo esc_attr($post_id); ?>">
+                        <?php
+                        print trim($favorite_text); ?>
                     </div>
                 </div>
 
                 <div class="col-md-6 reservation_buttons">
-                    <div id="contact_host" class="col-md-6"  data-postid="<?php esc_attr($post_id); ?>">
-                        <?php esc_html_e('Contact Owner', 'wprentals'); ?>
+                    <div id="contact_host" class="col-md-6" data-postid="<?php
+                    esc_attr($post_id); ?>">
+                        <?php
+                        esc_html_e('Contact Owner', 'wprentals'); ?>
                     </div>
                 </div>
             </div>
@@ -114,31 +337,30 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
 //            echo wpestate_share_unit_desing($post_id);
             ?>
 
-        <?php } // end else?>
+            <?php
+        } // end else?>
 
     </div>
 
-
     <?php
-    /*
-     * Only for shortcode
-     *
-     *
-     * */
-    if ($is_shortcode == 1) {
 
+    // Only for shortcode
+    if ($is_shortcode == 1) {
         $ajax_nonce = wp_create_nonce("wprentals_add_booking_nonce");
         print'<input type="hidden" id="wprentals_add_booking" value="' . esc_html($ajax_nonce) . '" />';
         ?>
 
-        <div class="modal fade" id="instant_booking_modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="instant_booking_modal" tabindex="-1" aria-labelledby="myModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h2 class="modal-title_big" ><?php esc_html_e('Confirm your booking', 'wprentals'); ?></h2>
-                        <h4 class="modal-title" id="myModalLabel"><?php esc_html_e('Review the dates and confirm your booking', 'wprentals'); ?></h4>
+                        <h2 class="modal-title_big"><?php
+                            esc_html_e('Confirm your booking', 'wprentals'); ?></h2>
+                        <h4 class="modal-title" id="myModalLabel"><?php
+                            esc_html_e('Review the dates and confirm your booking', 'wprentals'); ?></h4>
                     </div>
 
                     <div class="modal-body"></div>
@@ -149,7 +371,6 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
 
         <?php
         if (isset($_GET['check_in_prop']) && isset($_GET['check_out_prop'])) {
-
             print '<script type="text/javascript">
                       //<![CDATA[
                       jQuery(document).ready(function(){
@@ -161,15 +382,10 @@ function wpestate_show_booking_form($post_id, $wpestate_options = '', $favorite_
                       //]]>
               </script>';
         }
-        ?>
-
-        <?php
     } // end for shortcode
-    ?>
 
-
-    <?php
     $return = ob_get_contents();
     ob_end_clean();
+
     return $return;
 }
