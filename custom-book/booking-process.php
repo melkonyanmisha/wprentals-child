@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * To add or remove callback functions into woocommerce hooks
+ *
+ * @return void
+ */
+function handle_woocommerce_hooks(): void
+{
+    global $wpestate_global_payments; // wp-content/plugins/wprentals-core/classes/wpestate_global_payments.php => Wpestate_Global_Payments
+
+    // The text doesn't display correctly
+    remove_filter(
+        'woocommerce_thankyou_order_received_text',
+        [$wpestate_global_payments, 'wpestate_woocommerce_thankyou_order_received_text']
+    );
+}
+
+add_action('wp_loaded', 'handle_woocommerce_hooks');
+
+/**
  *  Custom booking function. Works after ajax request
  *  add_action( 'wp_ajax_nopriv_wpestate_ajax_add_booking_instant', 'wpestate_ajax_add_booking_instant' );
  *  add_action( 'wp_ajax_wpestate_ajax_add_booking_instant', 'wpestate_ajax_add_booking_instant' );
@@ -45,13 +63,13 @@ function group_booking(string $from_date, float $discount_percent): void
     //Array of group IDs with ascending by Group Order
     $group_ids_by_room_group_order = get_group_ids_by_room_group_order();
     // Single available group by ASC order
-    $group_data_to_book = get_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
+    $rooms_group_data_to_book = get_rooms_group_data_to_book($group_ids_by_room_group_order, $from_date_unix);
 
-    if ( ! empty($group_data_to_book['rooms_ids'])) {
+    if ( ! empty($rooms_group_data_to_book['rooms_ids'])) {
         $booking_instant_rooms_group_data = [];
 
         // STEP 1 - Start booking
-        foreach ($group_data_to_book['rooms_ids'] as $room_id) {
+        foreach ($rooms_group_data_to_book['rooms_ids'] as $room_id) {
             $booking_instant_data = wpestate_child_ajax_add_booking_instant($room_id);
             if ( ! empty($booking_instant_data)) {
                 $booking_instant_rooms_group_data[] = $booking_instant_data;
@@ -125,7 +143,8 @@ function group_booking(string $from_date, float $discount_percent): void
         update_necessary_metas(
             $booking_instant_rooms_group_data_with_first_room_summarized,
             $generated_invoice_first_room,
-            true
+            true,
+            $rooms_group_data_to_book
         );
 
         // STEP 3 - Display confirmation popup
@@ -263,12 +282,12 @@ function generate_the_invoice_step(array $booking_instant_data)
 /**
  * Display booking confirmation popup
  *
- * @param $booking_instant_data
- * @param $generated_invoice
+ * @param array $booking_instant_data
+ * @param array $generated_invoice
  *
  * @return void
  */
-function display_booking_confirm_popup($booking_instant_data, $generated_invoice)
+function display_booking_confirm_popup(array $booking_instant_data, array $generated_invoice)
 {
     echo render_booking_confirm_popup(
         $generated_invoice['invoice_id'],
@@ -284,17 +303,23 @@ function display_booking_confirm_popup($booking_instant_data, $generated_invoice
 }
 
 /**
- * @param $booking_full_data
- * @param $generated_invoice
- * @param $is_group_booking //To separate group booking from a standard single booking
+ * @param array $booking_full_data
+ * @param array $generated_invoice
+ * @param bool $is_group_booking //To separate group booking from a standard single booking
+ * @param array $rooms_group_data_to_book
  *
  * @return void
  */
-function update_necessary_metas($booking_full_data, $generated_invoice, $is_group_booking)
-{
+function update_necessary_metas(
+    array $booking_full_data,
+    array $generated_invoice,
+    bool $is_group_booking,
+    array $rooms_group_data_to_book = []
+) {
     $booking_instant_data = $booking_full_data['booking_instant_data'];
+    $invoice_id           = $generated_invoice['invoice_id'];
 
-    $invoice_id = $generated_invoice['invoice_id'];
+    // ######## Start of saving data to Invoice during single room(or cottage) booking ########
 
     if ($booking_instant_data['make_the_book']['booking_array']['balance'] > 0) {
         update_post_meta($invoice_id, 'invoice_status_full', 'waiting');
@@ -305,15 +330,53 @@ function update_necessary_metas($booking_full_data, $generated_invoice, $is_grou
         update_post_meta($booking_instant_data['make_the_book']['booking_id'], 'is_full_instant', 1);
     }
 
-    // Save for invoice
     update_post_meta($invoice_id, 'is_group_booking', $is_group_booking);
     update_post_meta($invoice_id, 'booking_full_data', json_encode($booking_full_data));
 
-    // Save for booking
-    update_post_meta($booking_instant_data['make_the_book']['booking_id'], 'is_group_booking', $is_group_booking);
-    update_post_meta(
-        $booking_instant_data['make_the_book']['booking_id'],
-        'booking_full_data',
-        json_encode($booking_full_data)
-    );
+    // ######## End of saving data to Invoice during single room(or cottage) booking ########
+
+    // The case when booked rooms group by Timeshare user
+    if ($is_group_booking) {
+        // Save data of current booked rooms group in invoice
+        update_post_meta($invoice_id, 'rooms_group_data_to_book', json_encode($rooms_group_data_to_book));
+
+        if ( ! empty($booking_full_data['booking_instant_rooms_group_data'])) {
+            $rooms_group_booking_id_list = [];
+
+            foreach ($booking_full_data['booking_instant_rooms_group_data'] as $booking_instant_current_room_data) {
+                // Get all other room booking ids
+                $rooms_group_booking_id_list[] = $booking_instant_current_room_data['make_the_book']['booking_id'];
+            }
+
+            if ( ! empty($rooms_group_booking_id_list)) {
+                foreach ($rooms_group_booking_id_list as $current_room_booking_id) {
+                    update_post_meta($current_room_booking_id, 'is_group_booking', $is_group_booking);
+
+                    update_post_meta(
+                        $current_room_booking_id,
+                        'booking_full_data',
+                        json_encode($booking_full_data)
+                    );
+
+                    // Save data of current booked rooms group in booking request
+                    update_post_meta(
+                        $current_room_booking_id,
+                        'rooms_group_data_to_book',
+                        json_encode($rooms_group_data_to_book)
+                    );
+                    // To avoid issues after booking in My Bookings page
+                    update_post_meta($current_room_booking_id, 'booking_invoice_no', $invoice_id);
+                }
+            }
+        }
+    } else {
+        update_post_meta($booking_instant_data['make_the_book']['booking_id'], 'is_group_booking', $is_group_booking);
+
+        update_post_meta(
+            $booking_instant_data['make_the_book']['booking_id'],
+            'booking_full_data',
+            json_encode($booking_full_data)
+        );
+    }
+
 }

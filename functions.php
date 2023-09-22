@@ -47,16 +47,17 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make-the-book.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/render-booking-confirm-popup.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking-process.php';
 
-
 // User Dashboard
 require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/functions.php';
-
 
 // Exit if accessed directly
 if ( ! defined('ABSPATH')) {
     exit;
 }
+
 /**
+ * Enqueues child theme js and css files
+ *
  * @return void
  */
 function wprentals_child_enques(): void
@@ -336,8 +337,6 @@ function check_is_listing_page(int $post_id): bool
     return get_post_type($post_id) === 'estate_property';
 }
 
-
-
 /**
  * @return object|int|mixed|stdClass|string|WP_Term
  */
@@ -370,5 +369,3 @@ function get_group_with_max_room_group_order(): object
 
     return $term_with_max_order;
 }
-
-
