@@ -42,7 +42,7 @@ function wpestate_show_confirmed_booking(): void
  *
  * @return void
  */
-function wpestate_child_super_invoice_details(int $invoice_id, string $width_logo = ''):void
+function wpestate_child_super_invoice_details(int $invoice_id, string $width_logo = ''): void
 {
     try {
         $bookid            = esc_html(get_post_meta($invoice_id, 'item_id', true));
@@ -225,16 +225,6 @@ function wpestate_chid_print_create_form_invoice(
         } ?>
 
         <div class="invoice_table">
-            <?php
-            if ($invoice_id != 0) { ?>
-                <div id="print_invoice" data-invoice_id="<?= esc_attr($invoice_id); ?>">
-                    <i class="fas fa-print" aria-hidden="true"></i>
-                </div>
-                <input type="hidden" id="wprentals_print_invoice"
-                       value="<?= esc_attr(wp_create_nonce("wprentals_print_invoice_nonce")); ?>"/>
-                <?php
-            } ?>
-
             <div class="invoice_data">
                 <?php
                 $bookid                = get_post_meta($invoice_id, 'item_id', true);
@@ -352,10 +342,10 @@ function wpestate_chid_print_create_form_invoice(
                     }
                 }
 
-                $booking_prop = esc_html(get_post_meta($bookid, 'booking_id', true)); // property_id
-                if (intval($booking_prop) == 0) {
+                if ($booking_prop == 0) {
                     $booking_prop = get_post_meta($invoice_id, 'for_property', true);
                 }
+
                 $first_name         = get_the_author_meta('first_name', $post_author_id);
                 $last_name          = get_the_author_meta('last_name', $post_author_id);
                 $user_email         = get_the_author_meta('user_email', $post_author_id);
@@ -365,13 +355,6 @@ function wpestate_chid_print_create_form_invoice(
                 $paypal_payments_to = get_the_author_meta('paypal_payments_to', $post_author_id);
 
                 ?>
-                <span class="date_duration invoice_date_property_name_wrapper">
-                    <span class="invoice_data_legend"><?= esc_html__('Property', 'wprentals') . ':'; ?></span>
-                    <a href="<?= esc_url(get_permalink($booking_prop)); ?>" target="_blank">
-                        <?= esc_html(get_the_title($booking_prop)); ?>
-                    </a>
-                </span>
-
                 <span class="date_duration invoice_date_renter_name_wrapper">
                     <span class="invoice_data_legend">
                         <?= esc_html__('Rented by', 'wprentals') . ':'; ?>
@@ -417,7 +400,6 @@ function wpestate_chid_print_create_form_invoice(
                 </div>
 
                 <?php
-
                 if (is_array($details)) {
                     foreach ($details as $detail) {
                         if ($detail[1] != 0) { ?>

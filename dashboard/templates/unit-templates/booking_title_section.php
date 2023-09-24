@@ -1,16 +1,17 @@
 <?php
 
 /**
+ *  The template part to display booking description in My Bookings page
  *
  * @var WP_Post $post
- * @var string $booking_id
+ * @var int $booking_id
  * @var string $booking_status
  * @var string $wpestate_currency
  * @var string $wpestate_where_currency
  * @var string $author
  * @var string $user_login
- * @var string $invoice_no
- * @var string $booking_guests
+ * @var int $invoice_no
+ * @var int $booking_guests
  * @var string $event_description
  * @var string $booking_from_date
  * @var string $booking_to_date
@@ -30,6 +31,19 @@ if ($booking_status === 'confirmed') {
 $prices_to_customize = [
     'item_price' => floatval(get_post_meta($invoice_no, 'item_price', true)),
 ];
+
+$rooms_group_link = get_permalink($booking_id);
+if (current_user_is_admin()) {
+    $is_group_booking = intval(get_post_meta($post->ID, 'is_group_booking', true));
+    if ($is_group_booking) {
+        $rooms_group_data_to_book_json = get_post_meta($post->ID, 'rooms_group_data_to_book', true);
+
+        if ($rooms_group_data_to_book_json) {
+            $rooms_group_data_to_book = json_decode($rooms_group_data_to_book_json, true);
+            $rooms_group_link         = $rooms_group_data_to_book['group_link'] ?? $rooms_group_link;
+        }
+    }
+}
 ?>
 
 <div class="prop-info">
@@ -38,7 +52,7 @@ $prices_to_customize = [
         <strong>
             <?= esc_html__('for', 'wprentals'); ?>
         </strong>
-        <a href="<?= esc_url(get_permalink($booking_id)); ?>">
+        <a href="<?= esc_url($rooms_group_link); ?>" target="_blank">
             <?= get_the_title($booking_id); ?>
         </a>
     </h4>
@@ -57,7 +71,7 @@ $prices_to_customize = [
             <span class="booking_details_title">
                 <?= esc_html__('Pay Amount: ', 'wprentals'); ?>
             </span>
-            <?php
+            <?
             echo wpestate_show_price_booking(
                 floatval(get_post_meta($invoice_no, 'item_price', true)),
                 $wpestate_currency,
@@ -65,11 +79,9 @@ $prices_to_customize = [
                 1
             );
             ?>
-
             <span class="booking_details_title guest_details book_listing_user_guest_details">
                 <?= esc_html__('Guests: ', 'wprentals'); ?>
             </span>
-
             <?php
             if ($booking_guests != 0) { ?>
                 <span class="book_listing_user_guest_details">
@@ -77,7 +89,6 @@ $prices_to_customize = [
                 </span>
                 <?php
             } ?>
-
         </div>
         <?php
     }
@@ -85,7 +96,6 @@ $prices_to_customize = [
     include(locate_template('dashboard/templates/unit-templates/balance_display.php'));
 
     if ($event_description != '') { ?>
-
         <div class="user_dashboard_listed event_desc">
             <span class="booking_details_title">
                <?= esc_html__('Reservation made by owner', 'wprentals'); ?>
@@ -97,7 +107,6 @@ $prices_to_customize = [
              </span>
             <?= esc_html($event_description); ?>
         </div>
-
         <?php
     } ?>
 
