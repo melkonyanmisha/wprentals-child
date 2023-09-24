@@ -369,3 +369,21 @@ function get_group_with_max_room_group_order(): object
 
     return $term_with_max_order;
 }
+
+/**
+ *  To restrict page access by user role
+ *
+ * @param WP_Query $query
+ *
+ * @return void
+ */
+function restrict_page_access(WP_Query $query): void
+{
+    // Check if this is a Rooms Group taxonomy page. The page can only be accessed by the administrator user
+    if ( ! current_user_is_admin() && is_tax('property_action_category')) {
+        wp_redirect(home_url(), '302');
+    }
+}
+
+// Fires after the query variable object is created, but before the actual query is run.
+add_action('pre_get_posts', 'restrict_page_access');
