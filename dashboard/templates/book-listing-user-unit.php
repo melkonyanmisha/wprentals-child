@@ -75,7 +75,6 @@ if ($wpestate_where_currency == 'before') {
         include(locate_template('dashboard/templates/unit-templates/reservation_period.php'));
         ?>
     </div>
-
     <div class="col-md-2 booking_unit_owner ">
         <?php
         include(locate_template('dashboard/templates/unit-templates/booking_owner.php'));
@@ -91,16 +90,10 @@ if ($wpestate_where_currency == 'before') {
                 </span>
                 <?php
             } ?>
-
             <span class="confirmed_booking" data-invoice-confirmed="<?= esc_attr($invoice_no); ?>"
                   data-booking-confirmed="<?= esc_attr($post->ID); ?>">
                 <?= esc_html__('Invoice Details', 'wprentals'); ?>
             </span>
-            <span class="trip_details" data-invoice-confirmed="<?= esc_attr($invoice_no); ?>"
-                  data-booking-confirmed="<?= esc_attr($post->ID); ?>">
-                <?= esc_html__('Trip Details', 'wprentals'); ?>
-            </span>
-
             <?php
             if (strtotime($booking_to_date) < time()) {
                 if (get_post_meta($booking_id, 'review_by_' . $userID, true) != 'has') { ?>
@@ -140,5 +133,4 @@ if ($wpestate_where_currency == 'before') {
            <?= esc_html__('Contact Owner', 'wprentals'); ?>
        </span>
     </div>
-
 </div>
