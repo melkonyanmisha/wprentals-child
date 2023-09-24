@@ -342,16 +342,20 @@ function check_is_listing_page(int $post_id): bool
  */
 function get_group_with_max_room_group_order(): object
 {
+    $term_with_max_order = new stdClass();
+
     $args = array(
         'taxonomy'   => 'property_action_category',
         'hide_empty' => true, // Include terms with no posts assigned
         'fields'     => 'all', // Get all term data including custom meta
     );
 
-    $terms = get_terms($args);
-
+    $terms                   = get_terms($args);
     $max_current_group_order = 0;
-    $term_with_max_order     = new stdClass();
+
+    if ( ! is_array($terms) || empty($terms)) {
+        return $term_with_max_order;
+    }
 
     foreach ($terms as $term) {
         $term_order = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
@@ -368,6 +372,48 @@ function get_group_with_max_room_group_order(): object
     }
 
     return $term_with_max_order;
+}
+
+/**
+ * Get a post from rooms group which has a max group order. The post should have selected "Make it Featured" checkbox
+ *
+ * @return object|stdClass|WP_Post
+ */
+function get_featured_post_from_last_room_group(): object
+{
+    $featured_post_from_last_room_group = new stdClass();
+    $group_with_max_room_group_order    = get_group_with_max_room_group_order();
+
+    if ($group_with_max_room_group_order instanceof stdClass) {
+        return $featured_post_from_last_room_group;
+    }
+
+    $args = array(
+        'post_type'   => 'estate_property',
+        'tax_query'   => array(
+            array(
+                'taxonomy' => 'property_action_category',
+                'field'    => 'id', // Possible values 'id', 'name', or 'term_taxonomy_id'
+                'terms'    => $group_with_max_room_group_order->term_id
+            ),
+        ),
+        'meta_query'  => array(
+            array(
+                'key'     => 'prop_featured',
+                'value'   => '1', // Assuming 'yes' indicates a post is featured
+                'compare' => '=',
+            ),
+        ),
+        'numberposts' => 1, // To get only 1 post
+    );
+
+    $post_in_last_room_group = get_posts($args);
+
+    if ( ! empty($post_in_last_room_group) and $post_in_last_room_group[0] instanceof WP_Post) {
+        $featured_post_from_last_room_group = $post_in_last_room_group[0];
+    }
+
+    return $featured_post_from_last_room_group;
 }
 
 /**

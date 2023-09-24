@@ -20,14 +20,31 @@ if ($booking_status == 'confirmed') {
     $to_be_paid      = floatval(get_post_meta($post->ID, 'total_price', true));
     $to_be_paid_show = wpestate_show_price_booking($to_be_paid, $wpestate_currency, $wpestate_where_currency, 1);
 }
+
+$featured_post_title_from_last_room_group = get_the_title($booking_id);
+$featured_post_link_from_last_room_group  = get_permalink($booking_id);
+
+// Get the room data from where start to book the timeshare user
+if (current_user_is_timeshare() ) {
+    $is_group_booking = intval(get_post_meta($post->ID, 'is_group_booking', true));
+
+    if($is_group_booking){
+        $featured_post_from_last_room_group       = get_featured_post_from_last_room_group();
+
+        if($featured_post_from_last_room_group instanceof WP_Post){
+            $featured_post_title_from_last_room_group = $featured_post_from_last_room_group->post_title;
+            $featured_post_link_from_last_room_group  = get_post_permalink($featured_post_from_last_room_group->ID);
+        }
+    }
+}
 ?>
 
 <div class="prop-info">
     <h4 class="listing_title_book book_listing_user_unit_title">
         <?= esc_html__('Booking request', 'wprentals') . ' ' . $post->ID; ?>
         <strong><?= esc_html__('for', 'wprentals'); ?></strong>
-        <a href="<?= esc_url(get_permalink($booking_id)); ?>">
-            <?= get_the_title($booking_id); ?>
+        <a href="<?= esc_url($featured_post_link_from_last_room_group); ?>">
+            <?= esc_html($featured_post_title_from_last_room_group); ?>
         </a>
     </h4>
     <div class="user_dashboard_listed book_listing_user_unit_invoice">
