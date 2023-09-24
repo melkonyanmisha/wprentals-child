@@ -13,16 +13,15 @@ global $wpestate_property_unit_slider;
 global $schema_flag;
 global $current_user;
 
-$wpestate_listing_type = wprentals_get_option('wp_estate_listing_unit_type', '');
-$wpestate_page_tax     = '';
+$wpestate_listing_type         = wprentals_get_option('wp_estate_listing_unit_type', '');
+$wpestate_page_tax             = '';
+$wpestate_property_unit_slider = esc_html(wprentals_get_option('wp_estate_prop_list_slider', ''));
+$custom_categories             = [];
+$custom_groups                 = [];
+
 if ($wpestate_options['content_class'] == "col-md-12") {
     $wpestate_full_page = 1;
 }
-
-$wpestate_property_unit_slider = esc_html(wprentals_get_option('wp_estate_prop_list_slider', ''));
-
-$custom_categories = [];
-$custom_groups     = [];
 
 ob_start();
 
@@ -113,7 +112,6 @@ if (current_user_is_admin()) {
     }
 }
 
-
 $templates = ob_get_contents();
 ob_end_clean();
 wp_reset_query();
@@ -124,55 +122,47 @@ $page_template = '';
 if (isset($post->ID)) {
     $page_template = get_post_meta($post->ID, '_wp_page_template', true);
 }
-
 ?>
 
 <div class="row content-fixed" itemscope itemtype="http://schema.org/ItemList">
-
     <?php
     include(locate_template('templates/breadcrumbs.php')); ?>
-    <div class=" <?php
-    print esc_attr($wpestate_options['content_class']); ?>  ">
-
-
+    <div class="<?= esc_attr($wpestate_options['content_class']); ?>">
         <?php
-        if ( ! is_tax()) { ?>
-            <?php
-            while (have_posts()) : the_post(); ?>
-                <?php
+        if ( ! is_tax()) {
+            while (have_posts()) : the_post();
                 if (esc_html(get_post_meta($post->ID, 'page_show_title', true)) == 'yes') { ?>
                     <?php
                     if (esc_html(get_post_meta($post->ID, 'page_show_title', true)) == 'yes') {
                         if ($page_template == 'advanced_search_results.php') {
                             ?>
-                            <h1 class="entry-title title_list_prop"><?php
+                            <h1 class="entry-title title_list_prop">
+                                <?php
                                 the_title();
-                                print ': ' . esc_html($prop_selection->found_posts) . ' ' . esc_html__(
-                                        'results',
-                                        'wprentals'
-                                    ); ?></h1>
+                                echo ': ' . esc_html($prop_selection->found_posts)
+                                     . ' ' . esc_html__('results', 'wprentals');
+                                ?>
+                            </h1>
                             <?php
                         } else { ?>
-                            <h1 class="entry-title title_list_prop"><?php
-                                the_title(); ?></h1>
+                            <h1 class="entry-title title_list_prop">
+                                <?= the_title(); ?>
+                            </h1>
                             <?php
                         }
                     }
-                    ?>
-                    <?php
                 } ?>
-                <div class="single-content"><?php
-                    the_content(); ?></div>
+                <div class="single-content">
+                    <?php
+                    the_content();
+                    ?>
+                </div>
             <?php
-            endwhile; ?>
-            <?php
-        } else { ?>
-
-            <?php
+            endwhile;
+        } else {
             $term_data = get_term_by('slug', $term, $taxonmy);
             $place_id  = $term_data->term_id;
             $term_meta = get_option("taxonomy_$place_id");
-
 
             if (isset($term_meta['pagetax'])) {
                 $wpestate_page_tax = $term_meta['pagetax'];
@@ -187,7 +177,6 @@ if (isset($post->ID)) {
                 }
             }
             ?>
-
             <h1 class="entry-title title_prop">
                 <?php
                 esc_html_e('Listings in ', 'wprentals');
@@ -195,41 +184,33 @@ if (isset($post->ID)) {
                 ?>
             </h1>
             <?php
-        } ?>
+        }
 
-        <?php
         if ($property_list_type_status == 2) {
             include(locate_template('templates/advanced_search_map_list.php'));
         }
-        ?>
 
-        <!--Filters starts here-->
-        <?php
-        include(locate_template('templates/property_list_filters.php')); ?>
-        <!--Filters Ends here-->
+        // Filters starts here
+        // include(locate_template('templates/property_list_filters.php'));
 
-        <?php
+        // Filters Ends here-->
         include(locate_template('templates/compare_list.php'));
+        // Listings starts here -->
+        include(locate_template('templates/spiner.php'));
         ?>
 
-        <!-- Listings starts here -->
-        <?php
-        include(locate_template('templates/spiner.php')); ?>
         <div id="listing_ajax_container" class="row">
-            <?php
-            print trim($templates);
-            ?>
+            <?= trim($templates); ?>
         </div>
         <!-- Listings Ends  here -->
 
         <?php
-        if ($prop_selection->have_posts()):
+        if ($prop_selection->have_posts()) {
             wprentals_pagination($prop_selection->max_num_pages, $range = 2);
-        endif;
+        }
         ?>
-
     </div><!-- end 8col container-->
-
     <?php
-    include(get_theme_file_path('sidebar.php')); ?>
+    include(get_theme_file_path('sidebar.php'));
+    ?>
 </div>
