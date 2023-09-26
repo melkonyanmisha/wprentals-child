@@ -1,5 +1,10 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined('ABSPATH')) {
+    exit;
+}
+
 if ( ! defined('WPRENTALS_THEME_URL')) {
     define('WPRENTALS_THEME_URL', trailingslashit(get_template_directory_uri()));
 }
@@ -36,24 +41,21 @@ if ( ! defined('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE')) {
     define('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE', 7);
 }
 
-require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/shortcodes/recent_items_list.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'plugins/wprentals-core/post-types/property.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
+
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/shortcodes/recent_items_list.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 
 // Booking Process
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/utils.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/generate-the-invoice.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/make-the-book.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/steps/render-booking-confirm-popup.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'custom-book/booking-process.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/utils.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/generate-the-invoice.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/make-the-book.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/render-booking-confirm-popup.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/booking-process.php';
 
 // User Dashboard
 require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/functions.php';
-
-// Exit if accessed directly
-if ( ! defined('ABSPATH')) {
-    exit;
-}
 
 /**
  * Enqueues child theme js and css files
@@ -239,58 +241,6 @@ function add_custom_user_role(): void
 add_action('init', 'add_custom_user_role');
 
 /**
- * @return bool
- */
-function current_user_is_admin(): bool
-{
-    return current_user_can('administrator');
-}
-
-function current_user_is_timeshare(): bool
-{
-    return current_user_can('timeshare_user');
-}
-
-/**
- * @return int
- */
-function get_room_category_id_by_slug(): int
-{
-    $taxonomy  = 'property_category';
-    $term_slug = 'room';
-
-    $term = get_term_by('slug', $term_slug, $taxonomy);
-
-    return ! empty($term->term_id) ? $term->term_id : 0;
-}
-
-/**
- * @return int
- */
-function get_room_group_id_by_slug(): int
-{
-    $taxonomy  = 'property_action_category';
-    $term_slug = 'room';
-
-    $term = get_term_by('slug', $term_slug, $taxonomy);
-
-    return ! empty($term->term_id) ? $term->term_id : 0;
-}
-
-/**
- * @return int
- */
-function get_cottage_category_id_by_slug(): int
-{
-    $taxonomy  = 'property_category';
-    $term_slug = 'cottage';
-
-    $term = get_term_by('slug', $term_slug, $taxonomy);
-
-    return ! empty($term->term_id) ? $term->term_id : 0;
-}
-
-/**
  * Overwrite "Properties List - Properties number per page" option for Advanced Search result
  *
  * @return void
@@ -326,95 +276,6 @@ function extract_text_from_link($links): array
 //Filter for remove icon link(icon_bar_classic) from single Listing page
 add_filter('term_links-property_category', 'extract_text_from_link');
 add_filter('term_links-property_action_category', 'extract_text_from_link');
-
-/**
- * @param int $post_id
- *
- * @return bool
- */
-function check_is_listing_page(int $post_id): bool
-{
-    return get_post_type($post_id) === 'estate_property';
-}
-
-/**
- * @return object|int|mixed|stdClass|string|WP_Term
- */
-function get_group_with_max_room_group_order(): object
-{
-    $term_with_max_order = new stdClass();
-
-    $args = array(
-        'taxonomy'   => 'property_action_category',
-        'hide_empty' => true, // Include terms with no posts assigned
-        'fields'     => 'all', // Get all term data including custom meta
-    );
-
-    $terms                   = get_terms($args);
-    $max_current_group_order = 0;
-
-    if ( ! is_array($terms) || empty($terms)) {
-        return $term_with_max_order;
-    }
-
-    foreach ($terms as $term) {
-        $term_order = get_term_meta($term->term_id, ROOM_GROUP_ORDER, true);
-
-        if ($term_order && is_numeric($term_order)) {
-            $term_order = intval($term_order);
-
-            if ($term_order > $max_current_group_order) {
-                $max_current_group_order    = $term_order;
-                $term_with_max_order        = $term;
-                $term_with_max_order->order = $term_order;
-            }
-        }
-    }
-
-    return $term_with_max_order;
-}
-
-/**
- * Get a post from rooms group which has a max group order. The post should have selected "Make it Featured" checkbox
- *
- * @return object|stdClass|WP_Post
- */
-function get_featured_post_from_last_room_group(): object
-{
-    $featured_post_from_last_room_group = new stdClass();
-    $group_with_max_room_group_order    = get_group_with_max_room_group_order();
-
-    if ($group_with_max_room_group_order instanceof stdClass) {
-        return $featured_post_from_last_room_group;
-    }
-
-    $args = array(
-        'post_type'   => 'estate_property',
-        'tax_query'   => array(
-            array(
-                'taxonomy' => 'property_action_category',
-                'field'    => 'id', // Possible values 'id', 'name', or 'term_taxonomy_id'
-                'terms'    => $group_with_max_room_group_order->term_id
-            ),
-        ),
-        'meta_query'  => array(
-            array(
-                'key'     => 'prop_featured',
-                'value'   => '1', // Assuming 'yes' indicates a post is featured
-                'compare' => '=',
-            ),
-        ),
-        'numberposts' => 1, // To get only 1 post
-    );
-
-    $post_in_last_room_group = get_posts($args);
-
-    if ( ! empty($post_in_last_room_group) and $post_in_last_room_group[0] instanceof WP_Post) {
-        $featured_post_from_last_room_group = $post_in_last_room_group[0];
-    }
-
-    return $featured_post_from_last_room_group;
-}
 
 /**
  *  To restrict page access by user role

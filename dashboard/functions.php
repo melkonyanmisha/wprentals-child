@@ -400,6 +400,9 @@ function wpestate_chid_print_create_form_invoice(
                 </div>
 
                 <?php
+                // To display separately prices for accessible and remaining days. Depends on client user role
+                echo render_additional_part_of_invoice($booking_array, $rental_type, $booking_type);
+
                 if (is_array($details)) {
                     foreach ($details as $detail) {
                         if ($detail[1] != 0) { ?>

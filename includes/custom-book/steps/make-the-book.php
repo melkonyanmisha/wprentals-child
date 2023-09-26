@@ -108,13 +108,14 @@ function make_the_book(
 
     //#### Start of prices customization
     if (current_user_is_timeshare()) {
-        $booking_array['discount_percent'] = $discount_percent;
-        $booking_array['inter_price']      = timeshare_discount_price_calc(
+        $booking_array['discount_price_calc'] = timeshare_discount_price_calc(
             $discount_percent,
             floatval($booking_array['inter_price']),
             $from_date,
             $to_date
         );
+
+        $booking_array['inter_price'] = $booking_array['discount_price_calc']['calculated_price'];
 
         //Calculate separately to avoid Price calculation issues after timeshare_discount_price_calc().
         $booking_array['default_price'] = $booking_array['inter_price'] / $booked_days_count;

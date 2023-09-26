@@ -76,53 +76,22 @@ function group_booking(string $from_date, float $discount_percent): void
             }
         }
 
-        if (empty($booking_instant_rooms_group_data)) {
-            wp_die('Error: Empty $booking_instant_rooms_group_data');
-        }
-
-        // To summarize prices
-        $booking_array_summed_prices = [
-            'default_price'      => 0,
-            'total_price'        => 0,
-            'inter_price'        => 0,
-            'deposit'            => 0,
-            'cleaning_fee'       => 0,
-            'city_fee'           => 0,
-            'service_fee'        => 0,
-            'youearned'          => 0,
-            'week_price'         => 0,
-            'month_price'        => 0,
-            'balance'            => 0,
-            'custom_price_array' => []
-        ];
-
-        foreach ($booking_instant_rooms_group_data as $booking_instant_current_room_data) {
-            foreach ($booking_array_summed_prices as $price_type => $price) {
-                if (isset($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
-                    // Summarize prices
-                    if ( ! is_array($price)) {
-                        $booking_array_summed_prices[$price_type] += $booking_instant_current_room_data['make_the_book']['booking_array'][$price_type];
-                    } else {
-                        // Summarize prices by per day
-                        if ($price_type === 'custom_price_array' && ! empty($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
-                            foreach ($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type] as $current_day => $current_day_price) {
-                                if (isset($booking_array_summed_prices[$price_type][$current_day])) {
-                                    $booking_array_summed_prices[$price_type][$current_day] += $current_day_price;
-                                } else {
-                                    $booking_array_summed_prices[$price_type][$current_day] = $current_day_price;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        //  Calculate summarized prices of rooms in a group
+        $booking_array_summed_prices = summarize_prices_group_booking(
+            $booking_instant_rooms_group_data
+        );
 
         $booking_instant_data_first_room_summarized                                   = $booking_instant_rooms_group_data[0];
         $booking_instant_data_first_room_summarized['make_the_book']['booking_array'] = array_merge(
             $booking_instant_rooms_group_data[0]['make_the_book']['booking_array'],
             $booking_array_summed_prices
         );
+
+        // Calculate summarized discounted prices of rooms in a group
+        $booking_instant_data_first_room_summarized['make_the_book']['booking_array']['discount_price_calc'] = summarize_discount_price_calc_group_booking(
+            $booking_instant_rooms_group_data
+        );
+
 
         // Set Timeshare user booking data into the SESSION
         set_session_timeshare_booking_data(
@@ -150,6 +119,97 @@ function group_booking(string $from_date, float $discount_percent): void
         // STEP 3 - Display confirmation popup
         display_booking_confirm_popup($booking_instant_data_first_room_summarized, $generated_invoice_first_room);
     }
+}
+
+/**
+ * Calculate summarized prices of rooms in a group
+ *
+ * @param array $booking_instant_rooms_group_data
+ *
+ * @return array
+ */
+function summarize_prices_group_booking(array $booking_instant_rooms_group_data): array
+{
+    if (empty($booking_instant_rooms_group_data)) {
+        wp_die('Error: Empty $booking_instant_rooms_group_data');
+    }
+
+    // Array to summarize prices
+    $booking_array_summed_prices = [
+        'default_price'      => 0,
+        'total_price'        => 0,
+        'inter_price'        => 0,
+        'deposit'            => 0,
+        'cleaning_fee'       => 0,
+        'city_fee'           => 0,
+        'service_fee'        => 0,
+        'youearned'          => 0,
+        'week_price'         => 0,
+        'month_price'        => 0,
+        'balance'            => 0,
+        'custom_price_array' => []
+    ];
+
+    foreach ($booking_instant_rooms_group_data as $booking_instant_current_room_data) {
+        foreach ($booking_array_summed_prices as $price_type => $price) {
+            if (isset($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
+                if ($price_type === 'custom_price_array') {
+                    // Summarize prices by per day.
+                    if ( ! empty($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type])) {
+                        foreach ($booking_instant_current_room_data['make_the_book']['booking_array'][$price_type] as $current_day => $current_day_price) {
+                            if (isset($booking_array_summed_prices[$price_type][$current_day])) {
+                                $booking_array_summed_prices[$price_type][$current_day] += $current_day_price;
+                            } else {
+                                $booking_array_summed_prices[$price_type][$current_day] = $current_day_price;
+                            }
+                        }
+                    }
+                } else {
+                    // Summarize all another prices
+                    $booking_array_summed_prices[$price_type] += $booking_instant_current_room_data['make_the_book']['booking_array'][$price_type];
+                }
+            }
+        }
+    }
+
+    return $booking_array_summed_prices;
+}
+
+/**
+ * Calculate summarized discounted prices of rooms in a group
+ *
+ * @param array $booking_instant_rooms_group_data
+ *
+ * @return array
+ */
+function summarize_discount_price_calc_group_booking(array $booking_instant_rooms_group_data): array
+{
+    if (empty($booking_instant_rooms_group_data)) {
+        wp_die('Error: Empty $booking_instant_rooms_group_data');
+    }
+
+    $discount_price_calc = [];
+
+    // Get initial data from first room
+    $first_room_key = 0;
+    if ( ! empty($booking_instant_rooms_group_data[$first_room_key]['make_the_book']['booking_array']['discount_price_calc'])) {
+        $discount_price_calc = $booking_instant_rooms_group_data[$first_room_key]['make_the_book']['booking_array']['discount_price_calc'];
+    }
+
+    foreach ($booking_instant_rooms_group_data as $key => $booking_instant_current_room_data) {
+        if ($first_room_key !== $key && ! empty($booking_instant_current_room_data['make_the_book']['booking_array']['discount_price_calc'])) {
+            $current_room_discount_price_calc = $booking_instant_current_room_data['make_the_book']['booking_array']['discount_price_calc'];
+
+            $discount_price_calc['calculated_price'] += $current_room_discount_price_calc['calculated_price'];
+
+            if ( ! empty($current_room_discount_price_calc['timeshare_user_calc'])) {
+                $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'] += $current_room_discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'];
+                $discount_price_calc['timeshare_user_calc']['remaining_days_price']                 += $current_room_discount_price_calc['timeshare_user_calc']['remaining_days_price'];
+            }
+        }
+    }
+
+    return $discount_price_calc;
 }
 
 /**
@@ -378,5 +438,4 @@ function update_necessary_metas(
             json_encode($booking_full_data)
         );
     }
-
 }

@@ -1,145 +1,6 @@
 <?php
 
 /**
- * @param int $listing_id
- *
- * @return bool
- */
-function check_has_room_category(int $listing_id): bool
-{
-    $category_terms            = wp_get_post_terms($listing_id, 'property_category');
-    $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
-
-    if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
-        foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
-            $current_category_parent_term  = get_term($current_category_parent_term_id, 'property_category');
-            $category_parent_terms_slugs[] = $current_category_parent_term->slug;
-        }
-
-        if (in_array('room', $category_parent_terms_slugs)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
- * @param int $listing_id
- *
- * @return bool
- */
-function check_has_room_group(int $listing_id): bool
-{
-    $category_terms            = wp_get_post_terms($listing_id, 'property_action_category');
-    $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
-
-    if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
-        foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
-            $current_category_parent_term  = get_term($current_category_parent_term_id, 'property_action_category');
-            $category_parent_terms_slugs[] = $current_category_parent_term->slug;
-        }
-
-        if (in_array('room-group', $category_parent_terms_slugs)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
- * Get listing ID's in single group
- *
- * @param int $listing_id
- *
- * @return array
- */
-function get_all_listings_ids_in_group(int $listing_id): array
-{
-    $all_listings_ids_in_group = [];
-    $all_listings_in_group     = get_all_listings_in_group($listing_id);
-
-    if ( ! empty($all_listings_in_group)) {
-        foreach ($all_listings_in_group as $current_listing) {
-            $all_listings_ids_in_group[] = $current_listing->ID;
-        }
-    }
-
-    return $all_listings_ids_in_group;
-}
-
-/**
- * @param int $listing_id
- *
- * @return array
- */
-function get_all_listings_in_group(int $listing_id): array
-{
-    // Get the taxonomy Group terms for the current post
-    $group_terms = wp_get_post_terms($listing_id, 'property_action_category');
-
-    if ( ! empty($group_terms)) {
-        $group_terms_ids = wp_list_pluck($group_terms, 'term_id');
-        $args            = array(
-            'post_type'      => 'estate_property',
-            'posts_per_page' => -1, // Retrieve all posts
-            'tax_query'      => array(
-                array(
-                    'taxonomy' => 'property_action_category',
-                    'field'    => 'id',
-                    'terms'    => $group_terms_ids,
-                    'operator' => 'IN',
-                ),
-            ),
-        );
-
-        return get_posts($args);
-    }
-
-    return [];
-}
-
-/**
- * Retrieve reservation data for all listings in current group
- *
- * @param array $all_listings_ids_in_group
- *
- * @return array
- */
-function get_reservation_grouped_array(array $all_listings_ids_in_group): array
-{
-    $reservation_grouped_array = [];
-    if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
-        foreach ($all_listings_ids_in_group as $current_listings_id) {
-            $reservation_grouped_array[$current_listings_id] = get_post_meta(
-                $current_listings_id,
-                'booking_dates',
-                true
-            );
-
-            if ($reservation_grouped_array[$current_listings_id] == '') {
-                $reservation_grouped_array[$current_listings_id] = wpestate_get_booking_dates($current_listings_id);
-            }
-        }
-    }
-
-    return $reservation_grouped_array;
-}
-
-/**
- * Convert date to necessarily format. Example 1970-01-01
- *
- * @param string $dateString
- *
- * @return string
- */
-function convert_date_format(string $dateString): string
-{
-    return date('Y-m-d', strtotime($dateString));
-}
-
-/**
  * Returns the key of month difference
  * Depends on the difference between the booking start day and the current day.
  *
@@ -248,16 +109,6 @@ function generateBookedDaysInfo(string $from_date_converted, string $to_date_con
 
     return $week_days_list;
 }
-
-//get_discount_percent('24-02-04', '24-02-25');
-//todo@@@@ need remove..... year mont day
-
-//get_discount_percent('24-10-01', '24-10-20');
-
-//get_discount_percent('24-10-01', '24-10-05');
-
-//for special
-//get_discount_percent('24-12-31', '25-01-16');
 
 /**
  * Retrieve calculated price
@@ -390,32 +241,32 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
 }
 
 /**
- * Calculate new price
+ * Calculate new price. Depends on discount percent
  *
  * @param float $discount_percent
  * @param float $price
  * @param string $from_date
  * @param string $to_date
- * @param bool $calc_by_force
  *
- * @return float
+ * @return array
  */
 function timeshare_discount_price_calc(
     float $discount_percent,
     float $price,
     string $from_date,
-    string $to_date,
-    bool $calc_by_force = false
-): float {
+    string $to_date
+): array {
     try {
-        if ($price == 0) {
-            return $price;
-        }
+        $current_user_is_timeshare = current_user_is_timeshare();
+        $discount_price_calc       = [
+            'booked_by_timeshare_user' => $current_user_is_timeshare,
+            'calculated_price'         => $price,
+            'timeshare_user_calc'      => [],
+        ];
 
-        // Calculation available during booking by timeshare users and in dashboards of administrator and timeshare user.
-        // $calc_by_force used by administrators to show customized price in "My Bookings" page
-        if ( ! $calc_by_force && ! current_user_is_timeshare()) {
-            return $price;
+        // New calculation accessible for booking by timeshare users.
+        if ($price == 0 || ! $current_user_is_timeshare) {
+            return $discount_price_calc;
         }
 
         $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
@@ -428,25 +279,46 @@ function timeshare_discount_price_calc(
 
         // Case when trying to book less than a timeshare package duration
         if ($timeshare_package_duration >= $booked_days_count) {
-            $price = $price * $discount_percent / 100;
+            $accessible_days_count = $booked_days_count;
+            $calculated_price      = $price * $discount_percent / 100;
+
+            $discount_price_calc['calculated_price']    = $calculated_price;
+            $discount_price_calc['timeshare_user_calc'] = [
+                'discount_percent'                     => $discount_percent,
+                'timeshare_package_duration'           => $timeshare_package_duration,
+                'accessible_days_count'                => $accessible_days_count,
+                'discounted_price_for_accessible_days' => $calculated_price,
+                'remaining_days_count'                 => 0,
+                'remaining_days_price'                 => 0,
+            ];
         } else {
+            $accessible_days_count = $timeshare_package_duration;
             // Divide price calculation by part
             $price_per_day_before_discount = $price / $booked_days_count;
-
-            // Price for Timeshare user depends on available days of package duration
-            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
+            // Price for Timeshare user depends on accessible days of package duration
+            $discounted_price_for_accessible_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
 
             $remaining_days_count = $booked_days_count - $timeshare_package_duration;
             // Calculate as for a standard user(Customer)
             $remaining_days_price = $price_per_day_before_discount * $remaining_days_count;
             // Calculated Total Price
-            $price = $discounted_price_by_available_days + $remaining_days_price;
+            $calculated_price = $discounted_price_for_accessible_days + $remaining_days_price;
+
+            $discount_price_calc['calculated_price']    = $calculated_price;
+            $discount_price_calc['timeshare_user_calc'] = [
+                'discount_percent'                     => $discount_percent,
+                'timeshare_package_duration'           => $timeshare_package_duration,
+                'accessible_days_count'                => $accessible_days_count,
+                'discounted_price_for_accessible_days' => $discounted_price_for_accessible_days,
+                'remaining_days_count'                 => $remaining_days_count,
+                'remaining_days_price'                 => $remaining_days_price,
+            ];
         }
     } catch (Exception|Error $e) {
         wp_die('Error: ' . $e->getMessage());
     }
 
-    return ceil($price);
+    return $discount_price_calc;
 }
 
 /**
@@ -607,7 +479,6 @@ function wpestate_ajax_check_booking_valability(): void
     die();
 }
 
-
 /**
  * Get array of group IDs with ascending by Group Order
  *
@@ -674,7 +545,6 @@ function get_rooms_group_data_to_book(array $group_ids_by_room_group_order, int 
 
     return $rooms_group_data_to_book;
 }
-
 
 /**
  * Retrieve reservation data for all listings by Group ID
