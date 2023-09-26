@@ -243,6 +243,11 @@ function render_booking_confirm_popup(
                     <span class="inv_exp"><?= esc_html__('Detail', 'wprentals'); ?></span>
                 </div>
 
+                <?php
+                // To display separately prices for accessible and remaining days. Depends on client user role
+                echo render_additional_part_of_invoice($booking_array, $rental_type, $booking_type);
+                ?>
+
                 <div class="invoice_row invoice_content">
                     <span class="inv_legend"><?= esc_html__('Subtotal', 'wprentals'); ?></span>
                     <span class="inv_data"><?= $inter_price_show; ?></span>

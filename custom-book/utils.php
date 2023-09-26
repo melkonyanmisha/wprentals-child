@@ -390,32 +390,33 @@ function get_discount_percent(string $from_date, string $to_date, bool $force = 
 }
 
 /**
- * Calculate new price
+ * Calculate new price. Depends on discount percent
  *
  * @param float $discount_percent
  * @param float $price
  * @param string $from_date
  * @param string $to_date
- * @param bool $calc_by_force
  *
- * @return float
+ * @return array
  */
 function timeshare_discount_price_calc(
     float $discount_percent,
     float $price,
     string $from_date,
-    string $to_date,
-    bool $calc_by_force = false
-): float {
+    string $to_date
+): array {
     try {
-        if ($price == 0) {
-            return $price;
-        }
+        $current_user_is_timeshare = current_user_is_timeshare();
 
-        // Calculation available during booking by timeshare users and in dashboards of administrator and timeshare user.
-        // $calc_by_force used by administrators to show customized price in "My Bookings" page
-        if ( ! $calc_by_force && ! current_user_is_timeshare()) {
-            return $price;
+        $discount_price_calc = [
+            'booked_by_timeshare_user' => $current_user_is_timeshare,
+            'timeshare_user_calc'      => [],
+            'total_price'              => $price
+        ];
+
+        // New calculation accessible for booking by timeshare users.
+        if ($price == 0 || ! $current_user_is_timeshare) {
+            return $discount_price_calc;
         }
 
         $timeshare_user_data_encoded = get_user_meta(get_current_user_id(), TIMESHARE_USER_DATA);
@@ -428,25 +429,49 @@ function timeshare_discount_price_calc(
 
         // Case when trying to book less than a timeshare package duration
         if ($timeshare_package_duration >= $booked_days_count) {
-            $price = $price * $discount_percent / 100;
+            $accessible_days_count = $booked_days_count;
+            $total_price           = $price * $discount_percent / 100;
+
+            $discount_price_calc['timeshare_user_calc'] = [
+                'discount_percent'                     => $discount_percent,
+                'timeshare_package_duration'           => $timeshare_package_duration,
+                'accessible_days_count'                => $accessible_days_count,
+                'discounted_price_for_accessible_days' => $total_price,
+                'remaining_days_count'                 => 0,
+                'remaining_days_price'                 => 0,
+            ];
+
+            $discount_price_calc['total_price'] = $total_price;
         } else {
+            $accessible_days_count = $timeshare_package_duration;
+
             // Divide price calculation by part
             $price_per_day_before_discount = $price / $booked_days_count;
 
-            // Price for Timeshare user depends on available days of package duration
-            $discounted_price_by_available_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
+            // Price for Timeshare user depends on accessible days of package duration
+            $discounted_price_for_accessible_days = $timeshare_package_duration * $price_per_day_before_discount * $discount_percent / 100;
 
             $remaining_days_count = $booked_days_count - $timeshare_package_duration;
             // Calculate as for a standard user(Customer)
             $remaining_days_price = $price_per_day_before_discount * $remaining_days_count;
             // Calculated Total Price
-            $price = $discounted_price_by_available_days + $remaining_days_price;
+            $total_price = $discounted_price_for_accessible_days + $remaining_days_price;
+
+            $discount_price_calc['timeshare_user_calc'] = [
+                'discount_percent'                     => $discount_percent,
+                'timeshare_package_duration'           => $timeshare_package_duration,
+                'accessible_days_count'                => $accessible_days_count,
+                'discounted_price_for_accessible_days' => $discounted_price_for_accessible_days,
+                'remaining_days_count'                 => $remaining_days_count,
+                'remaining_days_price'                 => $remaining_days_price,
+            ];
+            $discount_price_calc['total_price']         = $total_price;
         }
     } catch (Exception|Error $e) {
         wp_die('Error: ' . $e->getMessage());
     }
 
-    return ceil($price);
+    return $discount_price_calc;
 }
 
 /**
@@ -820,6 +845,73 @@ function wpestate_booking_insert_invoice(
 
     return $post_id;
 }
+
+/**
+ * To display separately prices for accessible and remaining days. Depends on client user role
+ *
+ * @param array $booking_array
+ * @param string $rental_type //wprentals_get_option('wp_estate_item_rental_type', '')
+ * @param string $booking_type
+ *
+ * @return string
+ */
+function render_additional_part_of_invoice(array $booking_array, string $rental_type, string $booking_type): string
+{
+    $discount_price_calc = $booking_array['discount_price_calc'];
+
+    // Start output buffering
+    ob_start();
+
+    // To display separately prices for accessible and remaining days
+    if (
+        $discount_price_calc['booked_by_timeshare_user']
+        && ! empty($discount_price_calc['timeshare_user_calc'])
+        && $discount_price_calc['timeshare_user_calc']['remaining_days_count'] > 0
+    ) {
+        $price_per_night_accessible_days = $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'] / $discount_price_calc['timeshare_user_calc']['accessible_days_count'];
+        $price_per_night_remaining_days  = $discount_price_calc['timeshare_user_calc']['remaining_days_price'] / $discount_price_calc['timeshare_user_calc']['remaining_days_count'];
+        ?>
+        <div class="invoice_row invoice_content">
+            <span class="inv_legend">
+                <?= esc_html__('Accessible days', 'wprentals-core'); ?>
+            </span>
+            <span class="inv_data">
+                <?= $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days']; ?>
+            </span>
+            <span class="inv_exp">
+                <?php
+                echo $discount_price_calc['timeshare_user_calc']['accessible_days_count']
+                     . ' '
+                     . wpestate_show_labels('nights', $rental_type, $booking_type)
+                     . ' x '
+                     . $price_per_night_accessible_days;
+                ?>
+            </span>
+        </div>
+        <div class="invoice_row invoice_content">
+            <span class="inv_legend">
+                <?= esc_html__('Remaining days', 'wprentals-core'); ?>
+            </span>
+            <span class="inv_data">
+                <?= $discount_price_calc['timeshare_user_calc']['remaining_days_price']; ?>
+            </span>
+            <span class="inv_exp">
+                <?php
+                echo $discount_price_calc['timeshare_user_calc']['remaining_days_count']
+                     . ' '
+                     . wpestate_show_labels('nights', $rental_type, $booking_type)
+                     . ' x '
+                     . $price_per_night_remaining_days;
+                ?>
+            </span>
+        </div>
+        <?php
+    }
+
+    // End output buffering
+    return ob_get_clean();
+}
+
 
 /**
  * Original function location is wp-content/themes/wprentals/libs/help_functions.php => wpestate_booking_price()
