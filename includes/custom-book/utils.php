@@ -260,8 +260,8 @@ function timeshare_discount_price_calc(
         $current_user_is_timeshare = current_user_is_timeshare();
         $discount_price_calc       = [
             'booked_by_timeshare_user' => $current_user_is_timeshare,
+            'calculated_price'         => $price,
             'timeshare_user_calc'      => [],
-            'total_price'              => $price
         ];
 
         // New calculation accessible for booking by timeshare users.
@@ -280,14 +280,14 @@ function timeshare_discount_price_calc(
         // Case when trying to book less than a timeshare package duration
         if ($timeshare_package_duration >= $booked_days_count) {
             $accessible_days_count = $booked_days_count;
-            $total_price           = $price * $discount_percent / 100;
+            $calculated_price      = $price * $discount_percent / 100;
 
-            $discount_price_calc['total_price']         = $total_price;
+            $discount_price_calc['calculated_price']    = $calculated_price;
             $discount_price_calc['timeshare_user_calc'] = [
                 'discount_percent'                     => $discount_percent,
                 'timeshare_package_duration'           => $timeshare_package_duration,
                 'accessible_days_count'                => $accessible_days_count,
-                'discounted_price_for_accessible_days' => $total_price,
+                'discounted_price_for_accessible_days' => $calculated_price,
                 'remaining_days_count'                 => 0,
                 'remaining_days_price'                 => 0,
             ];
@@ -302,9 +302,9 @@ function timeshare_discount_price_calc(
             // Calculate as for a standard user(Customer)
             $remaining_days_price = $price_per_day_before_discount * $remaining_days_count;
             // Calculated Total Price
-            $total_price = $discounted_price_for_accessible_days + $remaining_days_price;
+            $calculated_price = $discounted_price_for_accessible_days + $remaining_days_price;
 
-            $discount_price_calc['total_price']         = $total_price;
+            $discount_price_calc['calculated_price']    = $calculated_price;
             $discount_price_calc['timeshare_user_calc'] = [
                 'discount_percent'                     => $discount_percent,
                 'timeshare_package_duration'           => $timeshare_package_duration,
