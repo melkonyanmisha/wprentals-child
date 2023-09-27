@@ -104,6 +104,18 @@ function render_additional_part_of_invoice(array $booking_array, string $rental_
     return ob_get_clean();
 }
 
+/**
+ * Check if the selected "Make it Featured" checkbox
+ *
+ * @param int $listing_id
+ *
+ * @return bool
+ */
+function check_listing_is_featured(int $listing_id): bool
+{
+    return boolval(get_post_meta($listing_id, 'prop_featured', true));
+}
+
 ################## START OF ROOM CATEGORY ##################
 /**
  * @param int $listing_id
@@ -175,7 +187,7 @@ function check_has_room_group(int $listing_id): bool
 function get_room_group_id_by_slug(): int
 {
     $taxonomy  = 'property_action_category';
-    $term_slug = 'room';
+    $term_slug = 'room-group';
 
     $term = get_term_by('slug', $term_slug, $taxonomy);
 
@@ -326,7 +338,7 @@ function get_featured_post_from_last_room_group(): object
         'meta_query'  => array(
             array(
                 'key'     => 'prop_featured',
-                'value'   => '1', // Assuming 'yes' indicates a post is featured
+                'value'   => '1', // '1' indicates a post is featured
                 'compare' => '=',
             ),
         ),

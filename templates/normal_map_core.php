@@ -45,7 +45,12 @@ if (current_user_is_admin()) {
                 //Case when parent is Room Group. Show 1 listing from Group which has a max group order
                 if ($current_group->parent === $room_group_id) {
                     if ( ! empty($group_with_max_room_group_order->slug) && $group_with_max_room_group_order->slug === $current_group->slug) {
-                        $term_grouped_posts[$current_group->slug]['posts'][0] = get_post(); // Group posts by term slug
+                        $current_listing = get_post();
+
+                        if (check_listing_is_featured($current_listing->ID)) {
+                            // Group posts by term slug
+                            $term_grouped_posts[$current_group->slug]['posts'][] = $current_listing;
+                        }
                     }
                 }
             }
@@ -54,8 +59,8 @@ if (current_user_is_admin()) {
                 foreach ($custom_categories as $current_category) {
                     //Case for Cottages. Show ALL
                     if ($current_category->term_id === $cottage_category_id) {
-                        $term_grouped_posts[$current_category->slug]['posts'][] = get_post(
-                        ); // Group posts by term slug
+                        // Group posts by term slug
+                        $term_grouped_posts[$current_category->slug]['posts'][] = get_post();
                     }
                 }
             }
@@ -124,7 +129,7 @@ if (isset($post->ID)) {
 }
 ?>
 
-<div class="row content-fixed" itemscope itemtype="http://schema.org/ItemList">
+<div class="row content-fixed" itemscope itemtype="https://schema.org/ItemList">
     <?php
     include(locate_template('templates/breadcrumbs.php')); ?>
     <div class="<?= esc_attr($wpestate_options['content_class']); ?>">

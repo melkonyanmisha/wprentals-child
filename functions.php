@@ -249,7 +249,7 @@ function overwrite_wp_estate_prop_no(): void
 {
     if (get_page_template_slug(get_the_ID()) == 'advanced_search_results.php') {
         $wprentals_admin                      = get_option('wprentals_admin');
-        $wprentals_admin['wp_estate_prop_no'] = 100;
+        $wprentals_admin['wp_estate_prop_no'] = 10;
 
         update_option('wprentals_admin', $wprentals_admin);
     }
