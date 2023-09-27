@@ -694,8 +694,7 @@ function wpestate_booking_insert_invoice(
 /**
  * Original function location is wp-content/themes/wprentals/libs/help_functions.php => wpestate_booking_price()
  *
- * @param int $curent_guest_no
- * @param int $invoice_id
+ * @param int $current_guest_no
  * @param int $property_id
  * @param string $from_date
  * @param string $to_date
@@ -707,8 +706,8 @@ function wpestate_booking_insert_invoice(
  * @throws Exception
  */
 function wpestate_booking_price(
-    int $curent_guest_no,
-    int $invoice_id,
+    int $current_guest_no,
+    $invoice_id, // Bug in parent theme maybe coming a string, but correct is int
     int $property_id,
     string $from_date,
     string $to_date,
@@ -834,9 +833,9 @@ function wpestate_booking_price(
         }
 
         if ($overload_guest == 1) {  // if we allow overload
-            if ($curent_guest_no > $guestnumber) {
+            if ($current_guest_no > $guestnumber) {
                 $has_guest_overload = 1;
-                $extra_guests       = $curent_guest_no - $guestnumber;
+                $extra_guests       = $current_guest_no - $guestnumber;
                 if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend'])) {
                     $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $mega[$date_checker]['period_extra_price_per_guest'];
                     $custom_period_quest         = 1;
@@ -903,9 +902,9 @@ function wpestate_booking_price(
                 }
 
                 if ($overload_guest == 1) {  // if we allow overload
-                    if ($curent_guest_no > $guestnumber) {
+                    if ($current_guest_no > $guestnumber) {
                         $has_guest_overload = 1;
-                        $extra_guests       = $curent_guest_no - $guestnumber;
+                        $extra_guests       = $current_guest_no - $guestnumber;
                         if (isset($mega[$date_checker]) && isset($mega[$date_checker]['period_price_per_weekeend'])) {
                             $total_extra_price_per_guest = $total_extra_price_per_guest + $extra_guests * $mega[$date_checker]['period_extra_price_per_guest'];
                             $custom_period_quest         = 1;
@@ -955,13 +954,13 @@ function wpestate_booking_price(
         ////////////////////////////////////////////////////////////////
 
         if (isset($mega[$date_checker]['period_extra_price_per_guest'])) {
-            $total_price                        = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
-            $inter_price                        = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
-            $custom_price_array [$date_checker] = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $total_price                        = $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $inter_price                        = $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+            $custom_price_array [$date_checker] = $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
             $custom_period_quest                = 1;
         } else {
-            $total_price = $curent_guest_no * $extra_price_per_guest;
-            $inter_price = $curent_guest_no * $extra_price_per_guest;
+            $total_price = $current_guest_no * $extra_price_per_guest;
+            $inter_price = $current_guest_no * $extra_price_per_guest;
         }
 
         $from_date_obj_increasable = wprentals_increase_time_unit($wprentals_is_per_hour, $from_date_obj_increasable);
@@ -988,15 +987,15 @@ function wpestate_booking_price(
                 $numberDays++;
 
                 if (isset($mega[$date_checker]['period_extra_price_per_guest'])) {
-                    $total_price                        = $total_price + $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
-                    $inter_price                        = $inter_price + $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
-                    $custom_price_array [$date_checker] = $curent_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $total_price                        = $total_price + $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $inter_price                        = $inter_price + $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
+                    $custom_price_array [$date_checker] = $current_guest_no * $mega[$date_checker]['period_extra_price_per_guest'];
 
 
                     $custom_period_quest = 1;
                 } else {
-                    $total_price = $total_price + $curent_guest_no * $extra_price_per_guest;
-                    $inter_price = $inter_price + $curent_guest_no * $extra_price_per_guest;
+                    $total_price = $total_price + $current_guest_no * $extra_price_per_guest;
+                    $inter_price = $inter_price + $current_guest_no * $extra_price_per_guest;
                 }
             }
 
@@ -1072,14 +1071,14 @@ function wpestate_booking_price(
     $cleaning_fee = wpestate_calculate_cleaning_fee(
         $property_id,
         $count_days,
-        $curent_guest_no,
+        $current_guest_no,
         $cleaning_fee,
         $cleaning_fee_per_day
     );
     $city_fee     = wpestate_calculate_city_fee(
         $property_id,
         $count_days,
-        $curent_guest_no,
+        $current_guest_no,
         $city_fee,
         $city_fee_per_day,
         $city_fee_percent,
@@ -1159,7 +1158,7 @@ function wpestate_booking_price(
     $return_array['extra_guests']                = $extra_guests;
     $return_array['extra_price_per_guest']       = $extra_price_per_guest;
     $return_array['price_per_guest_from_one']    = $price_per_guest_from_one;
-    $return_array['curent_guest_no']             = $curent_guest_no;
+    $return_array['curent_guest_no']             = $current_guest_no;
     $return_array['cover_weekend']               = $cover_weekend;
     $return_array['custom_period_quest']         = $custom_period_quest;
     $return_array['security_deposit']            = $security_deposit;
