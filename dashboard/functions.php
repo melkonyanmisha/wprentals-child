@@ -1058,3 +1058,140 @@ function wpestate_ajax_update_listing_images(): void
         }
     }
 }
+
+/**
+ * Handle ajax request add_action( 'wp_ajax_wpestate_ajax_update_listing_details', 'wpestate_ajax_update_listing_details' );
+ * @return void
+ */
+function wpestate_ajax_update_listing_details(): void
+{
+    check_ajax_referer('wprentals_edit_prop_details_nonce', 'security');
+    $current_user       = wp_get_current_user();
+    $userID             = $current_user->ID;
+    $api_update_details = [];
+
+    if ( ! is_user_logged_in() || $userID === 0) {
+        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+    }
+
+    if (isset($_POST['listing_edit'])) {
+        if ( ! is_numeric($_POST['listing_edit'])) {
+            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+        } else {
+            $edit_id  = intval($_POST['listing_edit']);
+            $the_post = get_post($edit_id);
+
+            if ($current_user->ID != $the_post->post_author) {
+                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+            } else {
+                $allowed_html       = [];
+                $property_size      = isset($_POST['property_size']) ? floatval($_POST['property_size']) : 0;
+                $property_rooms     = isset($_POST['property_rooms']) ? floatval($_POST['property_rooms']) : 0;
+                $property_bedrooms  = isset($_POST['property_bedrooms']) ? floatval($_POST['property_bedrooms']) : 0;
+                $property_bathrooms = isset($_POST['property_bathrooms']) ? floatval($_POST['property_bathrooms']) : 0;
+                $beds_options       = isset($_POST['beds_options']) ? array_map(
+                    'intval',
+                    (array)$_POST['beds_options']
+                ) : [];
+
+                $bed_types          = esc_html(wprentals_get_option('wp_estate_bed_list', ''));
+                $bed_types_array    = explode(',', $bed_types);
+                $beds_options_array = [];
+
+                $i = 0;
+                while ($i < count($beds_options)) {
+                    $index_bed_options = $i % (count($bed_types_array));
+
+                    $beds_options_array[trim(
+                        wpestate_convert_cyrilic($bed_types_array[$index_bed_options])
+                    )][] = $beds_options[$i];
+                    $i++;
+                }
+
+                update_post_meta($edit_id, 'property_size', $property_size);
+                update_post_meta($edit_id, 'property_rooms', $property_rooms);
+                update_post_meta($edit_id, 'property_bedrooms', $property_bedrooms);
+                update_post_meta($edit_id, 'property_bedrooms_details', $beds_options_array);
+                update_post_meta($edit_id, 'property_bathrooms', $property_bathrooms);
+
+                $other_rules   = isset($_POST['other_rules']) ? sanitize_textarea_field($_POST['other_rules']) : '';
+                $pets_allowed  = isset($_POST['pets_allowed']) ? sanitize_text_field($_POST['pets_allowed']) : '';
+                $party_allowed = isset($_POST['party_allowed']) ? sanitize_text_field($_POST['party_allowed']) : '';
+
+                $cancellation_policy = isset($_POST['cancellation_policy']) ? sanitize_textarea_field(
+                    $_POST['cancellation_policy']
+                ) : '';
+
+                $smoking_allowed = isset($_POST['smoking_allowed']) ? sanitize_text_field(
+                    $_POST['smoking_allowed']
+                ) : '';
+
+                $children_allowed = isset($_POST['children_allowed']) ? sanitize_text_field(
+                    $_POST['children_allowed']
+                ) : '';
+
+                update_post_meta($edit_id, 'cancellation_policy', $cancellation_policy);
+                update_post_meta($edit_id, 'other_rules', $other_rules);
+                update_post_meta($edit_id, 'smoking_allowed', $smoking_allowed);
+                update_post_meta($edit_id, 'pets_allowed', $pets_allowed);
+                update_post_meta($edit_id, 'party_allowed', $party_allowed);
+                update_post_meta($edit_id, 'children_allowed', $children_allowed);
+
+                $custom_values = explode('~', wp_kses($_POST['custom_fields_val'], $allowed_html));
+
+                // save custom fields
+                $i             = 0;
+                $custom_fields = wprentals_get_option('wpestate_custom_fields_list', '');
+                if ( ! empty($custom_fields)) {
+                    while ($i < count($custom_fields)) {
+                        $name = $custom_fields[$i][0];
+                        $type = $custom_fields[$i][1];
+                        $slug = str_replace(' ', '_', $name);
+                        $slug = wpestate_limit45(sanitize_title($name));
+                        $slug = sanitize_key($slug);
+
+                        if ($type == 'numeric' && $custom_values[$i + 1] != '') {
+                            $value_custom = intval(wp_kses($custom_values[$i + 1], $allowed_html));
+                            update_post_meta($edit_id, $slug, $value_custom);
+                        } else {
+                            $value_custom = sanitize_text_field($custom_values[$i + 1]);
+                            update_post_meta($edit_id, $slug, $value_custom);
+                        }
+
+                        $api_update_details[$slug] = $value_custom;
+                        $i++;
+                    }
+                }
+
+                $extra_details_options = $_POST['extra_details_options'] ?? [];
+                $extra_details_array   = [];
+
+                if ( ! empty($extra_details_options)) {
+                    foreach ($extra_details_options as $key => $detail_option) {
+                        $option                          = explode('|', $detail_option);
+                        $extra_details_array[$option[0]] = sanitize_text_field($option[1]);
+                    }
+                }
+                update_post_meta($edit_id, 'property_custom_details', $extra_details_array);
+
+                $status         = wpestate_global_check_mandatory($edit_id);
+                $message_status = '';
+
+                if ($status == 'pending') {
+                    $message_status = esc_html__(
+                        'Your listing is pending. Please complete all the mandatory fields for it to be published!',
+                        'wprentals'
+                    );
+                }
+
+                wp_send_json_success(
+                    [
+                        'edited'       => true,
+                        'beds_options' => count($beds_options),
+                        'response'     => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ]
+                );
+            }
+        }
+    }
+}
