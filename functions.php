@@ -21,22 +21,22 @@ if ( ! defined('TIMESHARE_PRICE_CALC_DATA')) {
     define('TIMESHARE_PRICE_CALC_DATA', 'timeshare_price_calc_data');
 }
 
-//meta_key for save room Group order in wp_termmeta
+// The meta_key for save room Group order in wp_termmeta
 if ( ! defined('ROOM_GROUP_ORDER')) {
     define('ROOM_GROUP_ORDER', 'room_group_order');
 }
 
-//Meta Key
+// Meta Key
 if ( ! defined('TIMESHARE_USER_DATA')) {
     define('TIMESHARE_USER_DATA', 'timeshare_user_data');
 }
 
-//The Timeshare user package duration
+// The Timeshare user package duration
 if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
     define('TIMESHARE_PACKAGE_DURATION', 'timeshare_package_duration');
 }
 
-//Default value for TIMESHARE_PACKAGE_DURATION if it not set in DB
+// Default value for TIMESHARE_PACKAGE_DURATION if it not set in DB
 if ( ! defined('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE')) {
     define('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE', 7);
 }
@@ -54,8 +54,8 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/make-the-b
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/render-booking-confirm-popup.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/booking-process.php';
 
-// User Dashboard
-require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/functions.php';
+// User Dashboard hooks
+require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/hooks.php';
 
 /**
  * Enqueues child theme js and css files
