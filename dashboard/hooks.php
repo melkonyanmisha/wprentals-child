@@ -11,24 +11,19 @@ function wpestate_show_confirmed_booking(): void
     $current_user = wp_get_current_user();
     $userID       = $current_user->ID;
 
-    if ( ! is_user_logged_in()) {
-        exit('ko');
-    }
-    if ($userID === 0) {
-        exit('out pls');
+    if ( ! is_user_logged_in() || $userID === 0) {
+        wp_die('Permission denied');
     }
 
-    $invoice_id = intval($_POST['invoice_id']);
-    $bookid     = intval($_POST['booking_id']);
-
-    $the_post    = get_post($bookid);
-    $book_author = $the_post->post_author;
-
-    $the_post   = get_post($invoice_id);
-    $inv_author = $the_post->post_author;
+    $invoice_id   = intval($_POST['invoice_id']);
+    $booking_id   = intval($_POST['booking_id']);
+    $booking_post = get_post($booking_id);
+    $book_author  = $booking_post->post_author;
+    $invoice_post = get_post($invoice_id);
+    $inv_author   = $invoice_post->post_author;
 
     if ($userID != $inv_author && $book_author != $userID) {
-        wp_send_json_error(['response' => 'Permission denied']);
+        wp_die('Permission denied');
     }
 
     wpestate_child_super_invoice_details($invoice_id);
@@ -43,16 +38,15 @@ function wpestate_show_confirmed_booking(): void
 function wpestate_child_super_invoice_details(int $invoice_id, string $width_logo = ''): void
 {
     try {
-        $bookid            = esc_html(get_post_meta($invoice_id, 'item_id', true));
-        $booking_from_date = esc_html(get_post_meta($bookid, 'booking_from_date', true));
-        $booking_prop      = intval(get_post_meta($bookid, 'booking_id', true)); // property_id
-        $booking_to_date   = esc_html(get_post_meta($bookid, 'booking_to_date', true));
-        $booking_guests    = intval(get_post_meta($bookid, 'booking_guests', true));
+        $booking_id        = esc_html(get_post_meta($invoice_id, 'item_id', true));
+        $booking_from_date = esc_html(get_post_meta($booking_id, 'booking_from_date', true));
+        $booking_prop      = intval(get_post_meta($booking_id, 'booking_id', true)); // property_id
+        $booking_to_date   = esc_html(get_post_meta($booking_id, 'booking_to_date', true));
+        $booking_guests    = intval(get_post_meta($booking_id, 'booking_guests', true));
         $booking_type      = wprentals_return_booking_type($booking_prop);
-
-        $booking_array     = [];
         $booking_full_data = json_decode(get_post_meta($invoice_id, 'booking_full_data', true), true);
 
+        $booking_array = [];
         if ( ! empty($booking_full_data['booking_instant_data']['make_the_book']['booking_array'])) {
             $booking_array = $booking_full_data['booking_instant_data']['make_the_book']['booking_array'];
         }
@@ -66,11 +60,9 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
         $wpestate_currency       = esc_html(get_post_meta($invoice_id, 'invoice_currency', true));
         $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
         $details                 = get_post_meta($invoice_id, 'renting_details', true);
-
-        $default_price = $booking_array['default_price'];
-        $depozit       = floatval(get_post_meta($invoice_id, 'depozit_paid', true));
-        $balance       = $total_price - $depozit;
-
+        $default_price           = $booking_array['default_price'];
+        $depozit                 = floatval(get_post_meta($invoice_id, 'depozit_paid', true));
+        $balance                 = $total_price - $depozit;
         $price_show              = wpestate_show_price_booking_for_invoice(
             $default_price,
             $wpestate_currency,
@@ -113,8 +105,7 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
             1,
             1
         );
-
-        $invoice_saved = esc_html(get_post_meta($invoice_id, 'invoice_type', true));
+        $invoice_saved           = esc_html(get_post_meta($invoice_id, 'invoice_type', true));
 
         wpestate_chid_print_create_form_invoice(
             $guest_price,
@@ -138,7 +129,7 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
             $width_logo
         );
     } catch (Exception|Error $e) {
-        wp_send_json_error(['response' => $e->getMessage()]);
+        wp_die($e->getMessage());
     }
 }
 
@@ -200,7 +191,6 @@ function wpestate_chid_print_create_form_invoice(
 
     // Start output buffering
     ob_start();
-
     ?>
 
     <div class="create_invoice_form">
@@ -557,18 +547,18 @@ function wpestate_ajax_update_listing_description(): void
     $userID       = $current_user->ID;
 
     if ( ! is_user_logged_in() || $userID === 0) {
-        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
     if (isset($_POST['listing_edit'])) {
         if ( ! is_numeric($_POST['listing_edit'])) {
-            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
         } else {
             $edit_id  = intval($_POST['listing_edit']);
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+                wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
             } else {
                 ////////////////////////////////////////////////////////////////////
                 // start the edit
@@ -709,7 +699,7 @@ function wpestate_ajax_update_listing_description(): void
                     foreach ($errors as $key => $value) {
                         $show_err .= $value . '</br>';
                     }
-                    wp_send_json_error(['edited' => false, 'response' => $show_err]);
+                    wp_die(json_encode(['edited' => false, 'response' => $show_err]));
                 } else {
                     $post = [
                         'ID'           => $edit_id,
@@ -773,15 +763,17 @@ function wpestate_ajax_update_listing_description(): void
                             'wprentals'
                         );
                     }
-                    wp_send_json_success([
-                        'edited'   => true,
-                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                    ]);
+                    wp_die(
+                        json_encode([
+                            'edited'   => true,
+                            'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                        ])
+                    );
                 }
             }
         }
     } else {
-        wp_send_json_error(['edited' => false, 'response' => 'Missing "listing_edit"']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Missing "listing_edit"']));
     }
 }
 
@@ -798,18 +790,18 @@ function wpestate_ajax_update_listing_price(): void
     $userID       = $current_user->ID;
 
     if ( ! is_user_logged_in() || $userID === 0) {
-        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
     if (isset($_POST['listing_edit'])) {
         if ( ! is_numeric($_POST['listing_edit'])) {
-            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
         } else {
             $edit_id  = intval($_POST['listing_edit']);
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+                wp_die(json_encode(['edited' => false, 'response' => "Permission denied"]));
             } else {
                 $cleaning_fee       = isset($_POST['cleaning_fee']) ? floatval($_POST['cleaning_fee']) : 0;
                 $city_fee           = isset($_POST['city_fee']) ? floatval($_POST['city_fee']) : 0;
@@ -903,14 +895,16 @@ function wpestate_ajax_update_listing_price(): void
                     );
                 }
 
-                wp_send_json_success([
-                    'edited'   => true,
-                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                ]);
+                wp_die(
+                    json_encode([
+                        'edited'   => true,
+                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ])
+                );
             }
         }
     } else {
-        wp_send_json_error(['edited' => false, 'response' => 'Missing "listing_edit"']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Missing "listing_edit"']));
     }
 }
 
@@ -926,18 +920,18 @@ function wpestate_ajax_update_listing_images(): void
     $userID       = $current_user->ID;
 
     if ( ! is_user_logged_in() || $userID === 0) {
-        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
     if (isset($_POST['listing_edit'])) {
         if ( ! is_numeric($_POST['listing_edit'])) {
-            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
         } else {
             $edit_id  = intval($_POST['listing_edit']);
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+                wp_die(json_encode(['edited' => false, 'response' => "Permission denied"]));
             } else {
                 $allowed_html = [];
                 $iframe       = [
@@ -1044,10 +1038,12 @@ function wpestate_ajax_update_listing_images(): void
                     );
                 }
 
-                wp_send_json_success([
-                    'edited'   => true,
-                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                ]);
+                wp_die(
+                    json_encode([
+                        'edited'   => true,
+                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ])
+                );
             }
         }
     }
@@ -1065,18 +1061,18 @@ function wpestate_ajax_update_listing_details(): void
     $api_update_details = [];
 
     if ( ! is_user_logged_in() || $userID === 0) {
-        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
     if (isset($_POST['listing_edit'])) {
         if ( ! is_numeric($_POST['listing_edit'])) {
-            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
         } else {
             $edit_id  = intval($_POST['listing_edit']);
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+                wp_die(json_encode(['edited' => false, 'response' => "Permission denied"]));
             } else {
                 $allowed_html       = [];
                 $property_size      = isset($_POST['property_size']) ? floatval($_POST['property_size']) : 0;
@@ -1178,11 +1174,13 @@ function wpestate_ajax_update_listing_details(): void
                     );
                 }
 
-                wp_send_json_success([
-                    'edited'       => true,
-                    'beds_options' => count($beds_options),
-                    'response'     => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                ]);
+                wp_die(
+                    json_encode([
+                        'edited'       => true,
+                        'beds_options' => count($beds_options),
+                        'response'     => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ])
+                );
             }
         }
     }
@@ -1195,24 +1193,23 @@ function wpestate_ajax_update_listing_details(): void
  */
 function wpestate_ajax_update_listing_location(): void
 {
-//    var_dump(9999); exit;
     check_ajax_referer('wprentals_edit_prop_locations_nonce', 'security');
     $current_user = wp_get_current_user();
     $userID       = $current_user->ID;
 
     if ( ! is_user_logged_in() || $userID === 0) {
-        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+        wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
     if (isset($_POST['listing_edit'])) {
         if ( ! is_numeric($_POST['listing_edit'])) {
-            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
         } else {
             $edit_id  = intval($_POST['listing_edit']);
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+                wp_die(json_encode(['edited' => false, 'response' => "Permission denied"]));
             } else {
                 $allowed_html       = [];
                 $property_latitude  = isset($_POST['property_latitude']) ? floatval($_POST['property_latitude']) : 0;
@@ -1260,10 +1257,12 @@ function wpestate_ajax_update_listing_location(): void
                     );
                 }
 
-                wp_send_json_success([
-                    'edited'   => true,
-                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                ]);
+                wp_die(
+                    json_encode([
+                        'edited'   => true,
+                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ])
+                );
             }
         }
     }
