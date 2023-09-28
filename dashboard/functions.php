@@ -546,3 +546,258 @@ function wpestate_chid_print_create_form_invoice(
     echo ob_get_clean();
 }
 
+
+/**
+ * Handle ajax request add_action( 'wp_ajax_wpestate_ajax_update_listing_description', 'wpestate_ajax_update_listing_description' );
+ *
+ * @return string
+ */
+function wpestate_ajax_update_listing_description(): string
+{
+    check_ajax_referer('wprentals_edit_prop_1_nonce', 'security');
+    $current_user = wp_get_current_user();
+    $userID       = $current_user->ID;
+
+    if ( ! is_user_logged_in()) {
+        exit('ko');
+    }
+    if ($userID === 0) {
+        exit('out pls');
+    }
+
+    if (isset($_POST['listing_edit'])) {
+        if ( ! is_numeric($_POST['listing_edit'])) {
+            wp_die(json_encode(['edited' => false, 'response' => 'The "listing_edit" should be numeric']));
+        } else {
+            $edit_id  = intval($_POST['listing_edit']);
+            $the_post = get_post($edit_id);
+
+            if ($current_user->ID != $the_post->post_author) {
+                esc_html_e("you don't have the right to edit this", "wprentals");
+                die();
+            } else {
+                ////////////////////////////////////////////////////////////////////
+                // start the edit
+                ////////////////////////////////////////////////////////////////////
+                $allowed_html          = array();
+                $has_errors            = false;
+                $show_err              = '';
+                $submit_title          = wp_kses($_POST['title'], $allowed_html);
+                $submit_desc           = wp_kses($_POST['prop_desc'], $allowed_html);
+                $wpestate_guest_no     = intval($_POST['guests']);
+                $mandatory_page_fields = wprentals_get_option('wp_estate_mandatory_page_fields', '');
+                $rental_type           = wprentals_get_option('wp_estate_item_rental_type');
+
+                if ($rental_type == 1) {
+                    $wpestate_guest_no = 1;
+                }
+
+                //category
+                if ( ! isset($_POST['category'])) {
+                    $prop_category = 0;
+                } else {
+                    $prop_category = intval($_POST['category']);
+                }
+
+                if ($prop_category == -1) {
+                    wp_delete_object_term_relationships($edit_id, 'property_category');
+                }
+
+                //action category
+                if ( ! isset($_POST['action_category'])) {
+                    $prop_action_category = 0;
+                } else {
+                    $prop_action_category = wp_kses($_POST['action_category'], $allowed_html);
+                }
+
+                if ($prop_action_category == -1) {
+                    wp_delete_object_term_relationships($edit_id, 'property_action_category');
+                }
+
+                $prop_category = get_term($prop_category, 'property_category');
+                if (isset($prop_category->term_id)) {
+                    $prop_category_selected = $prop_category->term_id;
+                }
+
+                $prop_action_category = get_term($prop_action_category, 'property_action_category');
+                if (isset($prop_action_category->term_id)) {
+                    $prop_action_category_selected = $prop_action_category->term_id;
+                }
+
+                // city
+                if ( ! isset($_POST['city'])) {
+                    $property_city = 0;
+                } else {
+                    $property_city = wp_kses($_POST['city'], $allowed_html);
+                }
+
+                if ( ! isset($_POST['country'])) {
+                    $property_country = '';
+                } else {
+                    $property_country = wp_kses($_POST['country'], $allowed_html);
+                }
+
+                if ( ! isset($_POST['area'])) {
+                    $property_area = 0;
+                } else {
+                    $property_area = wp_kses($_POST['area'], $allowed_html);
+                }
+
+                if ( ! isset($_POST['property_admin_area'])) {
+                    $property_admin_area = '';
+                } else {
+                    $property_admin_area = wp_kses($_POST['property_admin_area'], $allowed_html);
+                }
+
+                if ( ! isset($_POST['aff_link'])) {
+                    $property_affiliate = '';
+                } else {
+                    $property_affiliate = esc_url($_POST['aff_link']);
+                }
+
+                if ( ! isset($_POST['private_notes'])) {
+                    $private_notes = '';
+                } else {
+                    $private_notes = esc_html($_POST['private_notes']);
+                }
+
+                $overload_guest     = floatval($_POST['overload_guest']);
+                $max_extra_guest_no = isset($_POST['max_extra_guest_no']) ? intval($_POST['max_extra_guest_no']) : 0;
+
+                //////////////////////////////////////// the updated
+
+                if ($submit_title == '') {
+                    $has_errors = true;
+                    $errors[]   = esc_html__('Please submit a title for your listing', 'wprentals');
+                }
+
+                if (is_array($mandatory_page_fields) && in_array('prop_category_submit', $mandatory_page_fields)) {
+                    if ($prop_category == '' || $prop_category == '-1') {
+                        $has_errors = true;
+                        $errors[]   = esc_html__('Please submit a category for your property', 'wprentals');
+                    }
+                }
+
+                if (
+                    is_array($mandatory_page_fields)
+                    && in_array('prop_action_category_submit', $mandatory_page_fields)
+                ) {
+                    if ($prop_action_category == '' || $prop_action_category == '-1') {
+                        $has_errors = true;
+                        $errors[]   = esc_html__('Please submit a  the second category for your property', 'wprentals');
+                    }
+                }
+
+                if (
+                    is_array($mandatory_page_fields)
+                    && (in_array('property_city_front', $mandatory_page_fields) || in_array(
+                            'property_area_front',
+                            $mandatory_page_fields
+                        ))
+                ) {
+                    if ($property_city == '') {
+                        $has_errors = true;
+                        $errors[]   = esc_html__('Please submit a city for your listing', 'wprentals');
+                    }
+                }
+
+                if (is_array($mandatory_page_fields) && in_array('property_affiliate', $mandatory_page_fields)) {
+                    if ($property_affiliate == '') {
+                        $has_errors = true;
+                        $errors[]   = esc_html__('Please submit an affiliate link', 'wprentals');
+                    }
+                }
+
+                if (is_array($mandatory_page_fields) && in_array('max_extra_guest_no', $mandatory_page_fields)) {
+                    if ($max_extra_guest_no == '') {
+                        $has_errors = true;
+                        $errors[]   = esc_html__(
+                            'Please submit an maximum extra guests above capacity number',
+                            'wprentals'
+                        );
+                    }
+                }
+
+                if ($has_errors) {
+                    foreach ($errors as $key => $value) {
+                        $show_err .= $value . '</br>';
+                    }
+                    wp_die(json_encode(array('edited' => false, 'response' => $show_err)));
+                } else {
+                    $post = array(
+                        'ID'           => $edit_id,
+                        'post_title'   => $submit_title,
+                        'post_type'    => 'estate_property',
+                        'post_content' => $submit_desc
+                    );
+
+                    $post_id              = wp_update_post($post);
+                    $prop_category        = get_term($prop_category, 'property_category');
+                    $prop_action_category = get_term($prop_action_category, 'property_action_category');
+
+                    if (isset($property_city) && $property_city != 'none' && $property_city != '') {
+                        wp_set_object_terms($post_id, $property_city, 'property_city');
+                    }
+
+                    if (isset($property_area) && $property_area != 'none') {
+                        $property_area = wpestate_double_tax_cover($property_area, $property_city, $post_id);
+                        // wp_set_object_terms($post_id,$property_area,'property_area');
+                    }
+
+                    if (isset ($prop_action_category->name)) {
+                        wp_set_object_terms($post_id, $prop_action_category->name, 'property_action_category');
+                    }
+
+                    if (isset($prop_category->name)) {
+                        wp_set_object_terms($post_id, $prop_category->name, 'property_category');
+                    }
+
+                    if (isset($property_area) && $property_area != 'none' && $property_area != '') {
+                        $property_area_obj = get_term_by('name', $property_area, 'property_area');
+
+                        $t_id                    = $property_area_obj->term_id;
+                        $term_meta               = get_option("taxonomy_$t_id");
+                        $allowed_html            = array();
+                        $term_meta['cityparent'] = wp_kses($property_city, $allowed_html);
+
+                        //save the option array
+                        update_option("taxonomy_$t_id", $term_meta);
+                    }
+
+                    update_post_meta($post_id, 'guest_no', $wpestate_guest_no);
+                    update_post_meta($post_id, 'overload_guest', $overload_guest);
+                    update_post_meta($post_id, 'max_extra_guest_no', $max_extra_guest_no);
+                    update_post_meta($post_id, 'instant_booking', intval($_POST['instant_booking']));
+                    update_post_meta($post_id, 'children_as_guests', intval($_POST['children_as_guests']));
+                    update_post_meta($post_id, 'property_affiliate', $property_affiliate);
+                    update_post_meta($post_id, 'private_notes', $private_notes);
+
+                    $property_country = wprentals_agolia_dirty_hack($property_country);
+                    update_post_meta($post_id, 'property_country', strtolower($property_country));
+
+                    $property_admin_area = str_replace(" ", "-", $property_admin_area);
+                    $property_admin_area = str_replace("\'", "", $property_admin_area);
+                    update_post_meta($post_id, 'property_admin_area', strtolower($property_admin_area));
+
+                    $status         = wpestate_global_check_mandatory($post_id);
+                    $message_status = '';
+                    if ($status == 'pending') {
+                        $message_status = esc_html__(
+                            'Your listing is pending. Please complete all the mandatory fields for it to be published!',
+                            'wprentals'
+                        );
+                    }
+                    wp_die(
+                        json_encode([
+                            'edited'   => true,
+                            'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                        ])
+                    );
+                }
+            }
+        }
+    }
+
+    wp_die(json_encode(['edited' => false, 'response' => 'Missing "listing_edit"']));
+}
+
