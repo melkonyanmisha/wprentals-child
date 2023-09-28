@@ -573,7 +573,7 @@ function wpestate_ajax_update_listing_description(): void
                 ////////////////////////////////////////////////////////////////////
                 // start the edit
                 ////////////////////////////////////////////////////////////////////
-                $allowed_html          = array();
+                $allowed_html          = [];
                 $has_errors            = false;
                 $show_err              = '';
                 $submit_title          = isset($_POST['title']) ? wp_kses($_POST['title'], $allowed_html) : '';
@@ -711,12 +711,12 @@ function wpestate_ajax_update_listing_description(): void
                     }
                     wp_send_json_error(['edited' => false, 'response' => $show_err]);
                 } else {
-                    $post = array(
+                    $post = [
                         'ID'           => $edit_id,
                         'post_title'   => $submit_title,
                         'post_type'    => 'estate_property',
                         'post_content' => $submit_desc
-                    );
+                    ];
 
                     $post_id              = wp_update_post($post);
                     $prop_category        = get_term($prop_category, 'property_category');
@@ -744,7 +744,6 @@ function wpestate_ajax_update_listing_description(): void
 
                         $t_id                    = $property_area_obj->term_id;
                         $term_meta               = get_option("taxonomy_$t_id");
-                        $allowed_html            = array();
                         $term_meta['cityparent'] = wp_kses($property_city, $allowed_html);
 
                         //save the option array
@@ -812,7 +811,7 @@ function wpestate_ajax_update_listing_price(): void
             $the_post = get_post($edit_id);
 
             if ($current_user->ID != $the_post->post_author) {
-                wp_send_json_error(['edited' => false, 'response' => "You don't have the right to edit this"]);
+                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
             } else {
                 $cleaning_fee       = isset($_POST['cleaning_fee']) ? floatval($_POST['cleaning_fee']) : 0;
                 $city_fee           = isset($_POST['city_fee']) ? floatval($_POST['city_fee']) : 0;
@@ -860,7 +859,7 @@ function wpestate_ajax_update_listing_price(): void
                     $_POST['property_price_before_label']
                 ) : '';
 
-                $extra_pay_values = array();
+                $extra_pay_values = [];
                 if (is_array($extra_pay_options)) {
                     foreach ($extra_pay_options as $key => $pay_option) {
                         $option             = explode('|', $pay_option);
@@ -919,3 +918,143 @@ function wpestate_ajax_update_listing_price(): void
     }
 }
 
+/**
+ * Handle ajax request add_action( 'wp_ajax_wpestate_ajax_update_listing_images', 'wpestate_ajax_update_listing_images' );
+ *
+ * @return void
+ */
+function wpestate_ajax_update_listing_images(): void
+{
+    check_ajax_referer('wprentals_edit_prop_image_nonce', 'security');
+    $current_user = wp_get_current_user();
+    $userID       = $current_user->ID;
+
+    if ( ! is_user_logged_in() || $userID === 0) {
+        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+    }
+
+    if (isset($_POST['listing_edit'])) {
+        if ( ! is_numeric($_POST['listing_edit'])) {
+            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+        } else {
+            $edit_id  = intval($_POST['listing_edit']);
+            $the_post = get_post($edit_id);
+
+            if ($current_user->ID != $the_post->post_author) {
+                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+            } else {
+                $allowed_html = [];
+                $iframe       = [
+                    'iframe' => [
+                        'src'             => [],
+                        'width'           => [],
+                        'height'          => [],
+                        'frameborder'     => [],
+                        'style'           => [],
+                        'allowFullScreen' => [] // add any other attributes you wish to allow
+                    ]
+                ];
+                $video_type   = isset($_POST['video_type']) ? wp_kses($_POST['video_type'], $allowed_html) : '';
+                $video_id     = isset($_POST['video_id']) ? wp_kses($_POST['video_id'], $allowed_html) : '';
+                $attachthumb  = isset($_POST['attachthumb']) ? intval($_POST['attachthumb']) : 0;
+                $attachid     = isset($_POST['attachid']) ? wp_kses($_POST['attachid'], $allowed_html) : '';
+                $virtual_tour = isset($_POST['virtual_tour']) ? wp_kses(trim($_POST['virtual_tour']), $iframe) : '';
+
+                $attach_array = explode(',', $attachid);
+                $last_id      = '';
+
+                // check for deleted images
+                $arguments        = [
+                    'numberposts' => -1,
+                    'post_type'   => 'attachment',
+                    'post_parent' => $edit_id,
+                    'post_status' => null,
+                    'orderby'     => 'menu_order',
+                    'order'       => 'ASC'
+                ];
+                $post_attachments = get_posts($arguments);
+                $new_thumb        = 0;
+                $curent_thumb     = get_post_thumbnail_id($edit_id);
+
+                if (function_exists('icl_translate')) {
+                    // code from wpml team
+
+                    foreach ($post_attachments as $attachment) {
+                        if ( ! in_array($attachment->ID, $attach_array)) {
+                            $active_languages = apply_filters('wpml_active_languages');
+                            foreach ($active_languages as $language) {
+                                $current_language = apply_filters('wpml_current_language');
+                                if ($language['code'] != $current_language) {
+                                    $attach_id = apply_filters(
+                                        'wpml_object_id',
+                                        $attachment->ID,
+                                        'attachment',
+                                        false,
+                                        $language['code']
+                                    );
+                                    if ($attach_id) {
+                                        wp_delete_post($attach_id);
+                                    }
+                                }
+                            }
+                            wp_delete_post($attachment->ID);
+                        }
+                    }
+                } else {
+                    foreach ($post_attachments as $attachment) {
+                        if ( ! in_array($attachment->ID, $attach_array)) {
+                            wp_delete_post($attachment->ID);
+                            if ($curent_thumb == $attachment->ID) {
+                                $new_thumb = 1;
+                            }
+                        }
+                    }
+                }
+                // check for deleted images
+
+                $order = 0;
+                foreach ($attach_array as $att_id) {
+                    if (is_numeric($att_id)) {
+                        if ($last_id == '') {
+                            $last_id = $att_id;
+                        }
+                        $order++;
+                        wp_update_post([
+                            'ID'          => $att_id,
+                            'post_parent' => $edit_id,
+                            'menu_order'  => $order
+                        ]);
+                    }
+                }
+
+                if ($attachthumb != '') {
+                    set_post_thumbnail($edit_id, $attachthumb);
+                }
+
+                if ($new_thumb == 1 || ! has_post_thumbnail($edit_id) || $attachthumb == '') {
+                    set_post_thumbnail($edit_id, $last_id);
+                }
+
+                update_post_meta($edit_id, 'embed_video_type', $video_type);
+                update_post_meta($edit_id, 'embed_video_id', $video_id);
+                update_post_meta($edit_id, 'virtual_tour', $virtual_tour);
+
+                $status         = wpestate_global_check_mandatory($edit_id);
+                $message_status = '';
+                if ($status == 'pending') {
+                    $message_status = esc_html__(
+                        'Your listing is pending. Please complete all the mandatory fields for it to be published!',
+                        'wprentals'
+                    );
+                }
+
+                wp_send_json_success(
+                    [
+                        'edited'   => true,
+                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ]
+                );
+            }
+        }
+    }
+}
