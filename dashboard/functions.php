@@ -773,12 +773,10 @@ function wpestate_ajax_update_listing_description(): void
                             'wprentals'
                         );
                     }
-                    wp_send_json_success(
-                        [
-                            'edited'   => true,
-                            'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                        ]
-                    );
+                    wp_send_json_success([
+                        'edited'   => true,
+                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                    ]);
                 }
             }
         }
@@ -905,12 +903,10 @@ function wpestate_ajax_update_listing_price(): void
                     );
                 }
 
-                wp_send_json_success(
-                    [
-                        'edited'   => true,
-                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                    ]
-                );
+                wp_send_json_success([
+                    'edited'   => true,
+                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                ]);
             }
         }
     } else {
@@ -1048,12 +1044,10 @@ function wpestate_ajax_update_listing_images(): void
                     );
                 }
 
-                wp_send_json_success(
-                    [
-                        'edited'   => true,
-                        'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                    ]
-                );
+                wp_send_json_success([
+                    'edited'   => true,
+                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                ]);
             }
         }
     }
@@ -1184,13 +1178,91 @@ function wpestate_ajax_update_listing_details(): void
                     );
                 }
 
-                wp_send_json_success(
-                    [
-                        'edited'       => true,
-                        'beds_options' => count($beds_options),
-                        'response'     => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
-                    ]
-                );
+                wp_send_json_success([
+                    'edited'       => true,
+                    'beds_options' => count($beds_options),
+                    'response'     => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                ]);
+            }
+        }
+    }
+}
+
+/**
+ * Handle ajax request add_action( 'wp_ajax_wpestate_ajax_update_listing_location', 'wpestate_ajax_update_listing_location' );
+ *
+ * @return void
+ */
+function wpestate_ajax_update_listing_location(): void
+{
+    check_ajax_referer('wprentals_edit_prop_locations_nonce', 'security');
+    $current_user = wp_get_current_user();
+    $userID       = $current_user->ID;
+
+    if ( ! is_user_logged_in() || $userID === 0) {
+        wp_send_json_error(['edited' => false, 'response' => 'Permission denied']);
+    }
+
+    if (isset($_POST['listing_edit'])) {
+        if ( ! is_numeric($_POST['listing_edit'])) {
+            wp_send_json_error(['edited' => false, 'response' => 'The "listing_edit" should be numeric']);
+        } else {
+            $edit_id  = intval($_POST['listing_edit']);
+            $the_post = get_post($edit_id);
+
+            if ($current_user->ID != $the_post->post_author) {
+                wp_send_json_error(['edited' => false, 'response' => "Permission denied"]);
+            } else {
+                $allowed_html       = [];
+                $property_latitude  = isset($_POST['property_latitude']) ? floatval($_POST['property_latitude']) : 0;
+                $property_longitude = isset($_POST['property_longitude']) ? floatval($_POST['property_longitude']) : 0;
+
+                $property_address = isset($_POST['property_address']) ? wp_kses(
+                    $_POST['property_address'],
+                    $allowed_html
+                ) : '';
+
+                $property_zip = isset($_POST['property_zip']) ? wp_kses(
+                    $_POST['property_zip'],
+                    $allowed_html
+                ) : '';
+
+                $property_county = isset($_POST['property_county']) ? wp_kses(
+                    $_POST['property_county'],
+                    $allowed_html
+                ) : '';
+
+                $property_state = isset($_POST['property_state']) ? wp_kses(
+                    $_POST['property_state'],
+                    $allowed_html
+                ) : '';
+
+                $google_camera_angle = isset($_POST['google_camera_angle']) ? floatval(
+                    $_POST['google_camera_angle']
+                ) : 0;
+
+                update_post_meta($edit_id, 'property_latitude', $property_latitude);
+                update_post_meta($edit_id, 'property_longitude', $property_longitude);
+                update_post_meta($edit_id, 'google_camera_angle', $google_camera_angle);
+                update_post_meta($edit_id, 'property_address', $property_address);
+                update_post_meta($edit_id, 'property_zip', $property_zip);
+                update_post_meta($edit_id, 'property_state', $property_state);
+                update_post_meta($edit_id, 'property_county', $property_county);
+
+                $status         = wpestate_global_check_mandatory($edit_id);
+                $message_status = '';
+
+                if ($status == 'pending') {
+                    $message_status = esc_html__(
+                        'Your listing is pending. Please complete all the mandatory fields for it to be published!',
+                        'wprentals'
+                    );
+                }
+
+                wp_send_json_success([
+                    'edited'   => true,
+                    'response' => esc_html__('Changes are saved!', 'wprentals') . ' ' . $message_status
+                ]);
             }
         }
     }
