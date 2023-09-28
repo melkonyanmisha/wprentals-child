@@ -8,10 +8,10 @@
 function wpestate_show_confirmed_booking(): void
 {
     check_ajax_referer('wprentals_booking_confirmed_actions_nonce', 'security');
-    $current_user = wp_get_current_user();
-    $userID       = $current_user->ID;
+    $current_user    = wp_get_current_user();
+    $current_user_id = $current_user->ID;
 
-    if ( ! is_user_logged_in() || $userID === 0) {
+    if ( ! is_user_logged_in() || $current_user_id === 0) {
         wp_die('Permission denied');
     }
 
@@ -22,20 +22,20 @@ function wpestate_show_confirmed_booking(): void
     $invoice_post = get_post($invoice_id);
     $inv_author   = $invoice_post->post_author;
 
-    if ($userID != $inv_author && $book_author != $userID) {
+    if ($current_user_id != $inv_author && $book_author != $current_user_id) {
         wp_die('Permission denied');
     }
 
-    wpestate_child_super_invoice_details($invoice_id);
+    wpestate_child_super_invoice_details($current_user_id, $invoice_id);
 }
 
 /**
+ * @param int $current_user_id
  * @param int $invoice_id
- * @param string $width_logo
  *
  * @return void
  */
-function wpestate_child_super_invoice_details(int $invoice_id, string $width_logo = ''): void
+function wpestate_child_super_invoice_details(int $current_user_id, int $invoice_id): void
 {
     try {
         $booking_id        = esc_html(get_post_meta($invoice_id, 'item_id', true));
@@ -108,6 +108,7 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
         $invoice_saved           = esc_html(get_post_meta($invoice_id, 'invoice_type', true));
 
         wpestate_chid_print_create_form_invoice(
+            $current_user_id,
             $guest_price,
             $booking_guests,
             $invoice_id,
@@ -125,8 +126,7 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
             $balance_show,
             $booking_prop,
             $price_per_weekeend_show,
-            $booking_type,
-            $width_logo
+            $booking_type
         );
     } catch (Exception|Error $e) {
         wp_die($e->getMessage());
@@ -136,6 +136,7 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
 /**
  * Original function location is wp-content/plugins/wprentals-core/post-types/invoices.php => wpestate_print_create_form_invoice()
  *
+ * @param int $current_user_id
  * @param string $guest_price
  * @param int $booking_guests
  * @param int $invoice_id
@@ -154,11 +155,11 @@ function wpestate_child_super_invoice_details(int $invoice_id, string $width_log
  * @param int $booking_prop
  * @param string $price_per_weekeend_show
  * @param string $booking_type
- * @param string $width_logo
  *
  * @return void
  */
 function wpestate_chid_print_create_form_invoice(
+    int $current_user_id,
     string $guest_price,
     int $booking_guests,
     int $invoice_id,
@@ -176,14 +177,11 @@ function wpestate_chid_print_create_form_invoice(
     string $balance_show,
     int $booking_prop,
     string $price_per_weekeend_show,
-    string $booking_type,
-    string $width_logo = ''
+    string $booking_type
 ): void {
-    $rental_type  = esc_html(wprentals_get_option('wp_estate_item_rental_type', ''));
-    $current_user = wp_get_current_user();
-    $userID       = $current_user->ID;
+    $rental_type = esc_html(wprentals_get_option('wp_estate_item_rental_type', ''));
 
-    if (wpsestate_get_author($booking_prop) == $userID) {
+    if (wpsestate_get_author($booking_prop) == $current_user_id) {
         $total_label = esc_html__('User Pays', 'wprentals-core');
     } else {
         $total_label = esc_html__('You Pay', 'wprentals-core');
@@ -195,19 +193,7 @@ function wpestate_chid_print_create_form_invoice(
 
     <div class="create_invoice_form">
         <?php
-        if ($invoice_id != 0) {
-            if ($width_logo == 'yes') {
-                $logo = wprentals_get_option('wp_estate_logo_image', 'url');
-                if ($logo != '') { ?>
-                    <img src="<?= esc_attr($logo); ?>" class="img-responsive printlogo" alt="logo"/>
-                    <?php
-                } else { ?>
-                    <img class="img-responsive printlogo" src="<?= esc_attr(get_theme_file_uri('/img/logo.png')); ?>"
-                         alt="logo"/>
-                    <?php
-                }
-            }
-            ?>
+        if ($invoice_id != 0) { ?>
             <h3><?= esc_html__('Invoice INV', 'wprentals-core') . $invoice_id; ?></h3>
             <?php
         } ?>
@@ -1135,12 +1121,12 @@ function wpestate_ajax_update_listing_location(): void
  *
  * @return void
  */
-function main_check_before_update_listing()
+function main_check_before_update_listing(): void
 {
-    $current_user = wp_get_current_user();
-    $userID       = $current_user->ID;
+    $current_user    = wp_get_current_user();
+    $current_user_id = $current_user->ID;
 
-    if ( ! is_user_logged_in() || $userID === 0) {
+    if ( ! is_user_logged_in() || $current_user_id === 0) {
         wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
@@ -1155,7 +1141,7 @@ function main_check_before_update_listing()
     $edit_id  = intval($_POST['listing_edit']);
     $the_post = get_post($edit_id);
 
-    if ($current_user->ID != $the_post->post_author) {
+    if ($current_user_id != $the_post->post_author) {
         wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 }
