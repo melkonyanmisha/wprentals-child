@@ -1195,6 +1195,7 @@ function wpestate_ajax_update_listing_details(): void
  */
 function wpestate_ajax_update_listing_location(): void
 {
+//    var_dump(9999); exit;
     check_ajax_referer('wprentals_edit_prop_locations_nonce', 'security');
     $current_user = wp_get_current_user();
     $userID       = $current_user->ID;
