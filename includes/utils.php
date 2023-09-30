@@ -317,7 +317,7 @@ function get_all_listings_in_group(int $listing_id): array
 function get_reservation_grouped_array(array $listings_ids_list): array
 {
     $reservation_grouped_array = [];
-//    if (current_user_is_timeshare() && ! empty($listings_ids_list)) { //todo@@@ check
+
     if ( ! empty($listings_ids_list)) {
         foreach ($listings_ids_list as $current_listings_id) {
             $reservation_grouped_array[$current_listings_id] = get_post_meta(
