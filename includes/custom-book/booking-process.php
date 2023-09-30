@@ -28,23 +28,29 @@ add_action('wp_loaded', 'handle_woocommerce_hooks');
  */
 function wpestate_ajax_add_booking_instant(): void
 {
-    $listing_id       = intval($_POST['listing_edit']);
-    $allowded_html    = [];
-    $from_date        = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
-    $to_date          = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
-    $discount_percent = get_discount_percent($from_date, $to_date);
+    if ( ! empty($_POST['listing_edit'])) {
+        $listing_id       = intval($_POST['listing_edit']);
+        $allowded_html    = [];
+        $from_date        = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+        $to_date          = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+        $discount_percent = get_discount_percent($from_date, $to_date);
 
-    if (current_user_is_timeshare()) {
-        //The case for Rooms. Timeshare users can book only grouped rooms
-        if (check_has_room_group($_POST['listing_edit'])) {
-            group_booking($_POST['fromdate'], $discount_percent);
-        } else {
-            //The case for Cottages
-            single_booking($listing_id, $discount_percent);
+        if (current_user_is_timeshare()) {
+            //The case for Rooms. Timeshare users can book only grouped rooms
+            if (check_has_room_group($_POST['listing_edit'])) {
+                group_booking($_POST['fromdate'], $discount_percent);
+            } elseif (check_has_cottage_category($_POST['listing_edit'])) { //The case for Cottages
+                single_booking($listing_id, $discount_percent);
+            }
+        } elseif (current_user_is_customer() || ! is_user_logged_in()) { // The case for Customer or Guest users
+            // The listing should be Cottage category or have a Room parent category
+            if (
+                check_has_room_parent_category($_POST['listing_edit'])
+                || check_has_cottage_category($_POST['listing_edit'])
+            ) {
+                single_booking($listing_id, $discount_percent);
+            }
         }
-    } else {
-        // The case for Customer user
-        single_booking($listing_id, $discount_percent);
     }
 }
 

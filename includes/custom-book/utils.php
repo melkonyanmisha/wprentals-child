@@ -346,7 +346,7 @@ function wpestate_ajax_check_booking_valability(): void
     $to_date_unix_check    = $to_date->getTimestamp();
     $date_checker          = strtotime(date("Y-m-d 00:00", $from_date_unix));
 
-    $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
+    $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_parent_category(
         $listing_id
     ) ? get_all_listings_ids_in_group($listing_id) : [];
 
