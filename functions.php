@@ -144,7 +144,7 @@ function wprentals_parent_enqueues_overwrite(): void
         $reservation_grouped_data = [];
         if (check_is_listing_page(get_the_ID())) {
             $listing_id                = get_the_ID();
-            $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_parent_category(
+            $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_group(
                 $listing_id
             ) ? get_all_listings_ids_in_group($listing_id) : [];
 
@@ -213,9 +213,7 @@ function wprentals_parent_enqueues_overwrite(): void
                 'instant_booking'        => esc_html__('Instant Booking', 'wprentals'),
                 'send_mess'              => esc_html__('Send Message', 'wprentals'),
                 'children_as_guests'     => $include_children_as_guests,
-
-//                todo@@@custom data
-                'reservationGroupedData' => $reservation_grouped_data
+                'reservationGroupedData' => $reservation_grouped_data // Custom data
             )
         );
     }

@@ -28,7 +28,11 @@ add_action('wp_loaded', 'handle_woocommerce_hooks');
  */
 function wpestate_ajax_add_booking_instant(): void
 {
-    if ( ! empty($_POST['listing_edit'])) {
+    try {
+        if (empty($_POST['listing_edit']) || empty($_POST['fromdate'])) {
+            throw new Exception('Invalid data to book');
+        }
+
         $listing_id       = intval($_POST['listing_edit']);
         $allowded_html    = [];
         $from_date        = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
@@ -36,21 +40,22 @@ function wpestate_ajax_add_booking_instant(): void
         $discount_percent = get_discount_percent($from_date, $to_date);
 
         if (current_user_is_timeshare()) {
-            //The case for Rooms. Timeshare users can book only grouped rooms
+            // The case for Rooms. Timeshare users can book only grouped rooms
             if (check_has_room_group($_POST['listing_edit'])) {
-                group_booking($_POST['fromdate'], $discount_percent);
+                room_group_booking($_POST['fromdate'], $discount_percent);
             } elseif (check_has_cottage_category($_POST['listing_edit'])) { //The case for Cottages
                 single_booking($listing_id, $discount_percent);
             }
         } elseif (current_user_is_customer() || ! is_user_logged_in()) { // The case for Customer or Guest users
-            // The listing should be Cottage category or have a Room parent category
-            if (
-                check_has_room_parent_category($_POST['listing_edit'])
-                || check_has_cottage_category($_POST['listing_edit'])
-            ) {
+            // The case for listing which have Room parent category
+            if (check_has_room_parent_category($_POST['listing_edit'])) {
+                room_category_booking($_POST['listing_edit'], $_POST['fromdate'], $discount_percent);
+            } elseif (check_has_cottage_category($_POST['listing_edit'])) { ////The case for Cottages
                 single_booking($listing_id, $discount_percent);
             }
         }
+    } catch (Exception|Error $e) {
+        wp_die($e->getMessage());
     }
 }
 
@@ -61,7 +66,7 @@ function wpestate_ajax_add_booking_instant(): void
  * @return void
  * @throws Exception
  */
-function group_booking(string $from_date, float $discount_percent): void
+function room_group_booking(string $from_date, float $discount_percent): void
 {
     $from_date      = new DateTime($from_date);
     $from_date_unix = $from_date->getTimestamp();
@@ -97,7 +102,6 @@ function group_booking(string $from_date, float $discount_percent): void
         $booking_instant_data_first_room_summarized['make_the_book']['booking_array']['discount_price_calc'] = summarize_discount_price_calc_group_booking(
             $booking_instant_rooms_group_data
         );
-
 
         // Set Timeshare user booking data into the SESSION
         set_session_timeshare_booking_data(
@@ -245,6 +249,92 @@ function single_booking(int $listing_id, float $discount_percent): void
         update_necessary_metas(['booking_instant_data' => $booking_instant_data], $generated_invoice, false);
         // STEP 3 - show me the money
         display_booking_confirm_popup($booking_instant_data, $generated_invoice);
+    }
+}
+
+/**
+ * Will give preference to the room that has a group with already booked any other room for the same time
+ * Otherwise will book a room from a category by sequence
+ *
+ * @param int $listing_id
+ * @param string $from_date
+ * @param float $discount_percent
+ *
+ * @return void
+ * @throws Exception
+ */
+function room_category_booking(int $listing_id, string $from_date, float $discount_percent): void
+{
+    $from_date                                  = new DateTime($from_date);
+    $from_date_unix                             = $from_date->getTimestamp();
+    $rooms_ids_in_current_category              = get_ordered_rooms_ids_in_current_category($listing_id);
+    $reservation_grouped_array_current_category = get_reservation_grouped_array($rooms_ids_in_current_category);
+    $listing_ids_ready_to_book_from_current_cat = [];
+
+    try {
+        if (empty($reservation_grouped_array_current_category)) {
+            throw new Exception('Failed to retrieve reservation data for listing/listings in the current category');
+        }
+
+        foreach ($reservation_grouped_array_current_category as $listing_id => $reservation_array) {
+            // Check is already booked or not for the same time
+            if ( ! array_key_exists($from_date_unix, $reservation_array)) {
+                // All listing IDs in the current category which didn't book for the same time
+                $listing_ids_ready_to_book_from_current_cat[] = $listing_id;
+            }
+        }
+
+        // The case when can't find a room which is ready for booking.
+        if (empty($listing_ids_ready_to_book_from_current_cat)) {
+            throw new Exception('Failed to book a room from current category');
+        }
+
+        // Add the first ID from the current category as the initial listing for booking
+        $listing_id_ready_to_book       = $listing_ids_ready_to_book_from_current_cat[0];
+        $grouped_listings_by_room_group = [];
+
+        foreach ($listing_ids_ready_to_book_from_current_cat as $current_listing_id_from_current_cat) {
+            // Try to get rooms groups
+            if (check_has_room_group($listing_id)) {
+                $grouped_listings_by_room_group[$current_listing_id_from_current_cat] = get_all_listings_ids_in_group(
+                    $current_listing_id_from_current_cat
+                );
+            }
+        }
+
+        // The case when listings has a room groups
+        if ( ! empty($grouped_listings_by_room_group)) {
+            $reservation_grouped_array_by_room_group = [];
+            foreach ($grouped_listings_by_room_group as $current_listing_id_from_current_cat => $current_room_group) {
+                $reservation_grouped_array_by_room_group[$current_listing_id_from_current_cat] = get_reservation_grouped_array(
+                    array_values($current_room_group)
+                );
+            }
+
+            $is_found_preferred_listing = false;
+            // Preferred to try to find a group where any room is already booked for the same time.
+            foreach ($reservation_grouped_array_by_room_group as $current_listing_id_from_current_cat => $reservation_grouped_array_current_room_group) {
+                if ($is_found_preferred_listing) {
+                    break;
+                }
+
+                foreach ($reservation_grouped_array_current_room_group as $reservation_grouped_array_current_listing) {
+                    // Need to keep available the listing from post request. It can be booked as a last of all
+                    if (
+                        $listing_id != $current_listing_id_from_current_cat
+                        && array_key_exists($from_date_unix, $reservation_grouped_array_current_listing)
+                    ) {
+                        $listing_id_ready_to_book   = $current_listing_id_from_current_cat;
+                        $is_found_preferred_listing = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        single_booking($listing_id_ready_to_book, $discount_percent);
+    } catch (Exception|Error $e) {
+        wp_die($e->getMessage());
     }
 }
 

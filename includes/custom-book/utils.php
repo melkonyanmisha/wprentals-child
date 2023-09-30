@@ -346,9 +346,10 @@ function wpestate_ajax_check_booking_valability(): void
     $to_date_unix_check    = $to_date->getTimestamp();
     $date_checker          = strtotime(date("Y-m-d 00:00", $from_date_unix));
 
-    $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_parent_category(
+    // All listing ID's in single group
+    $listings_ids_list = current_user_is_timeshare() && check_has_room_group(
         $listing_id
-    ) ? get_all_listings_ids_in_group($listing_id) : [];
+    ) ? get_all_listings_ids_in_group($listing_id) : [$listing_id];
 
     $to_date_unix = $to_date->getTimestamp();
     if ($wprentals_is_per_hour == 2) {
@@ -421,22 +422,26 @@ function wpestate_ajax_check_booking_valability(): void
         }
     }
 
-    if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
-        $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
-    } else {
-        $reservation_grouped_array[] = get_post_meta($listing_id, 'booking_dates', true);
-        if ($reservation_grouped_array[0] == '') {
-            $reservation_grouped_array[] = wpestate_get_booking_dates($listing_id);
-        }
-    }
+    //todo@@@ check to remove the comment
 
-    foreach ($reservation_grouped_array as $reservation_array) {
-        if (is_array($reservation_array) && ! empty($reservation_array) && array_key_exists(
-                $from_date_unix,
-                $reservation_array
-            )) {
-            print 'stop array_key_exists';
-            die();
+    // The case when booked Room group by timeshare user. Will add reservation data from all listings in array
+//    if (current_user_is_timeshare() && ! empty($listings_ids_list)) {
+//        $reservation_grouped_array = get_reservation_grouped_array($listings_ids_list);
+//    } else {
+//        $reservation_grouped_array[] = get_post_meta($listing_id, 'booking_dates', true);
+//        if ($reservation_grouped_array[0] == '') {
+//            $reservation_grouped_array[] = wpestate_get_booking_dates($listing_id);
+//        }
+//    }
+
+    $reservation_grouped_array = get_reservation_grouped_array($listings_ids_list);
+
+    if ( ! empty($reservation_grouped_array)) {
+        foreach ($reservation_grouped_array as $reservation_array) {
+            if ( ! empty($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
+                print 'stop array_key_exists';
+                die();
+            }
         }
     }
 
