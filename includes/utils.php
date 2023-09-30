@@ -17,6 +17,14 @@ function current_user_is_timeshare(): bool
 }
 
 /**
+ * @return bool
+ */
+function current_user_is_customer(): bool
+{
+    return current_user_can('customer');
+}
+
+/**
  * Convert date to necessarily format. Example 1970-01-01
  *
  * @param string $dateString
@@ -122,7 +130,7 @@ function check_listing_is_featured(int $listing_id): bool
  *
  * @return bool
  */
-function check_has_room_category(int $listing_id): bool
+function check_has_room_parent_category(int $listing_id): bool
 {
     $category_terms            = wp_get_post_terms($listing_id, 'property_category');
     $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
@@ -173,9 +181,7 @@ function check_has_room_group(int $listing_id): bool
             $category_parent_terms_slugs[] = $current_category_parent_term->slug;
         }
 
-        if (in_array('room-group', $category_parent_terms_slugs)) {
-            return true;
-        }
+        return in_array('room-group', $category_parent_terms_slugs);
     }
 
     return false;
@@ -357,6 +363,19 @@ function get_featured_post_from_last_room_group(): object
 ################## END OF ROOM GROUP ##################
 
 ################## START OF COTTAGE ##################
+/**
+ * @param int $listing_id
+ *
+ * @return bool
+ */
+function check_has_cottage_category(int $listing_id): bool
+{
+    $category_terms      = wp_get_post_terms($listing_id, 'property_category');
+    $categories_term_ids = wp_list_pluck($category_terms, 'term_id');
+
+    return in_array(get_cottage_category_id_by_slug(), $categories_term_ids);
+}
+
 /**
  * @return int
  */

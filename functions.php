@@ -144,7 +144,7 @@ function wprentals_parent_enqueues_overwrite(): void
         $reservation_grouped_data = [];
         if (check_is_listing_page(get_the_ID())) {
             $listing_id                = get_the_ID();
-            $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_category(
+            $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_parent_category(
                 $listing_id
             ) ? get_all_listings_ids_in_group($listing_id) : [];
 
