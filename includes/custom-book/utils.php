@@ -346,10 +346,6 @@ function wpestate_ajax_check_booking_valability(): void
     $to_date_unix_check    = $to_date->getTimestamp();
     $date_checker          = strtotime(date("Y-m-d 00:00", $from_date_unix));
 
-    $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_parent_category(
-        $listing_id
-    ) ? get_all_listings_ids_in_group($listing_id) : [];
-
     $to_date_unix = $to_date->getTimestamp();
     if ($wprentals_is_per_hour == 2) {
         $diff = 3600;
@@ -421,20 +417,15 @@ function wpestate_ajax_check_booking_valability(): void
         }
     }
 
-    if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
-        $reservation_grouped_array = get_reservation_grouped_array($all_listings_ids_in_group);
-    } else {
-        $reservation_grouped_array[] = get_post_meta($listing_id, 'booking_dates', true);
-        if ($reservation_grouped_array[0] == '') {
-            $reservation_grouped_array[] = wpestate_get_booking_dates($listing_id);
-        }
-    }
+    // All listing ID's in single group
+    $listings_ids_list         = current_user_is_timeshare() && check_has_room_group(
+        $listing_id
+    ) ? get_all_listings_ids_in_group($listing_id) : [$listing_id];
+    $reservation_grouped_array = get_reservation_grouped_array($listings_ids_list);
 
+    // Don't need to check with an empty() function because In this case the $reservation_grouped_array can't be empty
     foreach ($reservation_grouped_array as $reservation_array) {
-        if (is_array($reservation_array) && ! empty($reservation_array) && array_key_exists(
-                $from_date_unix,
-                $reservation_array
-            )) {
+        if ( ! empty($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
             print 'stop array_key_exists';
             die();
         }

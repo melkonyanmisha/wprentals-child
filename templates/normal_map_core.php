@@ -19,6 +19,8 @@ $wpestate_property_unit_slider = esc_html(wprentals_get_option('wp_estate_prop_l
 $custom_categories             = [];
 $custom_groups                 = [];
 
+$cottage_category_id = get_cottage_category_id_by_slug();
+
 if ($wpestate_options['content_class'] == "col-md-12") {
     $wpestate_full_page = 1;
 }
@@ -31,8 +33,6 @@ if (current_user_is_admin()) {
         include(locate_template('templates/property_unit.php'));
     endwhile;
 } elseif (current_user_is_timeshare()) {
-    $room_category_id                = get_room_category_id_by_slug();
-    $cottage_category_id             = get_cottage_category_id_by_slug();
     $room_group_id                   = get_room_group_id_by_slug();
     $group_with_max_room_group_order = get_group_with_max_room_group_order();
 
@@ -80,9 +80,7 @@ if (current_user_is_admin()) {
         }
     }
 } else {
-    //Get by categories
-    $room_category_id    = get_room_category_id_by_slug();
-    $cottage_category_id = get_cottage_category_id_by_slug();
+    $room_parent_category_id = get_parent_room_category_id_by_slug();
 
     //During the booking process Customer users can only see images for 1 unit per category
     while ($prop_selection->have_posts()): $prop_selection->the_post();
@@ -93,7 +91,7 @@ if (current_user_is_admin()) {
         if ( ! empty($custom_categories)) {
             foreach ($custom_categories as $current_category) {
                 //Case when parent is Room Category. Show 1 listing per Group
-                if ($current_category->parent === $room_category_id) {
+                if ($current_category->parent === $room_parent_category_id) {
                     $term_grouped_posts[$current_category->slug]['posts'][0] = get_post(); // Group posts by term slug
                 } elseif ($current_category->term_id === $cottage_category_id) {
                     //Case for Cottages. Show ALL

@@ -57,14 +57,15 @@ function check_is_listing_page(int $post_id): bool
  */
 function render_additional_part_of_invoice(array $booking_array, string $rental_type, string $booking_type): string
 {
-    $discount_price_calc = $booking_array['discount_price_calc'];
+    $discount_price_calc = $booking_array['discount_price_calc'] ?? [];
 
     // Start output buffering
     ob_start();
 
     // To display separately prices for accessible and remaining days
     if (
-        $discount_price_calc['booked_by_timeshare_user']
+        ! empty($discount_price_calc)
+        && $discount_price_calc['booked_by_timeshare_user']
         && ! empty($discount_price_calc['timeshare_user_calc'])
         && $discount_price_calc['timeshare_user_calc']['remaining_days_count'] > 0
     ) {
@@ -152,14 +153,68 @@ function check_has_room_parent_category(int $listing_id): bool
 /**
  * @return int
  */
-function get_room_category_id_by_slug(): int
+function get_parent_room_category_id_by_slug(): int
 {
     $taxonomy  = 'property_category';
     $term_slug = 'room';
-
-    $term = get_term_by('slug', $term_slug, $taxonomy);
+    $term      = get_term_by('slug', $term_slug, $taxonomy);
 
     return ! empty($term->term_id) ? $term->term_id : 0;
+}
+
+/**
+ * Retrieve all posts ordered ids in current category
+ *
+ * @param int $listing_id
+ *
+ * @return array
+ */
+function get_ordered_rooms_ids_in_current_category(int $listing_id): array
+{
+    $taxonomy         = 'property_category';
+    $post_type        = 'estate_property';
+    $room_category_id = get_room_category_id($listing_id);
+
+    // Query for posts in the same taxonomy term(s) and post type
+    $args = array(
+        'post_type'      => $post_type,
+        'posts_per_page' => -1, // To get all posts
+        'fields'         => 'ids', // Retrieve only post IDs
+        'tax_query'      => array(
+            array(
+                'taxonomy' => $taxonomy,
+                'field'    => 'id',
+                'terms'    => $room_category_id,
+            ),
+        ),
+        'order'          => 'ASC'
+    );
+
+    return get_posts($args);
+}
+
+/**
+ * Retrieve ID of the first category found
+ *
+ * @param int $listing_id
+ *
+ * @return int
+ */
+function get_room_category_id(int $listing_id): int
+{
+    $taxonomy  = 'property_category';
+    $post_type = 'estate_property';
+
+    // Get the current post's taxonomy terms
+    $category_terms   = wp_get_post_terms($listing_id, $taxonomy);
+    $room_category_id = 0;
+
+    if (is_array($category_terms)) {
+        // Get term_id of first term
+        $room_category_id = $category_terms[0]->term_id;
+    }
+
+    return $room_category_id;
 }
 
 ################## END OF ROOM CATEGORY ##################
@@ -253,17 +308,18 @@ function get_all_listings_in_group(int $listing_id): array
 }
 
 /**
- * Retrieve reservation data for all listings in current group
+ * Retrieve reservation data for listing/listings
  *
- * @param array $all_listings_ids_in_group
+ * @param array $listings_ids_list
  *
  * @return array
  */
-function get_reservation_grouped_array(array $all_listings_ids_in_group): array
+function get_reservation_grouped_array(array $listings_ids_list): array
 {
     $reservation_grouped_array = [];
-    if (current_user_is_timeshare() && ! empty($all_listings_ids_in_group)) {
-        foreach ($all_listings_ids_in_group as $current_listings_id) {
+
+    if ( ! empty($listings_ids_list)) {
+        foreach ($listings_ids_list as $current_listings_id) {
             $reservation_grouped_array[$current_listings_id] = get_post_meta(
                 $current_listings_id,
                 'booking_dates',
