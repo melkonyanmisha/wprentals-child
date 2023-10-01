@@ -375,11 +375,60 @@ function get_group_with_max_room_group_order(): object
 }
 
 /**
- * Get a post from rooms group which has a max group order. The post should have selected "Make it Featured" checkbox
+ * Retrieve all listings from rooms group which has a max group order.
+ *
+ * @return WP_Post[]
+ */
+function get_all_listings_from_last_room_group(): array
+{
+    $group_with_max_room_group_order = get_group_with_max_room_group_order();
+
+    if ($group_with_max_room_group_order instanceof stdClass) {
+        return [];
+    }
+
+    $args = array(
+        'post_type' => 'estate_property',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'property_action_category',
+                'field'    => 'id', // Possible values 'id', 'name', or 'term_taxonomy_id'
+                'terms'    => $group_with_max_room_group_order->term_id
+            ),
+        ),
+
+        'numberposts' => -1,
+    );
+
+    return get_posts($args);
+}
+
+/**
+ * Retrieve all listings ID's from rooms group which has a max group order.
+ *
+ * @return array
+ */
+function get_listings_ids_from_last_room_group(): array
+{
+    $listings_ids_from_last_room_group = [];
+    $all_listings_from_last_room_group = get_all_listings_from_last_room_group();
+
+    if ( ! empty($all_listings_from_last_room_group)) {
+        foreach ($all_listings_from_last_room_group as $current_listing) {
+            $listings_ids_from_last_room_group[] = $current_listing->ID;
+        }
+    }
+
+    return $listings_ids_from_last_room_group;
+}
+
+
+/**
+ * Retrieve a listing from rooms group which has a max group order. The post should have selected "Make it Featured" checkbox
  *
  * @return object|stdClass|WP_Post
  */
-function get_featured_post_from_last_room_group(): object
+function get_featured_listing_from_last_room_group(): object
 {
     $featured_post_from_last_room_group = new stdClass();
     $group_with_max_room_group_order    = get_group_with_max_room_group_order();

@@ -276,11 +276,11 @@ function room_category_booking(int $listing_id, string $from_date, float $discou
             throw new Exception('Failed to retrieve reservation data for listing/listings in the current category');
         }
 
-        foreach ($reservation_grouped_array_current_category as $listing_id => $reservation_array) {
+        foreach ($reservation_grouped_array_current_category as $listing_id_current_category => $reservation_array) {
             // Check is already booked or not for the same time
             if ( ! array_key_exists($from_date_unix, $reservation_array)) {
                 // All listing IDs in the current category which didn't book for the same time
-                $listing_ids_ready_to_book_from_current_cat[] = $listing_id;
+                $listing_ids_ready_to_book_from_current_cat[] = $listing_id_current_category;
             }
         }
 
@@ -289,23 +289,37 @@ function room_category_booking(int $listing_id, string $from_date, float $discou
             throw new Exception('Failed to book a room from current category');
         }
 
-        // Add the first ID from the current category as the initial listing for booking
-        $listing_id_ready_to_book       = $listing_ids_ready_to_book_from_current_cat[0];
+        // Add the retrieved listing ID as the initial listing for booking
+        $listing_id_ready_to_book          = $listing_id;
+        $listings_ids_from_last_room_group = get_listings_ids_from_last_room_group();
+
+        if (check_has_room_group($listing_id)) {
+            foreach ($listing_ids_ready_to_book_from_current_cat as $current_listing_id_current_category) {
+                // Add the ID which is not from the rooms group which has a maximum order
+                if ( ! in_array($current_listing_id_current_category, $listings_ids_from_last_room_group)) {
+                    $listing_id_ready_to_book = $current_listing_id_current_category;
+                    break;
+                }
+            }
+        }
+
         $grouped_listings_by_room_group = [];
 
         foreach ($listing_ids_ready_to_book_from_current_cat as $current_listing_id_from_current_cat) {
             // Try to get rooms groups
-            if (check_has_room_group($listing_id)) {
+            if (check_has_room_group($current_listing_id_from_current_cat)) {
                 $grouped_listings_by_room_group[$current_listing_id_from_current_cat] = get_all_listings_ids_in_group(
                     $current_listing_id_from_current_cat
                 );
             }
         }
 
-        // The case when listings has a room groups
+        // The case when listings has a room groups.
+        // Try to book the room from any group which has another booked room for the same time
         if ( ! empty($grouped_listings_by_room_group)) {
             $reservation_grouped_array_by_room_group = [];
             foreach ($grouped_listings_by_room_group as $current_listing_id_from_current_cat => $current_room_group) {
+                // All reservation data by room groups. Rooms from the current category
                 $reservation_grouped_array_by_room_group[$current_listing_id_from_current_cat] = get_reservation_grouped_array(
                     array_values($current_room_group)
                 );
@@ -318,12 +332,13 @@ function room_category_booking(int $listing_id, string $from_date, float $discou
                     break;
                 }
 
+                // Need to keep available the listing which is from the rooms group which has a maximum order
+                if (in_array($current_listing_id_from_current_cat, $listings_ids_from_last_room_group)) {
+                    continue;
+                }
+
                 foreach ($reservation_grouped_array_current_room_group as $reservation_grouped_array_current_listing) {
-                    // Need to keep available the listing from post request. It can be booked as a last of all
-                    if (
-                        $listing_id != $current_listing_id_from_current_cat
-                        && array_key_exists($from_date_unix, $reservation_grouped_array_current_listing)
-                    ) {
+                    if (array_key_exists($from_date_unix, $reservation_grouped_array_current_listing)) {
                         $listing_id_ready_to_book   = $current_listing_id_from_current_cat;
                         $is_found_preferred_listing = true;
                         break;
@@ -332,7 +347,9 @@ function room_category_booking(int $listing_id, string $from_date, float $discou
             }
         }
 
-        single_booking($listing_id_ready_to_book, $discount_percent);
+        if ($listing_id_ready_to_book) {
+            single_booking($listing_id_ready_to_book, $discount_percent);
+        }
     } catch (Exception|Error $e) {
         wp_die($e->getMessage());
     }

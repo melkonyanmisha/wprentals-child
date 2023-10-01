@@ -29,11 +29,11 @@ if (current_user_is_timeshare()) {
     $is_group_booking = intval(get_post_meta($post->ID, 'is_group_booking', true));
 
     if ($is_group_booking) {
-        $featured_post_from_last_room_group = get_featured_post_from_last_room_group();
+        $featured_listing_from_last_room_group = get_featured_listing_from_last_room_group();
 
-        if ($featured_post_from_last_room_group instanceof WP_Post) {
-            $featured_post_title_from_last_room_group = $featured_post_from_last_room_group->post_title;
-            $featured_post_link_from_last_room_group  = get_post_permalink($featured_post_from_last_room_group->ID);
+        if ($featured_listing_from_last_room_group instanceof WP_Post) {
+            $featured_post_title_from_last_room_group = $featured_listing_from_last_room_group->post_title;
+            $featured_post_link_from_last_room_group  = get_post_permalink($featured_listing_from_last_room_group->ID);
         }
     }
 }
