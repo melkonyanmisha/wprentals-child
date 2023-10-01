@@ -56,7 +56,8 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/booking-process.
 
 // User login/register hooks
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/user/hooks.php';
-// User Dashboard hooks
+// User Dashboard
+require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/functions.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'dashboard/hooks.php';
 
 /**
