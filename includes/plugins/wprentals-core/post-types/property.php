@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Remove the original estate_property custom post type and add a new one
  * @return void
@@ -12,16 +13,20 @@ function replace_wpestate_create_property_type(): void
 add_action('after_setup_theme', 'replace_wpestate_create_property_type');
 
 /**
- * @return void
+ * @return bool
  */
-function custom_wpestate_create_property_type():void
+function custom_wpestate_create_property_type(): bool
 {
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[0])) {
-        $slug = $rewrites[0];
-    } else {
-        $slug = 'properties';
+    if ( ! is_plugin_active('wprentals-core/wprentals-core.php')) {
+        return false;
     }
+
+    $rewrites        = wpestate_safe_rewite();
+    $slug_properties = $rewrites[0] ?? 'properties';
+    $slug_listings   = $rewrites[1] ?? 'listings';
+    $slug_action     = $rewrites[2] ?? 'action';
+    $slug_features   = $rewrites[5] ?? 'features';
+
     register_post_type('estate_property', array(
             'labels'               => array(
                 'name'               => esc_html__('Listings', 'wprentals-core'),
@@ -40,7 +45,7 @@ function custom_wpestate_create_property_type():void
             ),
             'public'               => true,
             'has_archive'          => true,
-            'rewrite'              => array('slug' => $slug),
+            'rewrite'              => array('slug' => $slug_properties),
             'supports'             => array('title', 'editor', 'thumbnail', 'comments', 'excerpt'),
             'can_export'           => true,
             'register_meta_box_cb' => 'wpestate_add_property_metaboxes',
@@ -53,22 +58,14 @@ function custom_wpestate_create_property_type():void
 ////////////////////////////////////////////////////////////////////////////////////////////////
     $category_main_label   = stripslashes(esc_html(wprentals_get_option('wp_estate_category_main', '')));
     $category_second_label = stripslashes(esc_html(wprentals_get_option('wp_estate_category_second', '')));
-
-    $name_label          = esc_html__('Categories', 'wprentals-core');
-    $add_new_item_label  = esc_html__('Add New Listing Category', 'wprentals-core');
-    $new_item_name_label = esc_html__('New Listing Category', 'wprentals-core');
+    $name_label            = esc_html__('Categories', 'wprentals-core');
+    $add_new_item_label    = esc_html__('Add New Listing Category', 'wprentals-core');
+    $new_item_name_label   = esc_html__('New Listing Category', 'wprentals-core');
 
     if ($category_main_label != '') {
         $name_label          = $category_main_label;
         $add_new_item_label  = esc_html__('Add New', 'wprentals-core') . ' ' . $category_main_label;
         $new_item_name_label = esc_html__('New', 'wprentals-core') . ' ' . $category_main_label;
-    }
-
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[1])) {
-        $slug = $rewrites[1];
-    } else {
-        $slug = 'listings';
     }
 
     register_taxonomy('property_category', 'estate_property', array(
@@ -79,27 +76,18 @@ function custom_wpestate_create_property_type():void
             ),
             'hierarchical' => true,
             'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
+            'rewrite'      => array('slug' => $slug_listings)
         )
     );
 
-    //todo@@@ start customized
     $action_name          = esc_html__('Groups', 'wprentals-core');
     $action_add_new_item  = esc_html__('Add New Listing Group ', 'wprentals-core');
     $action_new_item_name = esc_html__('Add New Listing Group', 'wprentals-core');
-    //todo@@@ end
 
     if ($category_second_label != '') {
         $action_name          = $category_second_label;
         $action_add_new_item  = esc_html__('Add New', 'wprentals-core') . ' ' . $category_second_label;
         $action_new_item_name = esc_html__('New', 'wprentals-core') . ' ' . $category_second_label;
-    }
-
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[2])) {
-        $slug = $rewrites[2];
-    } else {
-        $slug = 'action';
     }
 
     $taxonomy = 'property_action_category';
@@ -112,7 +100,7 @@ function custom_wpestate_create_property_type():void
             ),
             'hierarchical' => true,
             'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
+            'rewrite'      => array('slug' => $slug_action)
         )
     );
 
@@ -124,13 +112,6 @@ function custom_wpestate_create_property_type():void
     add_action('edited_' . $taxonomy, 'save_taxonomy_term_meta');
     add_action('create_' . $taxonomy, 'save_taxonomy_term_meta');
 
-    $rewrites = wpestate_safe_rewite();
-    if (isset($rewrites[5])) {
-        $slug = $rewrites[5];
-    } else {
-        $slug = 'features';
-    }
-
     // add custom taxonomy
     register_taxonomy('property_features', 'estate_property', array(
             'labels'       => array(
@@ -140,12 +121,14 @@ function custom_wpestate_create_property_type():void
             ),
             'hierarchical' => true,
             'query_var'    => true,
-            'rewrite'      => array('slug' => $slug)
+            'rewrite'      => array('slug' => $slug_features)
 
         )
     );
 
     wprentals_convert_features_status_to_tax();
+
+    return true;
 }
 
 /**
@@ -181,7 +164,7 @@ function edit_taxonomy_term_meta_field(WP_Term $term, string $taxonomy)
             </th>
             <td>
                 <input style="width: 20%;" class="postform" type="number" name=<?= ROOM_GROUP_ORDER; ?>
-                       id="current-group-order" value="<?= esc_attr($term_meta); ?>">
+                id="current-group-order" value="<?= esc_attr($term_meta); ?>">
                 <p class="description">It will be used when booking from a timeshare user.</p>
             </td>
         </tr>
