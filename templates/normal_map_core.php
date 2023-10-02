@@ -72,9 +72,6 @@ if (current_user_is_admin()) {
     endwhile;
 
     if ( ! empty($term_grouped_posts)) {
-        // Set additional data to use it in template
-        $args['show_only'] = 'group';
-
         // Display grouped posts by "Groups" term. Taxonomy is property_action_category
         foreach ($term_grouped_posts as $term_id => $term_data) {
             if ( ! empty($term_data['posts'])) {
@@ -113,9 +110,6 @@ if (current_user_is_admin()) {
             }
         }
     endwhile;
-
-    // Set additional data to use it in template
-    $args['show_only'] = 'category';
 
     // Display grouped posts by "Categories" term. Taxonomy is property_category
     foreach ($term_grouped_posts as $term_id => $term_data) {
