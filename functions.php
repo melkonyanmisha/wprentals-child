@@ -242,23 +242,6 @@ function add_custom_user_role(): void
 add_action('init', 'add_custom_user_role');
 
 /**
- * Overwrite "Properties List - Properties number per page" option for Advanced Search result
- *
- * @return void
- */
-function overwrite_wp_estate_prop_no(): void
-{
-    if (get_page_template_slug(get_the_ID()) == 'advanced_search_results.php') {
-        $wprentals_admin                      = get_option('wprentals_admin');
-        $wprentals_admin['wp_estate_prop_no'] = 10;
-
-        update_option('wprentals_admin', $wprentals_admin);
-    }
-}
-
-add_action('wp', 'overwrite_wp_estate_prop_no');
-
-/**
  * @param $links
  *
  * @return array

@@ -12,6 +12,7 @@ global $wpestate_listing_type;
 global $wpestate_property_unit_slider;
 global $schema_flag;
 global $current_user;
+global $args;
 
 $wpestate_listing_type         = wprentals_get_option('wp_estate_listing_unit_type', '');
 $wpestate_page_tax             = '';
@@ -19,6 +20,7 @@ $wpestate_property_unit_slider = esc_html(wprentals_get_option('wp_estate_prop_l
 $custom_categories             = [];
 $custom_groups                 = [];
 
+$posts_count         = 0;
 $cottage_category_id = get_cottage_category_id_by_slug();
 
 if ($wpestate_options['content_class'] == "col-md-12") {
@@ -29,16 +31,18 @@ ob_start();
 
 if (current_user_is_admin()) {
     while ($prop_selection->have_posts()): $prop_selection->the_post();
+        $posts_count++;
         $schema_flag = 1;
         include(locate_template('templates/property_unit.php'));
     endwhile;
 } elseif (current_user_is_timeshare()) {
+    $term_grouped_posts              = [];
     $room_group_id                   = get_room_group_id_by_slug();
     $group_with_max_room_group_order = get_group_with_max_room_group_order();
 
     while ($prop_selection->have_posts()): $prop_selection->the_post();
-        $custom_categories = get_the_terms(get_the_ID(), 'property_category');
         $custom_groups     = get_the_terms(get_the_ID(), 'property_action_category');
+        $custom_categories = get_the_terms(get_the_ID(), 'property_category');
 
         if ( ! empty($custom_groups)) {
             foreach ($custom_groups as $current_group) {
@@ -67,44 +71,57 @@ if (current_user_is_admin()) {
         }
     endwhile;
 
-    // Display grouped posts by "Groups" term. Taxonomy is property_action_category
-    foreach ($term_grouped_posts as $term_id => $term_data) {
-        if ( ! empty($term_data['posts'])) {
-            foreach ($term_data['posts'] as $post) {
-                setup_postdata($post);
+    if ( ! empty($term_grouped_posts)) {
+        // Set additional data to use it in template
+        $args['show_only'] = 'group';
 
-                // Display or process the post content
-                $schema_flag = 1;
-                include(locate_template('templates/property_unit.php'));
+        // Display grouped posts by "Groups" term. Taxonomy is property_action_category
+        foreach ($term_grouped_posts as $term_id => $term_data) {
+            if ( ! empty($term_data['posts'])) {
+                foreach ($term_data['posts'] as $post) {
+                    $posts_count++;
+                    setup_postdata($post);
+
+                    // Display or process the post content
+                    $schema_flag = 1;
+                    include(locate_template('templates/property_unit.php'));
+                }
             }
         }
     }
 } else {
-    $room_parent_category_id = get_parent_room_category_id_by_slug();
+    $listings_ids_from_last_room_group = get_listings_ids_from_last_room_group();
 
-    //During the booking process Customer users can only see images for 1 unit per category
     while ($prop_selection->have_posts()): $prop_selection->the_post();
-
-        // Get the custom categories (terms) for the post
+        // Get the custom categories (terms) for the current post
         $custom_categories = get_the_terms(get_the_ID(), 'property_category');
 
         if ( ! empty($custom_categories)) {
             foreach ($custom_categories as $current_category) {
-                //Case when parent is Room Category. Show 1 listing per Group
-                if ($current_category->parent === $room_parent_category_id) {
-                    $term_grouped_posts[$current_category->slug]['posts'][0] = get_post(); // Group posts by term slug
+                $post = get_post();
+                // The case when the listing parent is "Room" Category and the listing exists in the Rooms Group with max order.
+                // During the booking process, Customer users can only see 1 listing per category
+                if (
+                    check_has_room_parent_category($post->ID)
+                    && in_array($post->ID, $listings_ids_from_last_room_group)
+                ) {
+                    $term_grouped_posts[$current_category->slug]['posts'][] = $post; // Group posts by term slug
                 } elseif ($current_category->term_id === $cottage_category_id) {
                     //Case for Cottages. Show ALL
-                    $term_grouped_posts[$current_category->slug]['posts'][] = get_post(); // Group posts by term slug
+                    $term_grouped_posts[$current_category->slug]['posts'][] = $post; // Group posts by term slug
                 }
             }
         }
     endwhile;
 
+    // Set additional data to use it in template
+    $args['show_only'] = 'category';
+
     // Display grouped posts by "Categories" term. Taxonomy is property_category
     foreach ($term_grouped_posts as $term_id => $term_data) {
         if ( ! empty($term_data['posts'])) {
             foreach ($term_data['posts'] as $post) {
+                $posts_count++;
                 setup_postdata($post);
 
                 // Display or process the post content
@@ -142,7 +159,7 @@ if (isset($post->ID)) {
                             <h1 class="entry-title title_list_prop">
                                 <?php
                                 the_title();
-                                echo ': ' . esc_html($prop_selection->found_posts)
+                                echo ': ' . $posts_count
                                      . ' ' . esc_html__('results', 'wprentals');
                                 ?>
                             </h1>
