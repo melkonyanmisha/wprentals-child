@@ -49,6 +49,7 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.p
 
 // Booking Process
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/utils.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/hooks.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/generate-the-invoice.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/make-the-book.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/steps/render-booking-confirm-popup.php';
