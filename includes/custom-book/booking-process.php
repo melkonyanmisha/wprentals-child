@@ -229,7 +229,6 @@ function summarize_discount_price_calc_group_booking(array $booking_instant_room
  * @param float $discount_percent
  * @param string $from_date_converted
  * @param string $to_date_converted
- * @param bool $is_room_category_booking
  *
  * @return void
  * @throws Exception
@@ -238,8 +237,7 @@ function single_booking(
     int $listing_id,
     float $discount_percent,
     string $from_date_converted,
-    string $to_date_converted,
-    bool $is_room_category_booking = false
+    string $to_date_converted
 ): void {
     // STEP 1 - Start booking
     $booking_instant_data = wpestate_child_ajax_add_booking_instant(
@@ -259,11 +257,6 @@ function single_booking(
         // STEP 2 - generate the invoice
         $generated_invoice = generate_the_invoice_step($booking_instant_data);
         update_necessary_metas(['booking_instant_data' => $booking_instant_data], $generated_invoice, false);
-
-        if ($is_room_category_booking) {
-            // To display the initial room data(from post request) in checkout page. Because during category booking will book another room from the same category
-            $booking_instant_data['property_id'] = intval($_POST['listing_edit']);
-        }
 
         // STEP 3 - show me the money
         display_booking_confirm_popup($booking_instant_data, $generated_invoice);
@@ -377,8 +370,7 @@ function room_category_booking(
                 $listing_id_ready_to_book,
                 $discount_percent,
                 $from_date_converted,
-                $to_date_converted,
-                true
+                $to_date_converted
             );
         }
     } catch (Exception|Error $e) {
@@ -491,6 +483,9 @@ function generate_the_invoice_step(array $booking_instant_data): array
  */
 function display_booking_confirm_popup(array $booking_instant_data, array $generated_invoice)
 {
+    // To display the initial room data(from post request) on the checkout page. Because during booking listing ID can be changed depending on booking type
+    $booking_instant_data['property_id'] = intval($_POST['listing_edit']);
+
     echo render_booking_confirm_popup(
         $generated_invoice['invoice_id'],
         $booking_instant_data['make_the_book']['booking_id'],
