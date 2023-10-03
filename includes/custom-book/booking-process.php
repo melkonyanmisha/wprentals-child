@@ -31,8 +31,8 @@ function wpestate_ajax_add_booking_instant(): void
                 single_booking($listing_id, $discount_percent, $from_date_converted, $to_date_converted);
             }
         } elseif (current_user_is_customer() || ! is_user_logged_in()) { // The case for Customer or Guest users
-            // The case for listing which have Room parent category
-            if (check_has_room_parent_category($listing_id)) {
+            // The case for listing which have parent Room category
+            if (check_has_parent_room_category($listing_id)) {
                 room_category_booking(
                     $listing_id,
                     $from_date,
@@ -283,10 +283,11 @@ function room_category_booking(
     string $from_date_converted,
     string $to_date_converted
 ): void {
-    $from_date                                  = new DateTime($from_date);
-    $from_date_unix                             = $from_date->getTimestamp();
-    $rooms_ids_in_current_category              = get_ordered_rooms_ids_in_current_category($listing_id);
-    $reservation_grouped_array_current_category = get_reservation_grouped_array($rooms_ids_in_current_category);
+    $from_date        = new DateTime($from_date);
+    $from_date_unix   = $from_date->getTimestamp();
+    $room_category_id = get_room_category_id($listing_id);
+    $ordered_rooms_ids_from_category            = get_ordered_listing_ids_from_category($room_category_id);
+    $reservation_grouped_array_current_category = get_reservation_grouped_array($ordered_rooms_ids_from_category);
     $listing_ids_ready_to_book_from_current_cat = [];
 
     try {

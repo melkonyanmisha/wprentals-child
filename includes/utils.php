@@ -131,10 +131,11 @@ function check_listing_is_featured(int $listing_id): bool
  *
  * @return bool
  */
-function check_has_room_parent_category(int $listing_id): bool
+function check_has_parent_room_category(int $listing_id): bool
 {
-    $category_terms            = wp_get_post_terms($listing_id, 'property_category');
-    $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
+    $category_parent_terms_slugs = [];
+    $category_terms              = wp_get_post_terms($listing_id, 'property_category');
+    $category_parent_terms_ids   = wp_list_pluck($category_terms, 'parent');
 
     if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
         foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
@@ -163,17 +164,16 @@ function get_parent_room_category_id_by_slug(): int
 }
 
 /**
- * Retrieve all posts ordered ids in current category
+ * Retrieve ordered listing ids from current category
  *
- * @param int $listing_id
+ * @param int $category_id
  *
  * @return array
  */
-function get_ordered_rooms_ids_in_current_category(int $listing_id): array
+function get_ordered_listing_ids_from_category(int $category_id): array
 {
-    $taxonomy         = 'property_category';
-    $post_type        = 'estate_property';
-    $room_category_id = get_room_category_id($listing_id);
+    $taxonomy  = 'property_category';
+    $post_type = 'estate_property';
 
     // Query for posts in the same taxonomy term(s) and post type
     $args = array(
@@ -184,7 +184,7 @@ function get_ordered_rooms_ids_in_current_category(int $listing_id): array
             array(
                 'taxonomy' => $taxonomy,
                 'field'    => 'id',
-                'terms'    => $room_category_id,
+                'terms'    => $category_id,
             ),
         ),
         'order'          => 'ASC'
@@ -194,7 +194,7 @@ function get_ordered_rooms_ids_in_current_category(int $listing_id): array
 }
 
 /**
- * Retrieve ID of the first category found
+ * Retrieve the ID of the first room category found
  *
  * @param int $listing_id
  *
@@ -202,19 +202,48 @@ function get_ordered_rooms_ids_in_current_category(int $listing_id): array
  */
 function get_room_category_id(int $listing_id): int
 {
-    $taxonomy  = 'property_category';
-    $post_type = 'estate_property';
+    $taxonomy = 'property_category';
 
     // Get the current post's taxonomy terms
-    $category_terms   = wp_get_post_terms($listing_id, $taxonomy);
+    $post_terms       = wp_get_post_terms($listing_id, $taxonomy);
     $room_category_id = 0;
 
-    if (is_array($category_terms)) {
-        // Get term_id of first term
-        $room_category_id = $category_terms[0]->term_id;
+    if (is_array($post_terms)) {
+        foreach ($post_terms as $current_term) {
+            if ($current_term instanceof WP_Term && $current_term->parent === get_parent_room_category_id_by_slug()) {
+                $room_category_id = $current_term->term_id;
+
+                break;
+            }
+        }
     }
 
     return $room_category_id;
+}
+
+//get_main_room_id_from_room_category(98);
+function get_main_room_id_from_room_category(int $room_category_id): int
+{
+    $main_room_id                      = 0;
+    $taxonomy                          = 'property_category';
+    $room_category_term                = get_term($room_category_id, $taxonomy);
+    $ordered_listing_ids_from_category = get_ordered_listing_ids_from_category($room_category_id);
+
+    if (
+        $room_category_term instanceof WP_Term
+        && $room_category_term->parent === get_parent_room_category_id_by_slug()
+    ) {
+        $listings_ids_from_last_room_group = get_listings_ids_from_last_room_group();
+
+        foreach ($ordered_listing_ids_from_category as $current_listing_id) {
+            if (in_array($current_listing_id, $listings_ids_from_last_room_group)) {
+                $main_room_id = $current_listing_id;
+                break;
+            }
+        }
+    }
+
+    return $main_room_id;
 }
 
 ################## END OF ROOM CATEGORY ##################
@@ -227,8 +256,9 @@ function get_room_category_id(int $listing_id): int
  */
 function check_has_room_group(int $listing_id): bool
 {
-    $category_terms            = wp_get_post_terms($listing_id, 'property_action_category');
-    $category_parent_terms_ids = wp_list_pluck($category_terms, 'parent');
+    $category_parent_terms_slugs = [];
+    $category_terms              = wp_get_post_terms($listing_id, 'property_action_category');
+    $category_parent_terms_ids   = wp_list_pluck($category_terms, 'parent');
 
     if ( ! empty($category_parent_terms_ids) && $category_parent_terms_ids[0] !== 0) {
         foreach ($category_parent_terms_ids as $current_category_parent_term_id) {
