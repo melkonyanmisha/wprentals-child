@@ -99,7 +99,7 @@ if (current_user_is_admin()) {
                 // The case when the listing parent is "Room" Category and the listing exists in the Rooms Group with max order.
                 // During the booking process, Customer users can only see 1 listing per category
                 if (
-                    check_has_room_parent_category($post->ID)
+                    check_has_parent_room_category($post->ID)
                     && in_array($post->ID, $listings_ids_from_last_room_group)
                 ) {
                     $term_grouped_posts[$current_category->slug]['posts'][] = $post; // Group posts by term slug

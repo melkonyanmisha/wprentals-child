@@ -11,6 +11,9 @@
  * @var int $booking_guests
  */
 
+// To fix the variable name issue which comes from parent theme
+$listing_id = $booking_id;
+
 if ($booking_status == 'confirmed') {
     $total_price     = floatval(get_post_meta($post->ID, 'total_price', true));
     $to_be_paid      = floatval(get_post_meta($post->ID, 'to_be_paid', true));
@@ -20,9 +23,6 @@ if ($booking_status == 'confirmed') {
     $to_be_paid      = floatval(get_post_meta($post->ID, 'total_price', true));
     $to_be_paid_show = wpestate_show_price_booking($to_be_paid, $wpestate_currency, $wpestate_where_currency, 1);
 }
-
-$featured_post_title_from_last_room_group = get_the_title($booking_id);
-$featured_post_link_from_last_room_group  = get_permalink($booking_id);
 
 // Get the room data from where start to book the timeshare user
 if (current_user_is_timeshare()) {
@@ -36,7 +36,21 @@ if (current_user_is_timeshare()) {
             $featured_post_link_from_last_room_group  = get_post_permalink($featured_listing_from_last_room_group->ID);
         }
     }
+} elseif (current_user_is_customer()) {
+//    todo@@@ need to check also booking type after refactor the code
+    // The case when the listing is Room
+    if (check_has_parent_room_category($listing_id)) {
+        $room_category_id                = get_room_category_id($listing_id);
+        $main_room_id_from_room_category = get_main_room_id_from_room_category($room_category_id);
+
+        if ($main_room_id_from_room_category) {
+            $listing_id = $main_room_id_from_room_category;
+        }
+    }
 }
+
+$featured_post_title_from_last_room_group = get_the_title($listing_id);
+$featured_post_link_from_last_room_group  = get_permalink($listing_id);
 ?>
 
 <div class="prop-info">
