@@ -2,7 +2,9 @@
 /**
  * The template part to display in My Reservations page
  *
- * Added (and fixed) to the child theme to avoid possible issues after updating the parent theme
+ * @var int $listing_id
+ * @var bool $is_group_booking
+ * @var WP_Post|stdClass $featured_listing_from_last_room_group
  */
 
 global $post;
@@ -11,14 +13,20 @@ global $wpestate_currency;
 global $userID;
 global $user_login;
 
-$link                = esc_url(get_permalink());
+$link = esc_url(get_permalink());
+if ($is_group_booking && $featured_listing_from_last_room_group instanceof WP_Post) {
+    $preview = wp_get_attachment_image_src(
+        get_post_thumbnail_id($featured_listing_from_last_room_group->ID),
+        'wpestate_blog_unit'
+    );
+} else {
+    $preview = wp_get_attachment_image_src(get_post_thumbnail_id($listing_id), 'wpestate_blog_unit');
+}
 $booking_status      = get_post_meta($post->ID, 'booking_status', true);
 $booking_status_full = get_post_meta($post->ID, 'booking_status_full', true);
-$booking_id          = intval(get_post_meta($post->ID, 'booking_id', true));
 $booking_from_date   = get_post_meta($post->ID, 'booking_from_date', true);
 $booking_to_date     = get_post_meta($post->ID, 'booking_to_date', true);
 $booking_guests      = intval(get_post_meta($post->ID, 'booking_guests', true));
-$preview             = wp_get_attachment_image_src(get_post_thumbnail_id($booking_id), 'wpestate_blog_unit');
 $author              = get_the_author();
 $invoice_no          = intval(get_post_meta($post->ID, 'booking_invoice_no', true));
 $booking_pay         = floatval(get_post_meta($post->ID, 'booking_pay_ammount', true));
@@ -35,8 +43,8 @@ if ($booking_status == 'confirmed') {
 }
 
 $no_of_days       = (strtotime($booking_to_date) - strtotime($booking_from_date)) / (60 * 60 * 24);
-$property_price   = get_post_meta($booking_id, 'property_price', true);
-$price_per_option = intval(get_post_meta($booking_id, 'price_per', true));
+$property_price   = get_post_meta($listing_id, 'property_price', true);
+$price_per_option = intval(get_post_meta($listing_id, 'price_per', true));
 if ($price_per_option != 0) {
     $property_price = round($property_price / $price_per_option, 2);
 }
@@ -56,81 +64,83 @@ if ($wpestate_where_currency == 'before') {
 } else {
     $price_per_booking = $price_per_booking . ' ' . $wpestate_currency;
 }
+
+// Start output buffering
+ob_start();
 ?>
 
-<div class="col-md-12 dasboard-prop-listing">
-    <div class="col-md-6 blog_listing_image my_bookings_image book_image">
-        <?php
-        include(locate_template('dashboard/templates/unit-templates/reservation_image.php'));
-        include(locate_template('dashboard/templates/unit-templates/reservation_title_section.php'));
-        ?>
-    </div>
-    <div class="col-md-2 booking_unit_status">
-        <?php
-        include(locate_template('dashboard/templates/unit-templates/reservation_status.php'));
-        ?>
-    </div>
-    <div class="col-md-2 booking_unit_period">
-        <?php
-        include(locate_template('dashboard/templates/unit-templates/reservation_period.php'));
-        ?>
-    </div>
-    <div class="col-md-2 booking_unit_owner ">
-        <?php
-        include(locate_template('dashboard/templates/unit-templates/booking_owner.php'));
-        ?>
-    </div>
-    <div class="info-container_booking">
-        <?php
-        if ($booking_status == 'confirmed') {
-            if ( ! $booking_status_full == 'confirmed') { ?>
-                <span class="proceed-payment_full" data-invoiceid="<?= esc_attr($invoice_no); ?>"
-                      data-bookid="<?= esc_attr($post->ID); ?>">
+    <div class="col-md-12 dasboard-prop-listing">
+        <div class="col-md-6 blog_listing_image my_bookings_image book_image">
+            <?php
+            include(locate_template('dashboard/templates/unit-templates/booking_image.php'));
+            include(locate_template('dashboard/templates/unit-templates/reservation_title_section.php'));
+            ?>
+        </div>
+        <div class="col-md-2 booking_unit_status">
+            <?php
+            include(locate_template('dashboard/templates/unit-templates/reservation_status.php'));
+            ?>
+        </div>
+        <div class="col-md-2 booking_unit_period">
+            <?php
+            include(locate_template('dashboard/templates/unit-templates/reservation_period.php'));
+            ?>
+        </div>
+        <div class="info-container_booking">
+            <?php
+            if ($booking_status == 'confirmed') {
+                if ( ! $booking_status_full == 'confirmed') { ?>
+                    <span class="proceed-payment_full" data-invoiceid="<?= esc_attr($invoice_no); ?>"
+                          data-bookid="<?= esc_attr($post->ID); ?>">
                     <?= esc_html__('Pay Invoice in Full', 'wprentals'); ?>
                 </span>
-                <?php
-            } ?>
-            <span class="confirmed_booking" data-invoice-confirmed="<?= esc_attr($invoice_no); ?>"
-                  data-booking-confirmed="<?= esc_attr($post->ID); ?>">
+                    <?php
+                } ?>
+                <span class="confirmed_booking" data-invoice-confirmed="<?= esc_attr($invoice_no); ?>"
+                      data-booking-confirmed="<?= esc_attr($post->ID); ?>">
                 <?= esc_html__('Invoice Details', 'wprentals'); ?>
             </span>
-            <?php
-            if (strtotime($booking_to_date) < time()) {
-                if (get_post_meta($booking_id, 'review_by_' . $userID, true) != 'has') { ?>
-                    <span class="tag-post-review post_review" data-bookid="<?= esc_attr($post->ID); ?>"
-                          data-listing-review="<?= esc_attr($booking_id); ?>">
+                <?php
+                if (strtotime($booking_to_date) < time()) {
+                    if (get_post_meta($listing_id, 'review_by_' . $userID, true) != 'has') { ?>
+                        <span class="tag-post-review post_review" data-bookid="<?= esc_attr($post->ID); ?>"
+                              data-listing-review="<?= esc_attr($listing_id); ?>">
                         <?= esc_html__('Post Review', 'wprentals'); ?>
                     </span>
-                    <?php
-                } else { ?>
-                    <span class="you_already_review">
+                        <?php
+                    } else { ?>
+                        <span class="you_already_review">
                         <?= esc_html__('You already reviewed this property!', 'wprentals'); ?>
                     </span>
-                    <?php
-                }
-            } else { ?>
-                <span class="post_review_later">
+                        <?php
+                    }
+                } else { ?>
+                    <span class="post_review_later">
                     <?= esc_html__('You can post the review after the trip!', 'wprentals'); ?>
                 </span>
-                <?php
-            }
-        } elseif ($booking_status == 'waiting') { ?>
-            <span class="proceed-payment" data-invoiceid="<?= esc_attr($invoice_no); ?>"
-                  data-bookid="<?= esc_attr($post->ID); ?>">
+                    <?php
+                }
+            } elseif ($booking_status == 'waiting') { ?>
+                <span class="proceed-payment" data-invoiceid="<?= esc_attr($invoice_no); ?>"
+                      data-bookid="<?= esc_attr($post->ID); ?>">
                 <?= esc_html__('Invoice Created - Check & Pay', 'wprentals'); ?>
             </span>
-            <span class="delete_booking usercancel" data-bookid="<?= esc_attr($post->ID); ?>">
+                <span class="delete_booking usercancel" data-bookid="<?= esc_attr($post->ID); ?>">
                <?= esc_html__('Cancel Booking Request', 'wprentals'); ?>
             </span>
-            <?php
-        } else { ?>
-            <span class="delete_booking usercancel" data-bookid="<?= esc_attr($post->ID); ?>">
+                <?php
+            } else { ?>
+                <span class="delete_booking usercancel" data-bookid="<?= esc_attr($post->ID); ?>">
                 <?= esc_html__('Cancel Booking Request', 'wprentals'); ?>
             </span>
-            <?php
-        } ?>
-        <span class="contact_owner_reservation" data-bookid="<?= esc_attr($booking_id); ?>">
+                <?php
+            } ?>
+            <span class="contact_owner_reservation" data-bookid="<?= esc_attr($listing_id); ?>">
            <?= esc_html__('Contact Owner', 'wprentals'); ?>
        </span>
+        </div>
     </div>
-</div>
+
+<?php
+// End output buffering
+echo ob_get_clean();

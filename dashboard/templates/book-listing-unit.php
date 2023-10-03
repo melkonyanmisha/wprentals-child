@@ -2,7 +2,10 @@
 /**
  * The template part to display in My Bookings page
  *
- * Added (and fixed) to the child theme to avoid possible issues after updating the parent theme
+ * @var int $listing_id
+ *
+ * @var bool $is_group_booking
+ * @var WP_Post|stdClass $featured_listing_from_last_room_group
  */
 
 global $post;
@@ -10,14 +13,20 @@ global $wpestate_where_currency;
 global $wpestate_currency;
 global $user_login;
 
-$link                = esc_url(get_permalink());
+$link = esc_url(get_permalink());
+if ($is_group_booking && $featured_listing_from_last_room_group instanceof WP_Post) {
+    $preview = wp_get_attachment_image_src(
+        get_post_thumbnail_id($featured_listing_from_last_room_group->ID),
+        'wpestate_blog_unit'
+    );
+} else {
+    $preview = wp_get_attachment_image_src(get_post_thumbnail_id($listing_id), 'wpestate_blog_unit');
+}
 $booking_status      = get_post_meta($post->ID, 'booking_status', true);
 $booking_status_full = get_post_meta($post->ID, 'booking_status_full', true);
-$booking_id          = intval(get_post_meta($post->ID, 'booking_id', true));
 $booking_from_date   = get_post_meta($post->ID, 'booking_from_date', true);
 $booking_to_date     = get_post_meta($post->ID, 'booking_to_date', true);
 $booking_guests      = intval(get_post_meta($post->ID, 'booking_guests', true));
-$preview             = wp_get_attachment_image_src(get_post_thumbnail_id($booking_id), 'wpestate_blog_unit');
 $author              = get_the_author();
 $author_id           = get_the_author_meta('ID');
 $userid_agent        = intval(get_user_meta($author_id, 'user_agent_id', true));
@@ -26,7 +35,7 @@ $invoice_no          = intval(get_post_meta($post->ID, 'booking_invoice_no', tru
 $booking_array     = wpestate_booking_price(
     $booking_guests,
     $invoice_no,
-    $booking_id,
+    $listing_id,
     $booking_from_date,
     $booking_to_date
 );
@@ -57,6 +66,9 @@ $price_per_booking = wpestate_show_price_booking(
     $wpestate_where_currency,
     1
 );
+
+// Start output buffering
+ob_start();
 ?>
 
     <div class="col-md-12 dasboard-prop-listing">
@@ -80,9 +92,9 @@ $price_per_booking = wpestate_show_price_booking(
         </div>
 
         <div class="col-md-2 booking_unit_owner">
-            <?php
-            include(locate_template('dashboard/templates/unit-templates/booking_owner.php'));
-            ?>
+            <a href="<?= esc_url(get_edit_user_link($author_id)); ?> " target="_blank">
+                <?= esc_html($author); ?>
+            </a>
         </div>
 
         <div class="info-container_booking book_listing_user_confirmed">
@@ -93,13 +105,13 @@ $price_per_booking = wpestate_show_price_booking(
                           data-booking-confirmed="<?= esc_attr($post->ID); ?>">
                         <?= esc_html__('View Details', 'wprentals'); ?>
                     </span>
-                    <span class="cancel_user_booking" data-listing-id="<?= esc_attr($booking_id); ?>"
+                    <span class="cancel_user_booking" data-listing-id="<?= esc_attr($listing_id); ?>"
                           data-booking-confirmed="<?= esc_attr($post->ID); ?>">
                         <?= esc_html__('Cancel booking', 'wprentals'); ?>
                     </span>
                     <?php
                 } else { ?>
-                    <span class="cancel_own_booking" data-listing-id="<?= esc_attr($booking_id); ?>"
+                    <span class="cancel_own_booking" data-listing-id="<?= esc_attr($listing_id); ?>"
                           data-booking-confirmed="<?= esc_attr($post->ID); ?>">
                         <?= esc_html__('Cancel my own booking', 'wprentals'); ?>
                     </span>
@@ -141,4 +153,7 @@ $price_per_booking = wpestate_show_price_booking(
 
         </div>
     </div>
+
 <?php
+// End output buffering
+echo ob_get_clean();
