@@ -57,7 +57,7 @@ ob_start();
         <h4 class="listing_title_book book_listing_user_unit_title">
             <?= esc_html__('Booking request', 'wprentals') . ' ' . $post->ID; ?>
             <strong><?= esc_html__('for', 'wprentals'); ?></strong>
-            <a href="<?= esc_url($listing_link); ?>">
+            <a href="<?= esc_url($listing_link); ?>" target="_blank">
                 <?= esc_html($listing_title); ?>
             </a>
         </h4>

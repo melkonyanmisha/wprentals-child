@@ -31,27 +31,27 @@ get_header();
 $title_search = '';
 $new_mess     = 0;
 if (isset($_POST['wpestate_prop_title'])) {
-    if ( ! isset($_POST['wpestate_dash_rez_search_nonce']) || ! wp_verify_nonce(
-            $_POST['wpestate_dash_rez_search_nonce'],
-            'wpestate_dash_rez_search'
-        )) {
+    if (
+        ! isset($_POST['wpestate_dash_rez_search_nonce'])
+        || ! wp_verify_nonce($_POST['wpestate_dash_rez_search_nonce'], 'wpestate_dash_rez_search')
+    ) {
         esc_html_e('your nonce does not validated', 'wprentals');
         exit();
     }
-    $title = sanitize_text_field($_POST['wpestate_prop_title']);
 
-    $args     = array(
+    $title    = sanitize_text_field($_POST['wpestate_prop_title']);
+    $args     = [
         'post_type'      => 'estate_property',
         'posts_per_page' => -1,
         's'              => $title
-    );
+    ];
     $new_mess = 1;
 
     if (function_exists('wpestate_search_by_title_only_filter')) {
         $prop_selection = wpestate_search_by_title_only_filter($args);
     }
 
-    $right_array   = array();
+    $right_array   = [];
     $right_array[] = 0;
 
     while ($prop_selection->have_posts()): $prop_selection->the_post();
@@ -59,13 +59,13 @@ if (isset($_POST['wpestate_prop_title'])) {
     endwhile;
 
     wp_reset_postdata();
-    $title_search = array(
-        array(
+    $title_search = [
+        [
             'key'     => 'booking_id',
             'value'   => $right_array,
             'compare' => 'IN',
-        ),
-    );
+        ],
+    ];
 }
 
 // Start output buffering
@@ -74,10 +74,8 @@ ob_start();
 
     <div class="row is_dashboard">
         <?php
-        if (wpestate_check_if_admin_page($post->ID)) {
-            if (is_user_logged_in()) {
-                include(locate_template('templates/user_menu.php'));
-            }
+        if (wpestate_check_if_admin_page($post->ID) && is_user_logged_in()) {
+            include(locate_template('templates/user_menu.php'));
         }
         ?>
 
@@ -99,15 +97,15 @@ ob_start();
 
                 <?php
                 wp_reset_query();
-                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                $args  = array(
+                $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+                $args  = [
                     'post_type'      => 'wpestate_booking',
                     'post_status'    => 'publish',
                     'paged'          => $paged,
                     'posts_per_page' => 30,
                     'order'          => 'DESC',
                     'author'         => $userID
-                );
+                ];
 
                 if ($title_search != '') {
                     $args['meta_query'] = $title_search;
@@ -120,7 +118,7 @@ ob_start();
                 $book_selection = new WP_Query($args);
                 if ($book_selection->have_posts()) {
                     while ($book_selection->have_posts()): $book_selection->the_post();
-                        $listing_id       = get_post_meta(get_the_ID(), 'booking_id', true);
+                        $listing_id       = intval(get_post_meta(get_the_ID(), 'booking_id', true));
                         $is_group_booking = intval(get_post_meta($post->ID, 'is_group_booking', true));
 
                         if ($current_user_is_timeshare) {
@@ -165,7 +163,7 @@ $ajax_nonce      = wp_create_nonce("wprentals_reservation_actions_nonce");
 $ajax_nonce_book = wp_create_nonce("wprentals_booking_confirmed_actions_nonce");
 ?>
     <input type="hidden" id="wprentals_reservation_actions" value="<?= esc_html($ajax_nonce); ?>"/>
-    <input type="hidden" id="wprentals_booking_confirmed_actions" value="<?= esc_html($ajax_nonce_book) ?>"/>
+    <input type="hidden" id="wprentals_booking_confirmed_actions" value="<?= esc_html($ajax_nonce_book); ?>"/>
 
 <?php
 wp_reset_query();
