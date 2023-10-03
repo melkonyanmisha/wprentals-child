@@ -83,9 +83,9 @@ ob_start();
         </div>
 
         <div class="col-md-2 booking_unit_owner">
-            <?php
-            include(locate_template('dashboard/templates/unit-templates/booking_owner.php'));
-            ?>
+            <a href="<?= esc_url(get_edit_user_link($author_id)); ?> " target="_blank">
+                <?= esc_html($author); ?>
+            </a>
         </div>
 
         <div class="info-container_booking book_listing_user_confirmed">

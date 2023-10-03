@@ -95,7 +95,6 @@ ob_start();
                     <div class="col-md-6"><?= esc_html__('Property', 'wprentals'); ?></div>
                     <div class="col-md-2"><?= esc_html__('Status', 'wprentals'); ?></div>
                     <div class="col-md-2"><?= esc_html__('Period', 'wprentals'); ?></div>
-                    <div class="col-md-2"><?= esc_html__('Request by', 'wprentals'); ?></div>
                 </div>
 
                 <?php
@@ -174,4 +173,3 @@ wp_reset_query();
 echo ob_get_clean();
 
 get_footer();
-
