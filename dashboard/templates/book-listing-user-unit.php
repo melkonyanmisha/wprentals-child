@@ -56,6 +56,9 @@ if ($wpestate_where_currency == 'before') {
 } else {
     $price_per_booking = $price_per_booking . ' ' . $wpestate_currency;
 }
+
+// Start output buffering
+ob_start();
 ?>
 
 <div class="col-md-12 dasboard-prop-listing">
@@ -134,3 +137,7 @@ if ($wpestate_where_currency == 'before') {
        </span>
     </div>
 </div>
+
+<?php
+// End output buffering
+echo ob_get_clean();

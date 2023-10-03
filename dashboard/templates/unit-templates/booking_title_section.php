@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  The template part to display booking description in My Bookings page
  *
@@ -44,70 +43,77 @@ if (current_user_is_admin()) {
         }
     }
 }
+
+// Start output buffering
+ob_start();
 ?>
 
-<div class="prop-info">
-    <h4 class="listing_title_book book_listing_user_title">
-        <?= esc_html__('Booking request', 'wprentals') . ' ' . $post->ID; ?>
-        <strong>
-            <?= esc_html__('for', 'wprentals'); ?>
-        </strong>
-        <a href="<?= esc_url($rooms_group_link); ?>" target="_blank">
-            <?= get_the_title($booking_id); ?>
-        </a>
-    </h4>
+    <div class="prop-info">
+        <h4 class="listing_title_book book_listing_user_title">
+            <?= esc_html__('Booking request', 'wprentals') . ' ' . $post->ID; ?>
+            <strong>
+                <?= esc_html__('for', 'wprentals'); ?>
+            </strong>
+            <a href="<?= esc_url($rooms_group_link); ?>" target="_blank">
+                <?= get_the_title($booking_id); ?>
+            </a>
+        </h4>
 
-    <?php
-    if ($author != $user_login) { ?>
-        <div class="user_dashboard_listed book_listing_user_invoice">
+        <?php
+        if ($author != $user_login) { ?>
+            <div class="user_dashboard_listed book_listing_user_invoice">
             <span class="booking_details_title">
                 <?= esc_html__('Invoice No: ', 'wprentals'); ?>
             </span>
-            <span class="invoice_list_id">
+                <span class="invoice_list_id">
                 <?= esc_html($invoice_no); ?>
             </span>
-        </div>
-        <div class="user_dashboard_listed book_listing_user_pay">
+            </div>
+            <div class="user_dashboard_listed book_listing_user_pay">
             <span class="booking_details_title">
                 <?= esc_html__('Pay Amount: ', 'wprentals'); ?>
             </span>
-            <?
-            echo wpestate_show_price_booking(
-                floatval(get_post_meta($invoice_no, 'item_price', true)),
-                $wpestate_currency,
-                $wpestate_where_currency,
-                1
-            );
-            ?>
-            <span class="booking_details_title guest_details book_listing_user_guest_details">
+                <?
+                echo wpestate_show_price_booking(
+                    floatval(get_post_meta($invoice_no, 'item_price', true)),
+                    $wpestate_currency,
+                    $wpestate_where_currency,
+                    1
+                );
+                ?>
+                <span class="booking_details_title guest_details book_listing_user_guest_details">
                 <?= esc_html__('Guests: ', 'wprentals'); ?>
             </span>
-            <?php
-            if ($booking_guests != 0) { ?>
-                <span class="book_listing_user_guest_details">
+                <?php
+                if ($booking_guests != 0) { ?>
+                    <span class="book_listing_user_guest_details">
                    <?= esc_html($booking_guests) . wpestate_booking_guest_explanations($post->ID); ?>
                 </span>
-                <?php
-            } ?>
-        </div>
-        <?php
-    }
+                    <?php
+                } ?>
+            </div>
+            <?php
+        }
 
-    include(locate_template('dashboard/templates/unit-templates/balance_display.php'));
+        include(locate_template('dashboard/templates/unit-templates/balance_display.php'));
 
-    if ($event_description != '') { ?>
-        <div class="user_dashboard_listed event_desc">
+        if ($event_description != '') { ?>
+            <div class="user_dashboard_listed event_desc">
             <span class="booking_details_title">
                <?= esc_html__('Reservation made by owner', 'wprentals'); ?>
             </span>
-        </div>
-        <div class="user_dashboard_listed event_desc">
+            </div>
+            <div class="user_dashboard_listed event_desc">
             <span class="booking_details_title">
                     <?= esc_html__('Comments: ', 'wprentals'); ?>
              </span>
-            <?= esc_html($event_description); ?>
-        </div>
-        <?php
-    } ?>
+                <?= esc_html($event_description); ?>
+            </div>
+            <?php
+        } ?>
 
-</div>
+    </div>
+
+<?php
+// End output buffering
+echo ob_get_clean();

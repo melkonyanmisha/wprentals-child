@@ -57,6 +57,9 @@ $price_per_booking = wpestate_show_price_booking(
     $wpestate_where_currency,
     1
 );
+
+// Start output buffering
+ob_start();
 ?>
 
     <div class="col-md-12 dasboard-prop-listing">
@@ -141,4 +144,7 @@ $price_per_booking = wpestate_show_price_booking(
 
         </div>
     </div>
+
 <?php
+// End output buffering
+echo ob_get_clean();
