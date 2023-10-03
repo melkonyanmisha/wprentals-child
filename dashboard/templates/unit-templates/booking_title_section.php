@@ -73,7 +73,7 @@ ob_start();
             <span class="booking_details_title">
                 <?= esc_html__('Pay Amount: ', 'wprentals'); ?>
             </span>
-                <?
+                <?php
                 echo wpestate_show_price_booking(
                     floatval(get_post_meta($invoice_no, 'item_price', true)),
                     $wpestate_currency,
