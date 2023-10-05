@@ -371,14 +371,30 @@ function wpestate_chid_print_create_form_invoice(
 
                 <?php
                 // To display separately prices for accessible and remaining days. Depends on client user role
-                echo render_additional_part_of_invoice($booking_array, $rental_type, $booking_type);
+                $additional_part_of_invoice_html = trim(
+                    render_additional_part_of_invoice(
+                        $invoice_id,
+                        $booking_array,
+                        $rental_type,
+                        $booking_type
+                    )
+                );
 
                 foreach ($details as $detail) {
-                    if ($detail[1] != 0) { ?>
+                    if ($detail[1] != 0) {
+                        if ($detail[0] === 'Subtotal') {
+                            if ($additional_part_of_invoice_html) {
+                                echo $additional_part_of_invoice_html;
+                                continue;
+                            }
+                        }
+
+                        ?>
                         <div class="invoice_row invoice_content">
                             <span class="inv_legend"><?= esc_html($detail[0]); ?></span>
                             <span class="inv_data">
-                                    <?= esc_html(
+                                    <?php
+                                    echo esc_html(
                                         wpestate_show_price_booking_for_invoice(
                                             $detail[1],
                                             $wpestate_currency,
@@ -386,93 +402,94 @@ function wpestate_chid_print_create_form_invoice(
                                             0,
                                             1
                                         )
-                                    ); ?>
-                                </span>
+                                    );
+                                    ?>
+                            </span>
                             <span class="inv_exp">
-                                    <?php
-                                    if (
-                                        trim($detail[0]) == esc_html__('Security Depozit', 'wprentals-core')
-                                        || trim($detail[0]) == esc_html__('Security Deposit', 'wprentals-core')
-                                    ) {
-                                        esc_html_e('*refundable', 'wprentals-core');
-                                    }
+                                <?php
+                                if (
+                                    trim($detail[0]) == esc_html__('Security Depozit', 'wprentals-core')
+                                    || trim($detail[0]) == esc_html__('Security Deposit', 'wprentals-core')
+                                ) {
+                                    esc_html_e('*refundable', 'wprentals-core');
+                                }
 
-                                    if (
-                                        trim($detail[0]) == esc_html__('Subtotal', 'wprentals-core')
-                                        || trim($detail[0]) == esc_html__('Subtotal', 'wprentals')
-                                    ) {
-                                        if ($booking_array['price_per_guest_from_one'] == 1) {
-                                            if ($booking_array['custom_period_quest'] == 1) {
-                                                echo $booking_array['count_days']
-                                                     . ' '
-                                                     . wpestate_show_labels('nights', $rental_type, $booking_type)
-                                                     . ' x '
-                                                     . $booking_array['curent_guest_no']
-                                                     . ' '
-                                                     . esc_html__('guests', 'wprentals-core')
-                                                     . ' - '
-                                                     . esc_html__(" period with custom price per guest", "wprentals");
-                                            } else {
-                                                echo $extra_price_per_guest
-                                                     . ' x '
-                                                     . $booking_array['count_days']
-                                                     . ' '
-                                                     . wpestate_show_labels('nights', $rental_type, $booking_type)
-                                                     . ' x '
-                                                     . $booking_array['curent_guest_no']
-                                                     . ' '
-                                                     . esc_html__('guests', 'wprentals-core');
-                                            }
-                                        } else {
-                                            echo $booking_array['numberDays']
+                                if (
+                                    trim($detail[0]) == esc_html__('Subtotal', 'wprentals-core')
+                                    || trim($detail[0]) == esc_html__('Subtotal', 'wprentals')
+                                ) {
+                                    if ($booking_array['price_per_guest_from_one'] == 1) {
+                                        if ($booking_array['custom_period_quest'] == 1) {
+                                            echo $booking_array['count_days']
                                                  . ' '
                                                  . wpestate_show_labels('nights', $rental_type, $booking_type)
-                                                 . ' x ';
-                                            if ($booking_array['cover_weekend']) {
-                                                echo esc_html__('has weekend price of', 'wprentals-core')
-                                                     . ' '
-                                                     . $price_per_weekeend_show;
-                                            } else {
-                                                if ($booking_array['has_custom'] != 0) {
-                                                    esc_html_e('custom price', 'wprentals-core');
-                                                } else {
-                                                    echo $price_show;
-                                                }
-                                            }
+                                                 . ' x '
+                                                 . $booking_array['curent_guest_no']
+                                                 . ' '
+                                                 . esc_html__('guests', 'wprentals-core')
+                                                 . ' - '
+                                                 . esc_html__(" period with custom price per guest", "wprentals");
+                                        } else {
+                                            echo $extra_price_per_guest
+                                                 . ' x '
+                                                 . $booking_array['count_days']
+                                                 . ' '
+                                                 . wpestate_show_labels('nights', $rental_type, $booking_type)
+                                                 . ' x '
+                                                 . $booking_array['curent_guest_no']
+                                                 . ' '
+                                                 . esc_html__('guests', 'wprentals-core');
                                         }
-                                    }
-
-                                    if ($booking_array['custom_period_quest'] == 1) {
-                                        $new_guest_price = esc_html__("custom price", "wprentals");
                                     } else {
-                                        $new_guest_price = $guest_price . ' ' . wpestate_show_labels(
-                                                'per_night',
-                                                $rental_type,
-                                                $booking_type
-                                            );
-                                    }
-
-                                    if (
-                                        trim($detail[0]) == esc_html__('Extra Guests', 'wprentals-core')
-                                        || trim($detail[0]) == esc_html__('Extra Guests', 'wprentals')
-                                    ) {
                                         echo $booking_array['numberDays']
                                              . ' '
                                              . wpestate_show_labels('nights', $rental_type, $booking_type)
-                                             . ' x '
-                                             . $booking_array['extra_guests']
-                                             . ' '
-                                             . esc_html__('extra guests', 'wprentals-core')
-                                             . ' x '
-                                             . $new_guest_price;
+                                             . ' x ';
+                                        if ($booking_array['cover_weekend']) {
+                                            echo esc_html__('has weekend price of', 'wprentals-core')
+                                                 . ' '
+                                                 . $price_per_weekeend_show;
+                                        } else {
+                                            if ($booking_array['has_custom'] != 0) {
+                                                esc_html_e('custom price', 'wprentals-core');
+                                            } else {
+                                                echo $price_show;
+                                            }
+                                        }
                                     }
+                                }
 
-                                    if (isset($detail[2])) {
-                                        echo $detail[2];
-                                    }
-                                    ?>
+                                if ($booking_array['custom_period_quest'] == 1) {
+                                    $new_guest_price = esc_html__("custom price", "wprentals");
+                                } else {
+                                    $new_guest_price = $guest_price . ' ' . wpestate_show_labels(
+                                            'per_night',
+                                            $rental_type,
+                                            $booking_type
+                                        );
+                                }
 
-                                </span>
+                                if (
+                                    trim($detail[0]) == esc_html__('Extra Guests', 'wprentals-core')
+                                    || trim($detail[0]) == esc_html__('Extra Guests', 'wprentals')
+                                ) {
+                                    echo $booking_array['numberDays']
+                                         . ' '
+                                         . wpestate_show_labels('nights', $rental_type, $booking_type)
+                                         . ' x '
+                                         . $booking_array['extra_guests']
+                                         . ' '
+                                         . esc_html__('extra guests', 'wprentals-core')
+                                         . ' x '
+                                         . $new_guest_price;
+                                }
+
+                                if (isset($detail[2])) {
+                                    echo $detail[2];
+                                }
+                                ?>
+
+                            </span>
                         </div>
                         <?php
                     }//end if($detail[1]>0)

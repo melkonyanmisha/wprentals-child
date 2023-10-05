@@ -181,17 +181,15 @@ function render_booking_confirm_popup(
                         </span>
                         <?= trim($extra_price_per_guest); ?>
                     </span>
-
                     <?php
                 } else { ?>
-
                     <span class="date_duration invoice_date_label_wrapper">
                         <span class="invoice_data_legend">
                             <?= wpestate_show_labels('price_label', $rental_type, $booking_type) . ':'; ?>
                         </span>
-                        <?= trim($price_show); ?>
-
                         <?php
+                        echo trim($price_show);
+
                         if ($booking_array['has_custom']) {
                             echo ', ' . esc_html__('has custom price', 'wprentals');
                         }
@@ -201,13 +199,10 @@ function render_booking_confirm_popup(
                                  . ' ' . $price_per_weekeend_show;
                         }
                         ?>
-
                     </span>
-
                     <?php
                 }
                 if ($booking_array['has_custom']) { ?>
-
                     <span class="invoice_data_legend">
                         <?= __('Price details:', 'wprentals'); ?>
                     </span>
@@ -220,17 +215,14 @@ function render_booking_confirm_popup(
                             1,
                             1
                         );
-
                         ?>
-
                         <span class="price_custom_explained">
-                            <?=
-                            __('on', 'wprentals') . ' '
-                            . wpestate_convert_dateformat_reverse(date("Y-m-d", $date)) . ' '
-                            . __('price is', 'wprentals') . ' ' . $day_price;
+                            <?php
+                            echo __('on', 'wprentals') . ' '
+                                 . wpestate_convert_dateformat_reverse(date("Y-m-d", $date)) . ' '
+                                 . __('price is', 'wprentals') . ' ' . $day_price;
                             ?>
-                         </span>
-
+                        </span>
                         <?php
                     }
                 } ?>
@@ -245,45 +237,53 @@ function render_booking_confirm_popup(
 
                 <?php
                 // To display separately prices for accessible and remaining days. Depends on client user role
-                echo render_additional_part_of_invoice($booking_array, $rental_type, $booking_type);
-                ?>
+                $additional_part_of_invoice_html = trim(
+                    render_additional_part_of_invoice(
+                        $invoice_id,
+                        $booking_array,
+                        $rental_type,
+                        $booking_type
+                    )
+                );
 
-                <div class="invoice_row invoice_content">
-                    <span class="inv_legend"><?= esc_html__('Subtotal', 'wprentals'); ?></span>
-                    <span class="inv_data"><?= $inter_price_show; ?></span>
-
-                    <?php
-                    if ($booking_array['price_per_guest_from_one'] == 1) {
-                        echo
-                            esc_html($extra_price_per_guest) . ' x '
-                            . $booking_array['count_days'] . ' '
-                            . wpestate_show_labels(
-                                'nights',
-                                $rental_type,
-                                $booking_type
-                            ) . ' x '
-                            . $booking_array['curent_guest_no'] . ' '
-                            . esc_html__('guests', 'wprentals');
-                    } else {
-                        if ($booking_array['cover_weekend']) {
-                            $new_price_to_show = esc_html__(
-                                                     'has weekend price of',
-                                                     'wprentals'
-                                                 ) . ' ' . $price_per_weekeend_show;
+                if ($additional_part_of_invoice_html) {
+                    echo $additional_part_of_invoice_html;
+                } else { ?>
+                    <div class="invoice_row invoice_content">
+                        <span class="inv_legend"><?= esc_html__('Subtotal', 'wprentals'); ?></span>
+                        <span class="inv_data"><?= $inter_price_show; ?></span>
+                        <?php
+                        if ($booking_array['price_per_guest_from_one'] == 1) {
+                            echo
+                                esc_html($extra_price_per_guest) . ' x '
+                                . $booking_array['count_days'] . ' '
+                                . wpestate_show_labels(
+                                    'nights',
+                                    $rental_type,
+                                    $booking_type
+                                ) . ' x '
+                                . $booking_array['curent_guest_no'] . ' '
+                                . esc_html__('guests', 'wprentals');
                         } else {
-                            if ($booking_array['has_custom']) {
-                                $new_price_to_show = esc_html__("custom price", "wprentals");
+                            if ($booking_array['cover_weekend']) {
+                                $new_price_to_show = esc_html__(
+                                                         'has weekend price of',
+                                                         'wprentals'
+                                                     ) . ' ' . $price_per_weekeend_show;
                             } else {
-                                $new_price_to_show = $price_show . ' ' . wpestate_show_labels(
-                                        'per_night',
-                                        $rental_type,
-                                        $booking_type
-                                    );
+                                if ($booking_array['has_custom']) {
+                                    $new_price_to_show = esc_html__("custom price", "wprentals");
+                                } else {
+                                    $new_price_to_show = $price_show . ' ' . wpestate_show_labels(
+                                            'per_night',
+                                            $rental_type,
+                                            $booking_type
+                                        );
+                                }
                             }
-                        }
 
-                        if ($booking_array['numberDays'] == 1) { ?>
-                            <span class="inv_exp">
+                            if ($booking_array['numberDays'] == 1) { ?>
+                                <span class="inv_exp">
                                 <?=
                                 '('
                                 . $booking_array['numberDays'] . ' '
@@ -292,33 +292,30 @@ function render_booking_confirm_popup(
                                 . ')';
                                 ?>
                             </span>
-                            <?php
-                        } else {
-                            ?>
-                            <span class="inv_exp">
-                               <?=
-                               '('
-                               . $booking_array['numberDays'] . ' '
-                               . wpestate_show_labels('nights', $rental_type, $booking_type) . ' | '
-                               . $new_price_to_show
-                               . ')';
+                                <?php
+                            } else {
+                                ?>
+                                <span class="inv_exp">
+                               <?php
+                               echo '('
+                                    . $booking_array['numberDays'] . ' '
+                                    . wpestate_show_labels('nights', $rental_type, $booking_type) . ' | '
+                                    . $new_price_to_show
+                                    . ')';
                                ?>
                             </span>
-                            <?php
+                                <?php
+                            }
                         }
-                    }
 
-                    if ($booking_array['custom_period_quest'] == 1) {
-                        esc_html_e(" period with custom price per guest", "wprentals");
-                    }
+                        if ($booking_array['custom_period_quest'] == 1) {
+                            esc_html_e(" period with custom price per guest", "wprentals");
+                        } ?>
+                    </div>
+                    <?php
+                }
 
-                    ?>
-
-                </div>
-
-                <?php
                 if ($booking_array['has_guest_overload'] != 0 && $booking_array['total_extra_price_per_guest'] != 0) { ?>
-
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('Extra Guests', 'wprentals'); ?>
@@ -328,23 +325,21 @@ function render_booking_confirm_popup(
                             <?= $total_guest; ?>
                         </span>
                         <span class="inv_exp">
-                            (
-                                <?=
-                                $booking_array['numberDays'] . ' '
-                                . wpestate_show_labels('nights', $rental_type, $booking_type) . ' | '
-                                . $booking_array['extra_guests'] . ' '
-                                . esc_html__('extra guests', 'wprentals');
+                                <?php
+                                echo '(' .
+                                     $booking_array['numberDays'] . ' '
+                                     . wpestate_show_labels('nights', $rental_type, $booking_type) . ' | '
+                                     . $booking_array['extra_guests'] . ' '
+                                     . esc_html__('extra guests', 'wprentals')
+                                     . ')';
                                 ?>
-                             )
                         </span>
                     </div>
-
                     <?php
                 }
 
                 if ($booking_array['cleaning_fee'] != 0 && $booking_array['cleaning_fee'] != '') {
                     ?>
-
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('Cleaning fee', 'wprentals'); ?>
@@ -354,12 +349,10 @@ function render_booking_confirm_popup(
                             <?= $cleaning_fee_show; ?>
                         </span>
                     </div>
-
                     <?php
                 }
 
                 if ($booking_array['city_fee'] != 0 && $booking_array['city_fee'] != '') { ?>
-
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('City fee', 'wprentals'); ?>
@@ -369,11 +362,10 @@ function render_booking_confirm_popup(
                             <?= $city_fee_show; ?>
                         </span>
                     </div>
-
                     <?php
                 }
 
-                foreach ($extra_options_array as $key => $value) {
+                foreach ($extra_options_array as $value) {
                     if (isset($extra_pay_options[$value][0])) {
                         $extra_option_value             = wpestate_calculate_extra_options_value(
                             $booking_array['count_days'],
@@ -395,9 +387,7 @@ function render_booking_confirm_popup(
                             0,
                             1
                         );
-
                         ?>
-
                         <div class="invoice_row invoice_content">
                             <span class="inv_legend"><?= $extra_pay_options[$value][0]; ?></span>
                             <span class="inv_data"><?= $extra_option_value_show; ?></span>
@@ -405,7 +395,6 @@ function render_booking_confirm_popup(
                                 <?= $extra_option_value_show_single . ' ' . $options_array_explanations[$extra_pay_options[$value][2]]; ?>
                             </span>
                         </div>
-
                         <?php
                     }
                 }
@@ -417,14 +406,13 @@ function render_booking_confirm_popup(
                         $wpestate_where_currency,
                         1,
                         1
-                    ); ?>
-
+                    );
+                    ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend"><?= __('Security Deposit', 'wprentals'); ?> </span>
                         <span class="inv_data"><?= $security_depozit_show; ?></span>
                         <span class="inv_data"><?= __('*refundable', 'wprentals'); ?></span>
                     </div>
-
                     <?php
                 }
 
@@ -435,14 +423,13 @@ function render_booking_confirm_popup(
                         $wpestate_where_currency,
                         1,
                         1
-                    ); ?>
-
+                    );
+                    ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend"><?= __('Early Bird Discount', 'wprentals'); ?></span>
                         <span class="inv_data"><?= $early_bird_discount_show; ?></span>
                         <span class="inv_data"></span>
                     </div>
-
                     <?php
                 } ?>
 
@@ -480,21 +467,19 @@ function render_booking_confirm_popup(
                 }
                 $wpestate_global_payments->show_button_pay($property_id, $booking_id, $invoice_id, $depozit, 1);
             } else {
-                if (floatval($depozit) == 0) { ?>
-
+                if (floatval($depozit) == 0) {
+                    ?>
                     <span id="confirm_zero_instant_booking"
                           data-propid="<?= esc_attr($property_id); ?>"
                           data-bookid="<?= esc_attr($booking_id); ?>"
                           data-invoiceid="<?= esc_attr($invoice_id); ?>">
                      <?= esc_html__('Confirm Booking - No Deposit Needed', 'wprentals'); ?>
                     </span>
-
                     <?php
-                    $ajax_nonce = wp_create_nonce("wprentals_confirm_zero_instant_booking_nonce"); ?>
-
+                    $ajax_nonce = wp_create_nonce("wprentals_confirm_zero_instant_booking_nonce");
+                    ?>
                     <input type="hidden" id="wprentals_confirm_zero_instant_booking"
                            value="<?= esc_html($ajax_nonce); ?>"/>
-
                     <?php
                 } else {
                     $is_paypal_live = esc_html(wprentals_get_option('wp_estate_enable_paypal', ''));
@@ -504,7 +489,6 @@ function render_booking_confirm_popup(
                     <span class="pay_notice_booking">
                         <?= esc_html__('Pay Deposit & Confirm Reservation', 'wprentals'); ?>
                     </span>
-
                     <?php
                     if ($is_stripe_live == 'yes') {
                         global $wpestate_global_payments;
@@ -525,7 +509,6 @@ function render_booking_confirm_popup(
 
                     if ($is_paypal_live == 'yes') {
                         ?>
-
                         <span id="paypal_booking"
                               data-deposit="<?= esc_attr($depozit); ?>"
                               data-propid="<?= esc_attr($property_id); ?>"
@@ -533,16 +516,16 @@ function render_booking_confirm_popup(
                               data-invoiceid="<?= esc_attr($invoice_id); ?>">
                             <?= esc_html__('Pay with Paypal', 'wprentals'); ?>
                         </span>
-
                         <?php
-                        $ajax_nonce = wp_create_nonce("wprentals_reservation_actions_nonce"); ?>
+                        $ajax_nonce = wp_create_nonce("wprentals_reservation_actions_nonce");
+                        ?>
 
                         <input type="hidden" id="wprentals_reservation_actions" value="<?= esc_html($ajax_nonce); ?>"/>
                         <?php
                     }
                 }
-            } ?>
-
+            }
+            ?>
         </div>
     </div>
 

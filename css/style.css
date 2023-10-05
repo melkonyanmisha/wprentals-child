@@ -1,3 +1,11 @@
 #search_location_autointernal {
     display: none;
 }
+
+.user_dashboard_panel .invoice_table {
+    width: 40%;
+}
+
+.invoice_table .invoice_row.invoice_content span {
+    width: 33%;
+}
