@@ -67,10 +67,17 @@ function render_additional_part_of_invoice(array $booking_array, string $rental_
         ! empty($discount_price_calc)
         && $discount_price_calc['booked_by_timeshare_user']
         && ! empty($discount_price_calc['timeshare_user_calc'])
+        && $discount_price_calc['timeshare_user_calc']['accessible_days_count'] > 0
         && $discount_price_calc['timeshare_user_calc']['remaining_days_count'] > 0
     ) {
-        $price_per_night_accessible_days = $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'] / $discount_price_calc['timeshare_user_calc']['accessible_days_count'];
-        $price_per_night_remaining_days  = $discount_price_calc['timeshare_user_calc']['remaining_days_price'] / $discount_price_calc['timeshare_user_calc']['remaining_days_count'];
+        $discounted_price_for_accessible_days = $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'];
+        $accessible_days_count                = $discount_price_calc['timeshare_user_calc']['accessible_days_count'];
+        $remaining_days_price                 = $discount_price_calc['timeshare_user_calc']['remaining_days_price'];
+        $remaining_days_count                 = $discount_price_calc['timeshare_user_calc']['remaining_days_count'];
+
+        $price_per_night_accessible_days = $discounted_price_for_accessible_days / $accessible_days_count;
+        $price_per_night_remaining_days = $remaining_days_price / $remaining_days_count;
+
         ?>
         <div class="invoice_row invoice_content">
             <span class="inv_legend">
