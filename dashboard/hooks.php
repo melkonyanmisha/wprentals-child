@@ -84,14 +84,14 @@ function wpestate_child_super_invoice_details(int $current_user_id, int $invoice
             0,
             1
         );
-        $depozit_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
+        $depozit_show            = wpestate_show_price_booking_for_invoice(
             $depozit,
             $wpestate_currency,
             $wpestate_where_currency,
             0,
             1
         );
-        $balance_show            = wpestate_show_price_booking_for_invoice( //todo@@ keep as exist
+        $balance_show            = wpestate_show_price_booking_for_invoice(
             $balance,
             $wpestate_currency,
             $wpestate_where_currency,
