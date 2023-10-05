@@ -36,13 +36,7 @@ if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
     define('TIMESHARE_PACKAGE_DURATION', 'timeshare_package_duration');
 }
 
-// Default value for TIMESHARE_PACKAGE_DURATION if it not set in DB
-if ( ! defined('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE')) {
-    define('TIMESHARE_PACKAGE_DEFAULT_DURATION_VALUE', 7);
-}
-
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
-
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/shortcodes/recent_items_list.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';

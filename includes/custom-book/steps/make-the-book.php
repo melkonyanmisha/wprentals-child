@@ -3,7 +3,7 @@
 /**
  * Make the booking
  *
- * @param float $discount_percent
+ * @param float $daily_discount_percent
  * @param int $property_id
  * @param int $owner_id
  * @param int $booking_guest_no
@@ -15,7 +15,7 @@
  * @throws Exception
  */
 function make_the_book(
-    float $discount_percent,
+    float $daily_discount_percent,
     int $property_id,
     int $owner_id,
     int $booking_guest_no,
@@ -28,9 +28,9 @@ function make_the_book(
     $allowded_html     = [];
     $comment           = isset($_POST['comment']) ? wp_kses($_POST['comment'], $allowded_html) : '';
     $status            = isset ($_POST['confirmed']) && intval($_POST['confirmed']) == 1 ? 'confirmed' : 'pending';
-    $from_date         = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
-    $to_date           = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
-    $booked_days_count = get_booked_days_count($from_date, $to_date);
+    $from_date_2_digit         = wpestate_convert_dateformat_twodig(wp_kses($_POST['fromdate'], $allowded_html));
+    $to_date_2_digit           = wpestate_convert_dateformat_twodig(wp_kses($_POST['todate'], $allowded_html));
+    $booked_days_count = get_booked_days_count($from_date_2_digit, $to_date_2_digit);
 
     $booking_adults  = isset($_POST['booking_adults']) ? intval($_POST['booking_adults']) : 0;
     $booking_childs  = isset($_POST['booking_childs']) ? intval($_POST['booking_childs']) : 0;
@@ -66,10 +66,10 @@ function make_the_book(
     update_post_meta($booking_id, 'booking_status', $status);
     update_post_meta($booking_id, 'booking_id', $property_id);
     update_post_meta($booking_id, 'owner_id', $owner_id);
-    update_post_meta($booking_id, 'booking_from_date', $from_date);
-    update_post_meta($booking_id, 'booking_to_date', $to_date);
-    update_post_meta($booking_id, 'booking_from_date_unix', strtotime($from_date));
-    update_post_meta($booking_id, 'booking_to_date_unix', strtotime($to_date));
+    update_post_meta($booking_id, 'booking_from_date', $from_date_2_digit);
+    update_post_meta($booking_id, 'booking_to_date', $to_date_2_digit);
+    update_post_meta($booking_id, 'booking_from_date_unix', strtotime($from_date_2_digit));
+    update_post_meta($booking_id, 'booking_to_date_unix', strtotime($to_date_2_digit));
     update_post_meta($booking_id, 'booking_invoice_no', 0);
     update_post_meta($booking_id, 'booking_pay_ammount', 0);
     update_post_meta($booking_id, 'booking_guests', $booking_guest_no);
@@ -83,7 +83,6 @@ function make_the_book(
     update_post_meta($booking_id, 'early_bird_percent', $early_bird_percent);
     update_post_meta($booking_id, 'early_bird_days', $early_bird_days);
     update_post_meta($booking_id, 'booking_taxes', $taxes_value);
-
 
     // Re build the reservation array
     $reservation_array = get_post_meta($property_id, 'booking_dates', true);
@@ -100,8 +99,8 @@ function make_the_book(
         $booking_guest_no,
         $invoice_id,
         $property_id,
-        $from_date,
-        $to_date,
+        $from_date_2_digit,
+        $to_date_2_digit,
         $booking_id,
         $extra_options_array
     );
@@ -109,10 +108,10 @@ function make_the_book(
     //#### Start of prices customization
     if (current_user_is_timeshare()) {
         $booking_array['discount_price_calc'] = timeshare_discount_price_calc(
-            $discount_percent,
+            $daily_discount_percent,
             floatval($booking_array['inter_price']),
-            $from_date,
-            $to_date
+            $from_date_2_digit,
+            $to_date_2_digit
         );
 
         $booking_array['inter_price'] = $booking_array['discount_price_calc']['calculated_price'];
