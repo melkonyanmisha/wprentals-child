@@ -49,14 +49,19 @@ function check_is_listing_page(int $post_id): bool
 /**
  * To display separately prices for accessible and remaining days. Depends on client user role
  *
+ * @param int $invoice_id
  * @param array $booking_array
  * @param string $rental_type //wprentals_get_option('wp_estate_item_rental_type', '')
  * @param string $booking_type
  *
  * @return string
  */
-function render_additional_part_of_invoice(array $booking_array, string $rental_type, string $booking_type): string
-{
+function render_additional_part_of_invoice(
+    $invoice_id,
+    $booking_array,
+    string $rental_type,
+    string $booking_type
+): string {
     $discount_price_calc = $booking_array['discount_price_calc'] ?? [];
 
     // Start output buffering
@@ -68,7 +73,6 @@ function render_additional_part_of_invoice(array $booking_array, string $rental_
         && $discount_price_calc['booked_by_timeshare_user']
         && ! empty($discount_price_calc['timeshare_user_calc'])
         && $discount_price_calc['timeshare_user_calc']['accessible_days_count'] > 0
-        && $discount_price_calc['timeshare_user_calc']['remaining_days_count'] > 0
     ) {
         $discounted_price_for_accessible_days = $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days'];
         $accessible_days_count                = $discount_price_calc['timeshare_user_calc']['accessible_days_count'];
@@ -76,7 +80,51 @@ function render_additional_part_of_invoice(array $booking_array, string $rental_
         $remaining_days_count                 = $discount_price_calc['timeshare_user_calc']['remaining_days_count'];
 
         $price_per_night_accessible_days = $discounted_price_for_accessible_days / $accessible_days_count;
-        $price_per_night_remaining_days = $remaining_days_price / $remaining_days_count;
+        $price_per_night_remaining_days  = $remaining_days_count !== 0 ? $remaining_days_price / $remaining_days_count : 0;
+
+        $wpestate_currency       = esc_html(get_post_meta($invoice_id, 'invoice_currency', true));
+        $wpestate_where_currency = esc_html(wprentals_get_option('wp_estate_where_currency_symbol', ''));
+
+        $discounted_price_for_accessible_days_show = wpestate_show_price_booking_for_invoice(
+            $discounted_price_for_accessible_days,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+
+        $price_per_night_accessible_days_show = wpestate_show_price_booking_for_invoice(
+            $price_per_night_accessible_days,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+
+        $remaining_days_price_show = wpestate_show_price_booking_for_invoice(
+            $remaining_days_price,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+
+        $price_per_night_remaining_days_show = wpestate_show_price_booking_for_invoice(
+            $price_per_night_remaining_days,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
+
+
+        $subtotal_show = wpestate_show_price_booking_for_invoice(
+            $discounted_price_for_accessible_days + $remaining_days_price,
+            $wpestate_currency,
+            $wpestate_where_currency,
+            0,
+            1
+        );
 
         ?>
         <div class="invoice_row invoice_content">
@@ -84,35 +132,54 @@ function render_additional_part_of_invoice(array $booking_array, string $rental_
                 <?= esc_html__('Accessible days', 'wprentals-core'); ?>
             </span>
             <span class="inv_data">
-                <?= $discount_price_calc['timeshare_user_calc']['discounted_price_for_accessible_days']; ?>
+                <?= $discounted_price_for_accessible_days_show; ?>
             </span>
             <span class="inv_exp">
                 <?php
-                echo $discount_price_calc['timeshare_user_calc']['accessible_days_count']
+                echo $accessible_days_count
                      . ' '
                      . wpestate_show_labels('nights', $rental_type, $booking_type)
                      . ' x '
-                     . $price_per_night_accessible_days;
+                     . $price_per_night_accessible_days_show;
                 ?>
             </span>
         </div>
-        <div class="invoice_row invoice_content">
-            <span class="inv_legend">
-                <?= esc_html__('Remaining days', 'wprentals-core'); ?>
-            </span>
-            <span class="inv_data">
-                <?= $discount_price_calc['timeshare_user_calc']['remaining_days_price']; ?>
-            </span>
-            <span class="inv_exp">
-                <?php
-                echo $discount_price_calc['timeshare_user_calc']['remaining_days_count']
-                     . ' '
-                     . wpestate_show_labels('nights', $rental_type, $booking_type)
-                     . ' x '
-                     . $price_per_night_remaining_days;
-                ?>
-            </span>
-        </div>
+
+        <?php
+        if ($remaining_days_count) { ?>
+            <div class="invoice_row invoice_content">
+                <span class="inv_legend">
+                    <?= esc_html__('Remaining days', 'wprentals-core'); ?>
+                </span>
+                <span class="inv_data">
+                    <?= $remaining_days_price_show; ?>
+                </span>
+                <span class="inv_exp">
+                    <?php
+                    echo $remaining_days_count
+                         . ' '
+                         . wpestate_show_labels('nights', $rental_type, $booking_type)
+                         . ' x '
+                         . $price_per_night_remaining_days_show;
+                    ?>
+                </span>
+            </div>
+
+            <div class="invoice_row invoice_content">
+                <span class="inv_legend">
+                    <?= esc_html__('Subtotal', 'wprentals-core'); ?>
+                </span>
+                <span class="inv_data">
+                    <?= $subtotal_show; ?>
+                </span>
+                <span class="inv_exp">
+                    <?= $discounted_price_for_accessible_days . ' + ' . $remaining_days_price; ?>
+                </span>
+            </div>
+            <?php
+        } ?>
+
+
         <?php
     }
 
