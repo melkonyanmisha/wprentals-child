@@ -37,7 +37,6 @@ if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
-require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/shortcodes/recent_items_list.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 
@@ -105,7 +104,7 @@ function wprentals_child_enques(): void
         'wprentalsChildData',
         [
             'currentUserRole' => ! empty(wp_get_current_user()->roles) ? wp_get_current_user()->roles[0] : 'guest',
-            'isHomePage'      => is_front_page() || is_home() ? true : false
+            'isHomePage'      => is_front_page() || is_home()
         ]
     );
 }
