@@ -3,22 +3,12 @@
 global $wpestate_curent_fav;
 global $wpestate_currency;
 global $wpestate_where_currency;
-global $show_compare;
-global $wpestate_show_compare_only;
 global $show_remove_fav;
-global $wpestate_options;
-global $isdashabord;
-global $align;
-global $align_class;
 global $is_shortcode;
 global $is_widget;
 global $wpestate_row_number_col;
 global $wpestate_full_page;
 global $wpestate_listing_type;
-global $wpestate_property_unit_slider;
-global $wpestate_book_from;
-global $wpestate_book_to;
-global $wpestate_guest_no;
 global $prop_selection;
 global $post;
 
@@ -35,44 +25,38 @@ if ($wpestate_listing_type == 3) {
     return true;
 }
 
-$pinterest          = '';
-$previe             = '';
-$compare            = '';
-$extra              = '';
-$property_size      = '';
-$property_bathrooms = '';
-$property_rooms     = '';
-$measure_sys        = '';
-
 $col_class = 'col-md-6';
 $col_org   = 4;
 $title     = get_the_title($post->ID);
 
-if (isset($is_shortcode) && $is_shortcode == 1) {
-    $col_class = 'col-md-' . esc_attr($wpestate_row_number_col) . ' shortcode-col';
-}
-
-if (isset($is_widget) && $is_widget == 1) {
-    $col_class = 'col-md-12';
-    $col_org   = 12;
-}
-
-if (isset($wpestate_full_page) && $wpestate_full_page == 1) {
-    $col_class = 'col-md-4 ';
-    $col_org   = 3;
-    if (isset($is_shortcode) && $is_shortcode == 1 && $wpestate_row_number_col == '') {
+if (is_front_page()) {
+    if (isset($is_shortcode) && $is_shortcode == 1) {
         $col_class = 'col-md-' . esc_attr($wpestate_row_number_col) . ' shortcode-col';
     }
+
+    if (isset($is_widget) && $is_widget == 1) {
+        $col_class = 'col-md-12';
+        $col_org   = 12;
+    }
+
+    if (isset($wpestate_full_page) && $wpestate_full_page == 1) {
+        $col_class = 'col-md-4 ';
+        $col_org   = 3;
+        if (isset($is_shortcode) && $is_shortcode == 1 && $wpestate_row_number_col == '') {
+            $col_class = 'col-md-' . esc_attr($wpestate_row_number_col) . ' shortcode-col';
+        }
+    }
+} else {
+    $col_class = $post->term_type === 'cottage' ? 'col-md-4' : 'col-md-12';
 }
 
 $link                  = esc_url(get_permalink());
 $wprentals_is_per_hour = wprentals_return_booking_type($post->ID);
-$link                  = wprentals_card_link_autocomplete($post->ID, $link, $wprentals_is_per_hour);
-
-$preview        = [];
-$preview[0]     = '';
-$favorite_class = 'icon-fav-off';
-$fav_mes        = esc_html__('add to favorites', 'wprentals');
+$card_link             = wprentals_card_link_autocomplete($post->ID, $link, $wprentals_is_per_hour);
+$preview               = [];
+$preview[0]            = '';
+$favorite_class        = 'icon-fav-off';
+$fav_mes               = esc_html__('add to favorites', 'wprentals');
 if ($wpestate_curent_fav) {
     if (in_array($post->ID, $wpestate_curent_fav)) {
         $favorite_class = 'icon-fav-on';
@@ -87,9 +71,9 @@ if ($wpestate_listing_type == 1) {
 
 global $schema_flag;
 if ($schema_flag == 1) {
-    $schema_data = 'itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" ';
+    $schema_data = 'itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" ';
 } else {
-    $schema_data = ' itemscope itemtype="http://schema.org/Product" ';
+    $schema_data = ' itemscope itemtype="https://schema.org/Product" ';
 }
 ?>
 
@@ -101,7 +85,8 @@ if ($schema_flag == 1) {
     if ($schema_flag == 1) { ?>
         <meta itemprop="position" content="<?= esc_html($prop_selection->current_post); ?>"/>
         <?php
-    } ?>
+    }
+    ?>
 
     <div class="property_listing ">
         <?php
@@ -111,17 +96,27 @@ if ($schema_flag == 1) {
         $property_area   = get_the_term_list($post->ID, 'property_area', '', ', ', '');
         $property_action = get_the_term_list($post->ID, 'property_action_category', '', ', ', '');
         $property_categ  = get_the_term_list($post->ID, 'property_category', '', ', ', '');
+        $preview         = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'wpestate_property_full_map');
 
-        wpestate_print_property_unit_slider(
-            $post->ID,
-            $wpestate_property_unit_slider,
-            $wpestate_listing_type,
-            $wpestate_currency,
-            $wpestate_where_currency,
-            $link,
-            ''
-        );
+        if (isset($preview[0])) {
+            $thumb_prop = '<img itemprop="image" src="' . esc_url($preview[0]) . '" 
+                class="b-lazy img-responsive wp-post-image lazy-hidden" 
+                alt="' . esc_attr(get_the_title($post->ID)) . '" />';
+        } else {
+            $thumb_prop_default = get_stylesheet_directory_uri() . '/img/defaultimage_prop.jpg';
+            $thumb_prop         = '<img itemprop="image"  src="' . esc_url($thumb_prop_default) . '" 
+                class="b-lazy img-responsive wp-post-image  lazy-hidden" 
+                alt="' . esc_html__('image', 'wprentals') . '" />';
+        }
+        ?>
 
+        <div class="listing-unit-img-wrapper">
+            <a href="<?= esc_url($card_link); ?>"
+               target="<?= esc_attr(wprentals_get_option('wp_estate_prop_page_new_tab', '')); ?>">
+                <?= trim($thumb_prop); ?>
+            </a>
+        </div>
+        <?php
         if ($featured == 1) { ?>
             <div class="featured_div"><?= esc_html__('featured', 'wprentals'); ?></div>
             <?php
@@ -163,14 +158,16 @@ if ($schema_flag == 1) {
 
             <div class="category_name">
                 <?php
-                include(locate_template('templates/property_card_templates/property_card_title.php')); ?>
+                include(locate_template('templates/property_card_templates/property_card_title.php'));
+                ?>
 
                 <div class="category_tagline map_icon">
                     <?php
                     if ($property_area != '') {
                         echo trim($property_area) . ', ';
                     }
-                    echo trim($property_city); ?>
+                    echo trim($property_city);
+                    ?>
                 </div>
 
                 <div class="category_tagline actions_icon">

@@ -9,3 +9,17 @@
 .invoice_table .invoice_row.invoice_content span {
     width: 33%;
 }
+
+.property_listing img {
+    width: 100%;
+    min-height: 250px;
+    max-height: none;
+}
+
+.search-result-title {
+    margin-left: 15px;
+}
+
+.search-result-section .property_listing {
+    max-width: none;
+}
