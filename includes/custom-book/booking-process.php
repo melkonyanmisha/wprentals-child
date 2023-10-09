@@ -473,7 +473,7 @@ function display_booking_confirm_popup(array $booking_instant_data, array $gener
     // To display the initial room data(from post request) on the checkout page. Because during booking listing ID can be changed depending on booking type
     $booking_instant_data['property_id'] = intval($_POST['listing_edit']);
 
-    echo render_booking_confirm_popup(
+    wp_die(render_booking_confirm_popup(
         $generated_invoice['invoice_id'],
         $booking_instant_data['make_the_book']['booking_id'],
         $booking_instant_data['property_id'],
@@ -483,7 +483,7 @@ function display_booking_confirm_popup(array $booking_instant_data, array $gener
         $booking_instant_data['extra_options_array'],
         $generated_invoice['options_array_explanations'],
         $booking_instant_data['extra_pay_options']
-    );
+    ));
 }
 
 /**
