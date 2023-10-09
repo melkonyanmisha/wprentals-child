@@ -94,10 +94,9 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                 if (is_array($submission_page_fields) && in_array('prop_category_submit', $submission_page_fields)) { ?>
                     <div class="col-md-3">
                         <p>
-                            <label for="prop_category"><?php
-                                print esc_html($category_main_label); ?></label>
+                            <label for="prop_category"><?= esc_html($category_main_label); ?></label>
                             <?php
-                            $args = array(
+                            $args = [
                                 'class'            => 'select-submit2',
                                 'hide_empty'       => false,
                                 'selected'         => $prop_category_selected,
@@ -108,24 +107,22 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                                 'show_option_none' => esc_html__('None', 'wprentals'),
                                 'taxonomy'         => 'property_category',
                                 'hierarchical'     => true
-                            );
+                            ];
                             wp_dropdown_categories($args);
                             ?>
                         </p>
                     </div>
                     <?php
                 }
-
-                if (is_array($submission_page_fields) && in_array(
-                        'prop_action_category_submit',
-                        $submission_page_fields
-                    )) { ?>
+                if (
+                    is_array($submission_page_fields)
+                    && in_array('prop_action_category_submit', $submission_page_fields)
+                ) { ?>
                     <div class="col-md-3">
                         <p>
-                            <label for="prop_action_category"> <?php
-                                print esc_html($category_second_label); ?></label>
+                            <label for="prop_action_category"> <?= esc_html($category_second_label); ?></label>
                             <?php
-                            $args = array(
+                            $args = [
                                 'class'            => 'select-submit2',
                                 'hide_empty'       => false,
                                 'selected'         => $prop_action_category_selected,
@@ -136,18 +133,16 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                                 'show_option_none' => esc_html__('None', 'wprentals'),
                                 'taxonomy'         => 'property_action_category',
                                 'hierarchica l'    => true
-                            );
+                            ];
                             wp_dropdown_categories($args);
                             ?>
                         </p>
                     </div>
                     <?php
                 } ?>
-
             </div>
             <?php
         }
-
         $show_guest_number = stripslashes(esc_html(wprentals_get_option('wp_estate_show_guest_number', '')));
         if ($show_guest_number == 'yes') { ?>
             <div class="col-md-12">
@@ -188,7 +183,6 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                     </div>
                     <?php
                 }
-
                 if (is_array($submission_page_fields) && in_array('max_extra_guest_no', $submission_page_fields)) { ?>
                     <div class="col-md-12">
                         <div class="col-md-3"></div>
@@ -201,10 +195,12 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                         </div>
                         <div class="col-md-3">
                             <label for="extra_price_per_guest">
-                                <?= esc_html__(
+                                <?php
+                                esc_html_e(
                                     'Maximum extra guests above capacity (if extra guests are allowed)',
                                     'wprentals'
-                                ); ?>
+                                );
+                                ?>
                             </label>
                             <input type="text" id="max_extra_guest_no" class="form-control" size="40"
                                    name="max_extra_guest_no" value="<?= esc_html($max_extra_guest_no); ?>">
@@ -212,11 +208,9 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                     </div>
                     <?php
                 } ?>
-
             </div>
             <?php
         }
-
         if (
             is_array($submission_page_fields)
             && (
@@ -224,7 +218,6 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                 || in_array('property_area_front', $submission_page_fields)
             )
         ) { ?>
-
             <div class="col-md-12">
                 <div class="col-md-3 dashboard_chapter_label">
                     <p>
@@ -245,10 +238,7 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                     <div class="col-md-3 " id="property_city_front_md">
                         <p>
                             <?php
-                            $wpestate_internal_search = '';
-                            if ($show_adv_search_general == 'no') {
-                                $wpestate_internal_search = '_autointernal';
-                            }
+                            $wpestate_internal_search = $show_adv_search_general == 'no' ? '_autointernal' : '';
                             ?>
                             <label for="property_city_front">
                                 <?= esc_html__('City (mandatory)', 'wprentals'); ?>
@@ -261,19 +251,16 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                                        value="<?= esc_html($property_city); ?>" class="advanced_select  form-control">
                                 <?php
                             } else { ?>
-
                                 <select id="property_city_front_autointernal" name="property_city_front">
                                     <?= wpestate_city_submit_dropdown('property_city', $property_city); ?>
                                 </select>
                                 <?php
                             }
-
                             if ($show_adv_search_general != 'no') { ?>
                                 <input type="hidden" id="property_country" name="property_country"
                                        value="<?= esc_html($property_country); ?>">
                                 <?php
                             } ?>
-
                             <input type="hidden" id="property_city" name="property_city"
                                    value="<?= esc_html($property_city); ?>">
                             <input type="hidden" id="property_admin_area" name="property_admin_area"
@@ -284,35 +271,29 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                     </div>
                     <?php
                 }
-
                 if (is_array($submission_page_fields) && in_array('property_area_front', $submission_page_fields)) { ?>
                     <div class="col-md-3">
                         <label for="property_area_front">
                             <?= esc_html__('Neighborhood / Area', 'wprentals'); ?>
                         </label>
                         <?php
-                        if (wprentals_get_option('wp_estate_show_city_drop_submit') == 'no') {
-                            ?>
-                            <input type="text" id="property_area_front" name="property_area_front" placeholder="<?php
-                            esc_html_e('Type the neighborhood name', 'wprentals'); ?>" value="<?php
-                            print esc_html($property_area); ?>" class="advanced_select  form-control">
+                        if (wprentals_get_option('wp_estate_show_city_drop_submit') == 'no') { ?>
+                            <input type="text" id="property_area_front" name="property_area_front"
+                                   placeholder="<?= esc_html__('Type the neighborhood name', 'wprentals'); ?>"
+                                   value="<?= esc_html($property_area); ?>" class="advanced_select  form-control">
                             <?php
-                        } else {
-                            ?>
+                        } else { ?>
                             <select id="property_area_front" name="property_area_front">
-                                <?php
-                                echo wpestate_city_submit_dropdown('property_area', $property_area); ?>
+                                <?= wpestate_city_submit_dropdown('property_area', $property_area); ?>
                             </select>
                             <?php
                         } ?>
                     </div>
                     <?php
                 } ?>
-
             </div>
             <?php
         }
-
         if ($show_adv_search_general == 'no') { ?>
             <div class="col-md-12">
                 <div class="col-md-3 dashboard_chapter_label">
@@ -329,7 +310,6 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
             </div>
             <?php
         }
-
         if (is_array($submission_page_fields) && in_array('property_description', $submission_page_fields)) { ?>
             <div class="col-md-12">
                 <div class="col-md-3 dashboard_chapter_label">
@@ -344,14 +324,11 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                     <textarea rows="4" id="property_description" name="property_description"
                               class="advanced_select  form-control"
                               placeholder="<?= esc_html__('Describe your listing', 'wprentals'); ?>"
-                    ><?= esc_textarea(
-                            $submit_description
-                        ); ?></textarea>
+                    ><?= esc_textarea($submit_description); ?></textarea>
                 </div>
             </div>
             <?php
         }
-
         if (is_array($submission_page_fields) && in_array('property_affiliate', $submission_page_fields)) { ?>
             <div class="col-md-12">
                 <div class="col-md-3 dashboard_chapter_label">
@@ -362,7 +339,7 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                 <div class="col-md-6">
                     <label for="property_description">
                         <?php
-                        echo esc_html__(
+                        esc_html_e(
                             'Affiliate Link. User will be redirected to this link when he wants to make a booking.',
                             'wprentals'
                         );
@@ -374,7 +351,6 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
             </div>
             <?php
         } ?>
-
         <div class="col-md-12">
             <div class="col-md-3 dashboard_chapter_label">
                 <label for="private notes"><?= esc_html__('Private Notes', 'wprentals'); ?></label>
@@ -383,14 +359,10 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                 <label for="private notes"><?= esc_html__('Private Notes', 'wprentals'); ?></label>
                 <textarea rows="4" id="private_notes" name="private notes" class="advanced_select  form-control"
                           placeholder="<?= esc_html__('Private Notes', 'wprentals'); ?>"
-                ><?= esc_textarea(
-                        $private_notes
-                    ); ?></textarea>
+                ><?= esc_textarea($private_notes); ?></textarea>
             </div>
         </div>
-
     </div>
-
     <?php
     // Customized to keep checked always
     $instant_booking = 'checked';
@@ -401,7 +373,7 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
                    name="instant_booking" disabled="disabled" <?= esc_html($instant_booking); ?> >
             <label style="display: inline;" for="instant_booking">
                 <?php
-                echo esc_html__(
+                esc_html_e(
                     'Allow instant booking? If checked, you will not have the option to reject a booking request.',
                     'wprentals'
                 );
@@ -410,7 +382,6 @@ $show_adv_search_general = wprentals_get_option('wp_estate_wpestate_autocomplete
         </div>
     </div>
     <input type="hidden" name="" id="listing_edit" value="<?= intval($edit_id); ?>">
-
     <div class="col-md-12" style="display: inline-block;">
         <input type="submit" class="wpb_btn-info wpb_btn-small wpestate_vc_button  vc_button" id="edit_prop_1"
                value="<?= esc_html__('Save', 'wprentals') ?>"/>

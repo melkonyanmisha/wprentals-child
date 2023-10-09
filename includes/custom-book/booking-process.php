@@ -382,7 +382,7 @@ function wpestate_child_ajax_add_booking_instant(
     float $daily_discount_avg_percent
 ): array {
     check_ajax_referer('wprentals_add_booking_nonce', 'security');
-    $allowded_html    = array();
+    $allowded_html    = [];
     $booking_guest_no = isset($_POST['booking_guest_no']) ? intval($_POST['booking_guest_no']) : 0;
     $instant_booking  = floatval(get_post_meta($listing_id, 'instant_booking', true));
 
@@ -398,7 +398,7 @@ function wpestate_child_ajax_add_booking_instant(
     $extra_options      = wp_kses($_POST['extra_options'], $allowded_html);
     $extra_options      = rtrim($extra_options, ",");
 
-    $extra_options_array = array();
+    $extra_options_array = [];
     if ($extra_options != '') {
         $extra_options_array = explode(',', $extra_options);
     }
@@ -473,17 +473,19 @@ function display_booking_confirm_popup(array $booking_instant_data, array $gener
     // To display the initial room data(from post request) on the checkout page. Because during booking listing ID can be changed depending on booking type
     $booking_instant_data['property_id'] = intval($_POST['listing_edit']);
 
-    wp_die(render_booking_confirm_popup(
-        $generated_invoice['invoice_id'],
-        $booking_instant_data['make_the_book']['booking_id'],
-        $booking_instant_data['property_id'],
-        $booking_instant_data['make_the_book']['booking_array'],
-        $booking_instant_data['rental_type'],
-        $booking_instant_data['booking_type'],
-        $booking_instant_data['extra_options_array'],
-        $generated_invoice['options_array_explanations'],
-        $booking_instant_data['extra_pay_options']
-    ));
+    wp_die(
+        render_booking_confirm_popup(
+            $generated_invoice['invoice_id'],
+            $booking_instant_data['make_the_book']['booking_id'],
+            $booking_instant_data['property_id'],
+            $booking_instant_data['make_the_book']['booking_array'],
+            $booking_instant_data['rental_type'],
+            $booking_instant_data['booking_type'],
+            $booking_instant_data['extra_options_array'],
+            $generated_invoice['options_array_explanations'],
+            $booking_instant_data['extra_pay_options']
+        )
+    );
 }
 
 /**

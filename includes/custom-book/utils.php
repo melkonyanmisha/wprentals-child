@@ -424,13 +424,13 @@ function wpestate_ajax_check_booking_valability(): void
                 $min_days_value = $mega[$date_checker]['period_min_days_booking'];
 
                 if (abs($from_date_unix - $to_date_unix) / $diff < $min_days_value) {
-                    print 'stopdays';
+                    echo 'stopdays';
                     die();
                 }
             }
         } elseif ($min_days_booking > 0) {
             if (abs($from_date_unix - $to_date_unix) / $diff < $min_days_booking) {
-                print 'stopdays';
+                echo 'stopdays';
                 die();
             }
         }
@@ -446,13 +446,13 @@ function wpestate_ajax_check_booking_valability(): void
             $period_checkin_checkout_change_over = $mega[$from_date_unix]['period_checkin_checkout_change_over'];
 
             if ($weekday != $period_checkin_checkout_change_over || $end_bookday != $period_checkin_checkout_change_over) {
-                print 'stopcheckinout';
+                echo 'stopcheckinout';
                 die();
             }
         }
     } elseif ($checkin_checkout_change_over > 0) {
         if ($weekday != $checkin_checkout_change_over || $end_bookday != $checkin_checkout_change_over) {
-            print 'stopcheckinout';
+            echo 'stopcheckinout';
             die();
         }
     }
@@ -466,13 +466,13 @@ function wpestate_ajax_check_booking_valability(): void
             $period_checkin_change_over = $mega[$from_date_unix]['period_checkin_change_over'];
 
             if ($weekday != $period_checkin_change_over) {
-                print 'stopcheckin';
+                echo 'stopcheckin';
                 die();
             }
         }
     } elseif ($checkin_change_over > 0) {
         if ($weekday != $checkin_change_over) {
-            print 'stopcheckin';
+            echo 'stopcheckin';
             die();
         }
     }
@@ -486,7 +486,7 @@ function wpestate_ajax_check_booking_valability(): void
     // Don't need to check with an empty() function because In this case the $reservation_grouped_array can't be empty
     foreach ($reservation_grouped_array as $reservation_array) {
         if ( ! empty($reservation_array) && array_key_exists($from_date_unix, $reservation_array)) {
-            print 'stop array_key_exists';
+            echo 'stop array_key_exists';
             die();
         }
     }
@@ -506,7 +506,7 @@ function wpestate_ajax_check_booking_valability(): void
                     $to_date_unix,
                     $reservation_array
                 )) {
-                print 'stop hour';
+                echo 'stop hour';
                 die();
             }
         }
@@ -520,13 +520,13 @@ function wpestate_ajax_check_booking_valability(): void
                     $to_date_unix,
                     $reservation_array
                 )) {
-                print 'stop';
+                echo 'stop';
                 die();
             }
         }
     }
 
-    print 'run';
+    echo 'run';
     die();
 }
 
@@ -609,16 +609,16 @@ function get_reservation_grouped_array_by_group_id(int $group_id): array
     $taxonomy  = 'property_action_category';
     $post_type = 'estate_property';
 
-    $args  = array(
+    $args  = [
         'post_type' => $post_type,
-        'tax_query' => array(
-            array(
+        'tax_query' => [
+            [
                 'taxonomy' => $taxonomy,
                 'field'    => 'term_id',
                 'terms'    => $group_id,
-            ),
-        )
-    );
+            ],
+        ]
+    ];
     $query = new WP_Query($args);
 
     if ($query->have_posts()) {
@@ -661,11 +661,11 @@ function wpestate_booking_insert_invoice(
     float $price,
     int $author_id = 0
 ) {
-    $post = array(
+    $post = [
         'post_title'  => 'Invoice ',
         'post_status' => 'publish',
         'post_type'   => 'wpestate_invoice',
-    );
+    ];
 
     if ($author_id) {
         $post['post_author'] = $author_id;
@@ -732,10 +732,10 @@ function wpestate_booking_insert_invoice(
     $city_fee = floatval(get_post_meta($property_id, 'city_fee', true));
     update_post_meta($post_id, 'city_fee', $city_fee);
 
-    $my_post = array(
+    $my_post = [
         'ID'         => $post_id,
         'post_title' => 'Invoice ' . $post_id,
-    );
+    ];
 
     wp_update_post($my_post);
 
@@ -830,7 +830,7 @@ function wpestate_booking_price(
     $has_wkend_price           = 0;
     $cover_weekend             = 0;
     $custom_period_quest       = 0;
-    $custom_price_array        = array();
+    $custom_price_array        = [];
     $timeDiff                  = abs(strtotime($booking_to_date) - strtotime($booking_from_date));
 
     if ($wprentals_is_per_hour == 2) {
@@ -1176,7 +1176,7 @@ function wpestate_booking_price(
     }
 
     $balance                                     = $total_price - $deposit;
-    $return_array                                = array();
+    $return_array                                = [];
     $return_array['book_type']                   = $wprentals_is_per_hour;
     $return_array['default_price']               = $price_per_day;
     $return_array['week_price']                  = $week_price;

@@ -57,8 +57,8 @@ function check_is_listing_page(int $post_id): bool
  * @return string
  */
 function render_additional_part_of_invoice(
-    $invoice_id,
-    $booking_array,
+    int $invoice_id,
+    array $booking_array,
     string $rental_type,
     string $booking_type
 ): string {
@@ -250,19 +250,19 @@ function get_ordered_listing_ids_from_category(int $category_id): array
     $post_type = 'estate_property';
 
     // Query for posts in the same taxonomy term(s) and post type
-    $args = array(
+    $args = [
         'post_type'      => $post_type,
         'posts_per_page' => -1, // To get all posts
         'fields'         => 'ids', // Retrieve only post IDs
-        'tax_query'      => array(
-            array(
+        'tax_query'      => [
+            [
                 'taxonomy' => $taxonomy,
                 'field'    => 'id',
                 'terms'    => $category_id,
-            ),
-        ),
+            ],
+        ],
         'order'          => 'ASC'
-    );
+    ];
 
     return get_posts($args);
 }
@@ -392,18 +392,18 @@ function get_all_listings_in_group(int $listing_id): array
 
     if ( ! empty($group_terms)) {
         $group_terms_ids = wp_list_pluck($group_terms, 'term_id');
-        $args            = array(
+        $args            = [
             'post_type'      => 'estate_property',
             'posts_per_page' => -1, // Retrieve all posts
-            'tax_query'      => array(
-                array(
+            'tax_query'      => [
+                [
                     'taxonomy' => 'property_action_category',
                     'field'    => 'id',
                     'terms'    => $group_terms_ids,
                     'operator' => 'IN',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         return get_posts($args);
     }
@@ -448,11 +448,11 @@ function get_group_with_max_room_group_order(): object
 {
     $term_with_max_order = new stdClass();
 
-    $args = array(
+    $args = [
         'taxonomy'   => 'property_action_category',
         'hide_empty' => true, // Include terms with no posts assigned
         'fields'     => 'all', // Get all term data including custom meta
-    );
+    ];
 
     $terms                   = get_terms($args);
     $max_current_group_order = 0;
@@ -491,18 +491,17 @@ function get_all_listings_from_last_room_group(): array
         return [];
     }
 
-    $args = array(
-        'post_type' => 'estate_property',
-        'tax_query' => array(
-            array(
+    $args = [
+        'post_type'   => 'estate_property',
+        'tax_query'   => [
+            [
                 'taxonomy' => 'property_action_category',
                 'field'    => 'id', // Possible values 'id', 'name', or 'term_taxonomy_id'
                 'terms'    => $group_with_max_room_group_order->term_id
-            ),
-        ),
-
+            ],
+        ],
         'numberposts' => -1,
-    );
+    ];
 
     return get_posts($args);
 }
@@ -541,24 +540,24 @@ function get_featured_listing_from_last_room_group(): object
         return $featured_post_from_last_room_group;
     }
 
-    $args = array(
+    $args = [
         'post_type'   => 'estate_property',
-        'tax_query'   => array(
-            array(
+        'tax_query'   => [
+            [
                 'taxonomy' => 'property_action_category',
                 'field'    => 'id', // Possible values 'id', 'name', or 'term_taxonomy_id'
                 'terms'    => $group_with_max_room_group_order->term_id
-            ),
-        ),
-        'meta_query'  => array(
-            array(
+            ],
+        ],
+        'meta_query'  => [
+            [
                 'key'     => 'prop_featured',
                 'value'   => '1', // '1' indicates a post is featured
                 'compare' => '=',
-            ),
-        ),
+            ],
+        ],
         'numberposts' => 1, // To get only 1 post
-    );
+    ];
 
     $post_in_last_room_group = get_posts($args);
 
