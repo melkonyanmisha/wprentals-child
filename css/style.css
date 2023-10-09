@@ -23,3 +23,16 @@
 .search-result-section .property_listing {
     max-width: none;
 }
+
+.header-language-switcher {
+    float: right;
+    clear: right;
+}
+
+.user_loged .header-language-switcher {
+    margin-left: 15px;
+}
+
+.guest_user .header-language-switcher {
+    margin: -10px 0 150px 15px;
+}
