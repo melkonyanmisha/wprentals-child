@@ -11,8 +11,12 @@
 function wpestate_ajax_add_booking_instant(): void
 {
     try {
+        if ( ! is_plugin_active('woocommerce/woocommerce.php')) {
+            return;
+        }
+
         if (empty($_POST['listing_edit']) || empty($_POST['fromdate']) || empty($_POST['todate'])) {
-            throw new Exception('Invalid data to book');
+            throw new Exception(__('Invalid data to book', 'wprentals'));
         }
 
         $from_date               = $_POST['fromdate'];
@@ -22,13 +26,30 @@ function wpestate_ajax_add_booking_instant(): void
         $interval_of_booked_days = get_booked_days_count($from_date_2_digit, $to_date_2_digit);
 
         if ( ! $interval_of_booked_days) {
-            throw new Exception('Invalid data to book');
+            throw new Exception(__('Invalid dates.', 'wprentals'));
         }
 
         $listing_id                 = intval($_POST['listing_edit']);
         $daily_discount_avg_percent = get_daily_discount_avg_percent($from_date_2_digit, $to_date_2_digit);
 
         if (current_user_is_timeshare()) {
+            if (WC()->cart->get_cart_contents_count() > 0) {
+                $wc_cart_hyperlink = sprintf(
+                    '<a class="btn-link" href="%s" target="_blank">' . __('Cart Page', 'woocommerce') . '</a>',
+                    wc_get_cart_url()
+                );
+
+                $error_msg = sprintf(
+                    __(
+                        'You can only purchase one room/cottage at a time. Please complete your purchase on the %s',
+                        'wprentals'
+                    ),
+                    $wc_cart_hyperlink
+                );
+
+                throw new Exception("<h4>$error_msg</h4>");
+            }
+
             // The case for Rooms. Timeshare users can book only grouped rooms
             if (check_has_room_group($listing_id)) {
                 room_group_booking($from_date, $daily_discount_avg_percent);
