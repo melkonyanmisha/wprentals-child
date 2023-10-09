@@ -529,7 +529,7 @@ function wpestate_chid_print_create_form_invoice(
     </div>
     <?php
     // End output buffering
-    echo ob_get_clean();
+    wp_die(ob_get_clean());
 }
 
 /**
