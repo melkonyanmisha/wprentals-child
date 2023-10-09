@@ -167,7 +167,7 @@ ob_start();
                     if (isset($content_post->post_content)) {
                         $content = $content_post->post_content;
                         $content = apply_filters('the_content', $content);
-                        print trim($content);
+                        echo trim($content);
                     }
                 }
                 ?>

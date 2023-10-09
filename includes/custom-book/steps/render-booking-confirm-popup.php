@@ -139,7 +139,7 @@ function render_booking_confirm_popup(
     if ($wpestate_global_payments->is_woo == 'yes') {
         if ( ! is_user_logged_in()) {
             $wpestate_global_payments->wpestate_woo_pay_non_logged($property_id, $invoice_id, $booking_id, $depozit);
-            print  (wc_get_cart_url());
+            echo(wc_get_cart_url());
             die();
         }
     }
@@ -338,7 +338,7 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                if ($booking_array['cleaning_fee'] != 0 && $booking_array['cleaning_fee'] != '') {
+                if ($booking_array['cleaning_fee'] !== 0 && $booking_array['cleaning_fee'] !== '') {
                     ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
@@ -352,7 +352,7 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                if ($booking_array['city_fee'] != 0 && $booking_array['city_fee'] != '') { ?>
+                if ($booking_array['city_fee'] !== 0 && $booking_array['city_fee'] !== '') { ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('City fee', 'wprentals'); ?>
@@ -492,7 +492,7 @@ function render_booking_confirm_popup(
                     <?php
                     if ($is_stripe_live == 'yes') {
                         global $wpestate_global_payments;
-                        $metadata = array(
+                        $metadata = [
                             'booking_id' => $booking_id,
                             'invoice_id' => $invoice_id,
                             'listing_id' => $property_id,
@@ -500,7 +500,7 @@ function render_booking_confirm_popup(
                             'pay_type'   => 1,
                             'message'    => esc_html__('Pay & Confirm Reservation', 'wprentals'),
 
-                        );
+                        ];
                         $wpestate_global_payments->stripe_payments->wpestate_show_stripe_form(
                             $depozit_stripe,
                             $metadata

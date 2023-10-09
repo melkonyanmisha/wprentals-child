@@ -177,7 +177,7 @@ function wprentals_parent_enqueues_overwrite(): void
 
         wp_localize_script(
             'wprentals-child-property', 'property_vars',
-            array(
+            [
                 'plsfill'                => esc_html__('Please fill all the forms!', 'wprentals'),
                 'sending'                => esc_html__('Sending Request...', 'wprentals'),
                 'logged_in'              => $logged_in,
@@ -209,7 +209,7 @@ function wprentals_parent_enqueues_overwrite(): void
                 'send_mess'              => esc_html__('Send Message', 'wprentals'),
                 'children_as_guests'     => $include_children_as_guests,
                 'reservationGroupedData' => $reservation_grouped_data // Custom data
-            )
+            ]
         );
     }
 }

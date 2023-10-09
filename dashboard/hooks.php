@@ -250,7 +250,7 @@ function wpestate_chid_print_create_form_invoice(
                            if ($booking_array['custom_period_quest'] == 1) {
                                _e('custom price', 'wprentals-core');
                            } else {
-                               print $extra_price_per_guest;
+                               echo $extra_price_per_guest;
                            }
                            ?>
                         </span>
@@ -323,7 +323,6 @@ function wpestate_chid_print_create_form_invoice(
                 $user_mobile        = get_the_author_meta('mobile', $post_author_id);
                 $payment_info       = get_the_author_meta('payment_info', $post_author_id);
                 $paypal_payments_to = get_the_author_meta('paypal_payments_to', $post_author_id);
-
                 ?>
                 <span class="date_duration invoice_date_renter_name_wrapper">
                     <span class="invoice_data_legend">
@@ -388,13 +387,12 @@ function wpestate_chid_print_create_form_invoice(
                                 continue;
                             }
                         }
-
                         ?>
                         <div class="invoice_row invoice_content">
                             <span class="inv_legend"><?= esc_html($detail[0]); ?></span>
                             <span class="inv_data">
                                     <?php
-                                    echo esc_html(
+                                    esc_html_e(
                                         wpestate_show_price_booking_for_invoice(
                                             $detail[1],
                                             $wpestate_currency,
