@@ -190,7 +190,7 @@ function wprentals_parent_enqueues_overwrite(): void
                 ),
                 'noguest'                => esc_html__('Please select the number of guests', 'wprentals'),
                 'guestoverload'          => esc_html__(
-                    'The number of guests is greater than the property capacity - ',
+                    'The number of guests is greater than the the maximum allowed - ',
                     'wprentals'
                 ),
                 'guests'                 => esc_html__('guests', 'wprentals'),

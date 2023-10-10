@@ -264,7 +264,7 @@ function wpestate_show_booking_form(
                 <div class="col-md-6 reservation_buttons">
                     <div id="contact_host" class="col-md-6" data-postid="<?= esc_attr($post_id); ?>">
                         <?php
-                        esc_html_e('Contact Owner', 'wprentals');
+                        esc_html_e('Contact', 'wprentals');
                         ?>
                     </div>
                 </div>
