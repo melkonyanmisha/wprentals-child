@@ -36,3 +36,22 @@
 .guest_user .header-language-switcher {
     margin: -10px 0 150px 15px;
 }
+
+.header_wrapper.header_type1.header_align_left #user_menu_open {
+    width: 30%;
+}
+
+.is_dashboard_page .header_wrapper.header_type1.header_align_left #user_menu_open{
+    width: 20%;
+}
+
+.header_wrapper.header_type1.header_align_left #user_menu_open a {
+    width: 33%;
+}
+
+.widget-area-sidebar .reservation_buttons > div {
+    height: 70px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}

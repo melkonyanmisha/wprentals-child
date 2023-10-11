@@ -37,6 +37,7 @@ if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/hooks.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 
