@@ -29,7 +29,11 @@ function wpestate_ajax_add_booking_instant(): void
             throw new Exception(__('Invalid dates.', 'wprentals'));
         }
 
-        $listing_id                 = intval($_POST['listing_edit']);
+        // Get the listing ID in current language
+        $listing_id_current_language = intval($_POST['listing_edit']);
+        // Get the listing ID by English by the translated listing.
+        $listing_id_en = apply_filters('wpml_object_id', $listing_id_current_language, 'attachment', false, 'en');
+
         $daily_discount_avg_percent = get_daily_discount_avg_percent($from_date_2_digit, $to_date_2_digit);
 
         if (current_user_is_timeshare()) {
@@ -51,17 +55,17 @@ function wpestate_ajax_add_booking_instant(): void
             }
 
             // The case for Rooms. Timeshare users can book only grouped rooms
-            if (check_has_room_group($listing_id)) {
-                room_group_booking($from_date, $daily_discount_avg_percent);
-            } elseif (check_has_cottage_category($listing_id)) { //The case for Cottages
-                single_booking($listing_id, $daily_discount_avg_percent);
+            if (check_has_room_group($listing_id_en)) {
+                room_group_booking($listing_id_en, $from_date, $daily_discount_avg_percent);
+            } elseif (check_has_cottage_category($listing_id_en)) { //The case for Cottages
+                single_booking($listing_id_en, $daily_discount_avg_percent);
             }
         } elseif (current_user_is_customer() || ! is_user_logged_in()) { // The case for Customer or Guest users
             // The case for listing which have parent Room category
-            if (check_has_parent_room_category($listing_id)) {
-                room_category_booking($listing_id, $from_date, $daily_discount_avg_percent);
-            } elseif (check_has_cottage_category($listing_id)) { ////The case for Cottages
-                single_booking($listing_id, $daily_discount_avg_percent);
+            if (check_has_parent_room_category($listing_id_en)) {
+                room_category_booking($listing_id_en, $from_date, $daily_discount_avg_percent);
+            } elseif (check_has_cottage_category($listing_id_en)) { ////The case for Cottages
+                single_booking($listing_id_en, $daily_discount_avg_percent);
             }
         }
     } catch (Exception|Error $e) {
@@ -70,13 +74,14 @@ function wpestate_ajax_add_booking_instant(): void
 }
 
 /**
+ * @param int $listing_id
  * @param string $from_date
  * @param float $daily_discount_avg_percent
  *
  * @return void
  * @throws Exception
  */
-function room_group_booking(string $from_date, float $daily_discount_avg_percent): void
+function room_group_booking(int $listing_id, string $from_date, float $daily_discount_avg_percent): void
 {
     $from_date      = new DateTime($from_date);
     $from_date_unix = $from_date->getTimestamp();
@@ -138,7 +143,11 @@ function room_group_booking(string $from_date, float $daily_discount_avg_percent
         );
 
         // STEP 3 - Display confirmation popup
-        display_booking_confirm_popup($booking_instant_data_first_room_summarized, $generated_invoice_first_room);
+        display_booking_confirm_popup(
+            $listing_id,
+            $booking_instant_data_first_room_summarized,
+            $generated_invoice_first_room
+        );
     }
 }
 
@@ -260,7 +269,7 @@ function single_booking(int $listing_id, float $daily_discount_avg_percent): voi
         update_necessary_metas(['booking_instant_data' => $booking_instant_data], $generated_invoice, false);
 
         // STEP 3 - show me the money
-        display_booking_confirm_popup($booking_instant_data, $generated_invoice);
+        display_booking_confirm_popup($listing_id, $booking_instant_data, $generated_invoice);
     }
 }
 
@@ -463,15 +472,16 @@ function generate_the_invoice_step(array $booking_instant_data): array
 /**
  * Display booking confirmation popup
  *
+ * @param int $listing_id
  * @param array $booking_instant_data
  * @param array $generated_invoice
  *
  * @return void
  */
-function display_booking_confirm_popup(array $booking_instant_data, array $generated_invoice)
+function display_booking_confirm_popup(int $listing_id, array $booking_instant_data, array $generated_invoice)
 {
-    // To display the initial room data(from post request) on the checkout page. Because during booking listing ID can be changed depending on booking type
-    $booking_instant_data['property_id'] = intval($_POST['listing_edit']);
+    // To display the initial room data on the checkout page. Because during booking listing ID can be changed depending on booking type
+    $booking_instant_data['property_id'] = $listing_id;
 
     wp_die(
         render_booking_confirm_popup(
