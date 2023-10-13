@@ -41,7 +41,7 @@
     width: 30%;
 }
 
-.is_dashboard_page .header_wrapper.header_type1.header_align_left #user_menu_open{
+.is_dashboard_page .header_wrapper.header_type1.header_align_left #user_menu_open {
     width: 20%;
 }
 
@@ -54,4 +54,9 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
+}
+
+.create_invoice_form .invoice_data_legend {
+    width: auto;
+    margin-right: 10px;
 }

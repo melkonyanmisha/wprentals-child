@@ -315,7 +315,7 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                if ($booking_array['has_guest_overload'] != 0 && $booking_array['total_extra_price_per_guest'] != 0) { ?>
+                if ( ! empty($booking_array['has_guest_overload']) && ! empty($booking_array['total_extra_price_per_guest'])) { ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('Extra Guests', 'wprentals'); ?>
@@ -338,7 +338,7 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                if ($booking_array['cleaning_fee'] !== 0 && $booking_array['cleaning_fee'] !== '') {
+                if ( ! empty($booking_array['cleaning_fee'])) {
                     ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
@@ -352,7 +352,7 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                if ($booking_array['city_fee'] !== 0 && $booking_array['city_fee'] !== '') { ?>
+                if ( ! empty($booking_array['city_fee'])) { ?>
                     <div class="invoice_row invoice_content">
                         <span class="inv_legend">
                             <?= esc_html__('City fee', 'wprentals'); ?>
@@ -365,37 +365,39 @@ function render_booking_confirm_popup(
                     <?php
                 }
 
-                foreach ($extra_options_array as $value) {
-                    if (isset($extra_pay_options[$value][0])) {
-                        $extra_option_value             = wpestate_calculate_extra_options_value(
-                            $booking_array['count_days'],
-                            $booking_guests,
-                            $extra_pay_options[$value][2],
-                            $extra_pay_options[$value][1]
-                        );
-                        $extra_option_value_show        = wpestate_show_price_booking_for_invoice(
-                            $extra_option_value,
-                            $wpestate_currency,
-                            $wpestate_where_currency,
-                            1,
-                            1
-                        );
-                        $extra_option_value_show_single = wpestate_show_price_booking_for_invoice(
-                            $extra_pay_options[$value][1],
-                            $wpestate_currency,
-                            $wpestate_where_currency,
-                            0,
-                            1
-                        );
-                        ?>
-                        <div class="invoice_row invoice_content">
-                            <span class="inv_legend"><?= $extra_pay_options[$value][0]; ?></span>
-                            <span class="inv_data"><?= $extra_option_value_show; ?></span>
-                            <span class="inv_data">
+                if ( ! empty($extra_options_array)) {
+                    foreach ($extra_options_array as $value) {
+                        if (isset($extra_pay_options[$value][0])) {
+                            $extra_option_value             = wpestate_calculate_extra_options_value(
+                                $booking_array['count_days'],
+                                $booking_guests,
+                                $extra_pay_options[$value][2],
+                                $extra_pay_options[$value][1]
+                            );
+                            $extra_option_value_show        = wpestate_show_price_booking_for_invoice(
+                                $extra_option_value,
+                                $wpestate_currency,
+                                $wpestate_where_currency,
+                                1,
+                                1
+                            );
+                            $extra_option_value_show_single = wpestate_show_price_booking_for_invoice(
+                                $extra_pay_options[$value][1],
+                                $wpestate_currency,
+                                $wpestate_where_currency,
+                                0,
+                                1
+                            );
+                            ?>
+                            <div class="invoice_row invoice_content">
+                                <span class="inv_legend"><?= $extra_pay_options[$value][0]; ?></span>
+                                <span class="inv_data"><?= $extra_option_value_show; ?></span>
+                                <span class="inv_data">
                                 <?= $extra_option_value_show_single . ' ' . $options_array_explanations[$extra_pay_options[$value][2]]; ?>
                             </span>
-                        </div>
-                        <?php
+                            </div>
+                            <?php
+                        }
                     }
                 }
 
@@ -441,20 +443,29 @@ function render_booking_confirm_popup(
                           data-total="<?= esc_attr($invoice_price); ?>">
                         <?= $total_price_show; ?>
                     </span>
-                    </br>
-                    <span class="inv_legend invoice_reseration_fee_req">
-                        <?= esc_html__('Reservation Fee Required', 'wprentals') . ':'; ?>
-                    </span>
-                    <span class="inv_depozit depozit_show" data-value="<?= esc_attr($depozit); ?>">
-                        <?= $depozit_show; ?>
-                    </span>
-                    </br>
-                    <span class="inv_legend invoice_balance_owed ">
-                    <?= esc_html__('Balance Owed', 'wprentals') . ':'; ?>
-                    </span>
-                    <span class="inv_depozit balance_show" data-value="<?= esc_attr($balance); ?>">
-                        <?= $balance_show; ?>
-                    </span>
+                    <?php
+                    if ($invoice_price !== $depozit) { ?>
+                        <br>
+                        <span class="inv_legend invoice_reseration_fee_req">
+                            <?= esc_html__('Reservation Fee Required', 'wprentals') . ':'; ?>
+                        </span>
+                        <span class="inv_depozit depozit_show" data-value="<?= esc_attr($depozit); ?>">
+                            <?= $depozit_show; ?>
+                        </span>
+                        <?php
+                    }
+
+                    if ( ! empty($balance)) { ?>
+                        <br>
+                        <span class="inv_legend invoice_balance_owed ">
+                            <?= esc_html__('Balance Owed', 'wprentals') . ':'; ?>
+                        </span>
+                        <span class="inv_depozit balance_show" data-value="<?= esc_attr($balance); ?>">
+                            <?= $balance_show; ?>
+                        </span>
+                        <?php
+                    } ?>
+
                 </div>
             </div>
 
