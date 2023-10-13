@@ -60,10 +60,11 @@ function generate_the_invoice(
             1 => ucfirst(wpestate_show_labels('per_night', $rental_type, $booking_type)),
             2 => esc_html__('Per Guest', 'wprentals'),
             3 => ucfirst(wpestate_show_labels('per_night', $rental_type, $booking_type)) . ' ' . esc_html__(
-                    'per Guest',
+                    'Per Guest',
                     'wprentals'
                 )
         ];
+
         foreach ($extra_options_array as $value) {
             if (isset($extra_pay_options[$value][0])) {
                 $value_computed = wpestate_calculate_extra_options_value(
