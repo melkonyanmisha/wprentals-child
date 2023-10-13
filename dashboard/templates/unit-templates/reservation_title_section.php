@@ -56,19 +56,18 @@ ob_start();
     <div class="prop-info">
         <h4 class="listing_title_book book_listing_user_unit_title">
             <?= esc_html__('Booking request', 'wprentals') . ' ' . $post->ID; ?>
-            <strong><?= esc_html__('for', 'wprentals'); ?></strong>
             <a href="<?= esc_url($listing_link); ?>" target="_blank">
                 <?= esc_html($listing_title); ?>
             </a>
         </h4>
         <div class="user_dashboard_listed book_listing_user_unit_invoice">
-            <strong><?= esc_html__('Invoice No: ', 'wprentals'); ?></strong>
+            <strong><?= esc_html__('Invoice No:', 'wprentals'); ?></strong>
             <span class="invoice_list_id"><?= esc_html($invoice_no); ?></span>
         </div>
         <div class="user_dashboard_listed book_listing_user_unit_guests">
             <?php
             if ($booking_guests != 0) { ?>
-                <strong><?= esc_html__('Guests: ', 'wprentals'); ?> </strong>
+                <strong><?= esc_html__('Guests:', 'wprentals'); ?> </strong>
                 <?= esc_html($booking_guests . wpestate_booking_guest_explanations($post->ID));
             } ?>
         </div>

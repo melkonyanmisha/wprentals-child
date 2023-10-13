@@ -37,6 +37,7 @@ if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/hooks.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
 
@@ -190,7 +191,7 @@ function wprentals_parent_enqueues_overwrite(): void
                 ),
                 'noguest'                => esc_html__('Please select the number of guests', 'wprentals'),
                 'guestoverload'          => esc_html__(
-                    'The number of guests is greater than the property capacity - ',
+                    'The number of guests is greater than the the maximum allowed - ',
                     'wprentals'
                 ),
                 'guests'                 => esc_html__('guests', 'wprentals'),

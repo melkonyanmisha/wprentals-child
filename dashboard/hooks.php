@@ -11,7 +11,7 @@ function wpestate_show_confirmed_booking(): void
     $current_user    = wp_get_current_user();
     $current_user_id = $current_user->ID;
 
-    if ( ! is_user_logged_in() || $current_user_id === 0) {
+    if ( ! is_user_logged_in() || ! $current_user_id) {
         wp_die('Permission denied');
     }
 
@@ -1141,7 +1141,7 @@ function main_check_before_update_listing(): void
     $current_user    = wp_get_current_user();
     $current_user_id = $current_user->ID;
 
-    if ( ! is_user_logged_in() || $current_user_id === 0) {
+    if ( ! is_user_logged_in() || ! $current_user_id) {
         wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
 
@@ -1159,4 +1159,71 @@ function main_check_before_update_listing(): void
     if ($current_user_id != $the_post->post_author) {
         wp_die(json_encode(['edited' => false, 'response' => 'Permission denied']));
     }
+}
+
+/**
+ * Fires after update profile
+ *
+ * Handle ajax request add_action('wp_ajax_wpestate_ajax_update_profile', 'wpestate_ajax_update_profile');
+ *
+ * @return void
+ */
+function wpestate_ajax_update_profile()
+{
+    check_ajax_referer('wprentals_update_profile_nonce', 'security');
+    check_ajax_referer('profile_ajax_nonce', 'security-profile');
+
+    $current_user = wp_get_current_user();
+    $userID       = $current_user->ID;
+
+    if ( ! is_user_logged_in() || ! $userID) {
+        wp_die('Permission denied');
+    }
+
+    $firstname               = sanitize_text_field($_POST['firstname']);
+    $secondname              = sanitize_text_field($_POST['secondname']);
+    $useremail               = sanitize_text_field($_POST['useremail']);
+    $userphone               = sanitize_text_field($_POST['userphone']);
+    $usermobile              = sanitize_text_field($_POST['usermobile']);
+    $about_me                = sanitize_text_field($_POST['description']);
+    $profile_image_url_small = sanitize_text_field($_POST['profile_image_url_small']);
+    $profile_image_url       = sanitize_text_field($_POST['profile_image_url']);
+    $live_in                 = sanitize_text_field($_POST['live_in']);
+    $i_speak                 = sanitize_text_field($_POST['i_speak']);
+
+    update_user_meta($userID, 'first_name', $firstname);
+    update_user_meta($userID, 'last_name', $secondname);
+    update_user_meta($userID, 'phone', $userphone);
+    update_user_meta($userID, 'custom_picture', $profile_image_url);
+    update_user_meta($userID, 'small_custom_picture', $profile_image_url_small);
+    update_user_meta($userID, 'mobile', $usermobile);
+    update_user_meta($userID, 'description', $about_me);
+    update_user_meta($userID, 'live_in', $live_in);
+    update_user_meta($userID, 'i_speak', $i_speak);
+
+    $old_mobile = get_user_meta($userID, 'mobile', true);
+    if ($old_mobile != $usermobile) {
+        update_user_meta($userID, 'check_phone_valid', 'no');
+    }
+
+    $msg = __('Profile updated', 'wprentals');
+    if ($current_user->user_email != $useremail) {
+        $user_id = email_exists($useremail);
+        if ($user_id) {
+            $msg = __('The email was not saved because it is used by another user.', 'wprentals');
+        } elseif ($useremail == '') {
+            $msg = __('The email field cannot be blank.', 'wprentals');
+        } elseif (filter_var($useremail, FILTER_VALIDATE_EMAIL) === false) {
+            $msg = __('Wrong email.', 'wprentals');
+        } else {
+            $args = array(
+                'ID'         => $userID,
+                'user_email' => $useremail
+            );
+
+            wp_update_user($args);
+        }
+    }
+
+    wp_die(esc_html__($msg));
 }

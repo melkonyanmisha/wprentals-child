@@ -136,7 +136,7 @@ ob_start();
                 <?php
             } ?>
             <span class="contact_owner_reservation" data-bookid="<?= esc_attr($listing_id); ?>">
-           <?= esc_html__('Contact Owner', 'wprentals'); ?>
+           <?= esc_html__('Contact', 'wprentals'); ?>
        </span>
         </div>
     </div>
