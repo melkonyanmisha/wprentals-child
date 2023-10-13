@@ -182,9 +182,9 @@ function wpestate_chid_print_create_form_invoice(
     $rental_type = esc_html(wprentals_get_option('wp_estate_item_rental_type', ''));
 
     if (wpsestate_get_author($booking_prop) == $current_user_id) {
-        $total_label = esc_html__('User Pays', 'wprentals-core');
+        $total_label = esc_html__('User Pays', 'wprentals');
     } else {
-        $total_label = esc_html__('You Pay', 'wprentals-core');
+        $total_label = esc_html__('You Pay', 'wprentals');
     }
 
     // Start output buffering
@@ -194,7 +194,7 @@ function wpestate_chid_print_create_form_invoice(
     <div class="create_invoice_form">
         <?php
         if ($invoice_id != 0) { ?>
-            <h3><?= esc_html__('Invoice INV', 'wprentals-core') . $invoice_id; ?></h3>
+            <h3><?= esc_html__('Invoice INV', 'wprentals') . $invoice_id; ?></h3>
             <?php
         } ?>
 
@@ -212,16 +212,16 @@ function wpestate_chid_print_create_form_invoice(
 
                 if (
                     $invoice_saved == 'Reservation fee'
-                    || $invoice_saved == esc_html__('Reservation fee', 'wprentals-core')
+                    || $invoice_saved == esc_html__('Reservation fee', 'wprentals')
                 ) { ?>
 
                     <span class="date_interval show_invoice_period">
                         <span class="invoice_data_legend">
-                            <?= esc_html__('Period', 'wprentals-core') . ' : '; ?>
+                            <?= esc_html__('Period', 'wprentals') . ' : '; ?>
                         </span>
                         <?=
                         wpestate_convert_dateformat_reverse($booking_from_date)
-                        . ' ' . esc_html__('to', 'wprentals-core')
+                        . ' ' . esc_html__('to', 'wprentals')
                         . ' ' . wpestate_convert_dateformat_reverse($booking_to_date);
                         ?>
                     </span>
@@ -235,7 +235,7 @@ function wpestate_chid_print_create_form_invoice(
                     if ($booking_guests > 0) { ?>
                         <span class="date_duration show_invoice_guests">
                             <span class="invoice_data_legend">
-                                <?= esc_html__('Guests', 'wprentals-core') . ':'; ?>
+                                <?= esc_html__('Guests', 'wprentals') . ':'; ?>
                             </span>
                             <?= esc_html($booking_guests . wpestate_booking_guest_explanations($bookid)); ?>
                         </span>
@@ -244,11 +244,11 @@ function wpestate_chid_print_create_form_invoice(
                     if ($booking_array['price_per_guest_from_one'] == 1) { ?>
                         <span class="date_duration show_invoice_price_per_quest ">
                             <span class="invoice_data_legend">
-                                <?= esc_html__('Price per Guest', 'wprentals-core') . ':'; ?>
+                                <?= esc_html__('Price per Guest', 'wprentals') . ':'; ?>
                             </span>
                            <?php
                            if ($booking_array['custom_period_quest'] == 1) {
-                               _e('custom price', 'wprentals-core');
+                               _e('custom price', 'wprentals');
                            } else {
                                echo $extra_price_per_guest;
                            }
@@ -264,11 +264,11 @@ function wpestate_chid_print_create_form_invoice(
                             <?php
                             echo $price_show;
                             if ($booking_array['has_custom']) {
-                                echo ', ' . esc_html__('has custom price', 'wprentals-core');
+                                echo ', ' . esc_html__('has custom price', 'wprentals');
                             }
                             if ($booking_array['cover_weekend']) {
                                 echo ', '
-                                     . esc_html__('has weekend price of', 'wprentals-core')
+                                     . esc_html__('has weekend price of', 'wprentals')
                                      . ' '
                                      . $price_per_weekeend_show;
                             }
@@ -280,7 +280,7 @@ function wpestate_chid_print_create_form_invoice(
                     if ($booking_array['has_custom'] || $booking_array['custom_period_quest'] == 1) {
                         if (is_array($booking_array['custom_price_array'])) { ?>
                             <span class="invoice_data_legend show_invoice_price_details">
-                                <?= __('Price details:', 'wprentals-core'); ?>
+                                <?= __('Price details:', 'wprentals'); ?>
                             </span>
 
                             <?php
@@ -294,11 +294,11 @@ function wpestate_chid_print_create_form_invoice(
                                 ); ?>
                                 <span class="price_custom_explained show_invoice_price_details">
                                     <?=
-                                    __('on', 'wprentals-core')
+                                    __('on', 'wprentals')
                                     . ' '
                                     . wpestate_convert_dateformat_reverse(date("Y-m-d", $date))
                                     . ' '
-                                    . __('price is', 'wprentals-core')
+                                    . __('price is', 'wprentals')
                                     . ' ' . $day_price;
                                     ?>
                                 </span>
@@ -363,9 +363,9 @@ function wpestate_chid_print_create_form_invoice(
 
             <div class="invoice_details">
                 <div class="invoice_row header_legend">
-                    <span class="inv_legend"><?= esc_html__('Cost', 'wprentals-core'); ?></span>
-                    <span class="inv_data"><?= esc_html__('Price', 'wprentals-core'); ?></span>
-                    <span class="inv_exp"><?= esc_html__('Detail', 'wprentals-core'); ?></span>
+                    <span class="inv_legend"><?= esc_html__('Cost', 'wprentals'); ?></span>
+                    <span class="inv_data"><?= esc_html__('Price', 'wprentals'); ?></span>
+                    <span class="inv_exp"><?= esc_html__('Detail', 'wprentals'); ?></span>
                 </div>
 
                 <?php
@@ -406,14 +406,14 @@ function wpestate_chid_print_create_form_invoice(
                             <span class="inv_exp">
                                 <?php
                                 if (
-                                    trim($detail[0]) == esc_html__('Security Depozit', 'wprentals-core')
-                                    || trim($detail[0]) == esc_html__('Security Deposit', 'wprentals-core')
+                                    trim($detail[0]) == esc_html__('Security Depozit', 'wprentals')
+                                    || trim($detail[0]) == esc_html__('Security Deposit', 'wprentals')
                                 ) {
-                                    esc_html_e('*refundable', 'wprentals-core');
+                                    esc_html_e('*refundable', 'wprentals');
                                 }
 
                                 if (
-                                    trim($detail[0]) == esc_html__('Subtotal', 'wprentals-core')
+                                    trim($detail[0]) == esc_html__('Subtotal', 'wprentals')
                                     || trim($detail[0]) == esc_html__('Subtotal', 'wprentals')
                                 ) {
                                     if ($booking_array['price_per_guest_from_one'] == 1) {
@@ -424,7 +424,7 @@ function wpestate_chid_print_create_form_invoice(
                                                  . ' x '
                                                  . $booking_array['curent_guest_no']
                                                  . ' '
-                                                 . esc_html__('guests', 'wprentals-core')
+                                                 . esc_html__('guests', 'wprentals')
                                                  . ' - '
                                                  . esc_html__(" period with custom price per guest", "wprentals");
                                         } else {
@@ -436,7 +436,7 @@ function wpestate_chid_print_create_form_invoice(
                                                  . ' x '
                                                  . $booking_array['curent_guest_no']
                                                  . ' '
-                                                 . esc_html__('guests', 'wprentals-core');
+                                                 . esc_html__('guests', 'wprentals');
                                         }
                                     } else {
                                         echo $booking_array['numberDays']
@@ -444,12 +444,12 @@ function wpestate_chid_print_create_form_invoice(
                                              . wpestate_show_labels('nights', $rental_type, $booking_type)
                                              . ' x ';
                                         if ($booking_array['cover_weekend']) {
-                                            echo esc_html__('has weekend price of', 'wprentals-core')
+                                            echo esc_html__('has weekend price of', 'wprentals')
                                                  . ' '
                                                  . $price_per_weekeend_show;
                                         } else {
                                             if ($booking_array['has_custom'] != 0) {
-                                                esc_html_e('custom price', 'wprentals-core');
+                                                esc_html_e('custom price', 'wprentals');
                                             } else {
                                                 echo $price_show;
                                             }
@@ -468,7 +468,7 @@ function wpestate_chid_print_create_form_invoice(
                                 }
 
                                 if (
-                                    trim($detail[0]) == esc_html__('Extra Guests', 'wprentals-core')
+                                    trim($detail[0]) == esc_html__('Extra Guests', 'wprentals')
                                     || trim($detail[0]) == esc_html__('Extra Guests', 'wprentals')
                                 ) {
                                     echo $booking_array['numberDays']
@@ -477,7 +477,7 @@ function wpestate_chid_print_create_form_invoice(
                                          . ' x '
                                          . $booking_array['extra_guests']
                                          . ' '
-                                         . esc_html__('extra guests', 'wprentals-core')
+                                         . esc_html__('extra guests', 'wprentals')
                                          . ' x '
                                          . $new_guest_price;
                                 }
@@ -505,15 +505,15 @@ function wpestate_chid_print_create_form_invoice(
                         <?php
                         if (
                             $invoice_saved == 'Reservation fee'
-                            || $invoice_saved == esc_html__('Reservation fee', 'wprentals-core')
+                            || $invoice_saved == esc_html__('Reservation fee', 'wprentals')
                         ) { ?>
                             <span class="inv_legend">
-                                <?= esc_html__('Reservation Fee Required', 'wprentals-core') . ':'; ?>
+                                <?= esc_html__('Reservation Fee Required', 'wprentals') . ':'; ?>
                             </span>
                             <span class="inv_depozit"><?= $depozit_show; ?> </span>
                             </br>
                             <span class="inv_legend">
-                                <?= esc_html__('Balance', 'wprentals-core') . ':'; ?>
+                                <?= esc_html__('Balance', 'wprentals') . ':'; ?>
                             </span>
                             <span class="inv_depozit"><?= $balance_show; ?></span>
                             <?php

@@ -129,7 +129,7 @@ function render_additional_part_of_invoice(
         ?>
         <div class="invoice_row invoice_content">
             <span class="inv_legend">
-                <?= esc_html__('Accessible days', 'wprentals-core'); ?>
+                <?= esc_html__('Accessible days', 'wprentals'); ?>
             </span>
             <span class="inv_data">
                 <?= $discounted_price_for_accessible_days_show; ?>
@@ -149,7 +149,7 @@ function render_additional_part_of_invoice(
         if ($remaining_days_count) { ?>
             <div class="invoice_row invoice_content">
                 <span class="inv_legend">
-                    <?= esc_html__('Remaining days', 'wprentals-core'); ?>
+                    <?= esc_html__('Remaining days', 'wprentals'); ?>
                 </span>
                 <span class="inv_data">
                     <?= $remaining_days_price_show; ?>
@@ -167,7 +167,7 @@ function render_additional_part_of_invoice(
 
             <div class="invoice_row invoice_content">
                 <span class="inv_legend">
-                    <?= esc_html__('Subtotal', 'wprentals-core'); ?>
+                    <?= esc_html__('Subtotal', 'wprentals'); ?>
                 </span>
                 <span class="inv_data">
                     <?= $subtotal_show; ?>
