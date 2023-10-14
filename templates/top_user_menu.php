@@ -81,7 +81,7 @@ if (0 != $current_user->ID && is_user_logged_in()) {
         if ($home_url != $dash_profile) { ?>
             <a href="<?= esc_url($dash_profile); ?>">
                 <i class="fas fa-cog"></i>
-                <?= esc_html__('My Profile', 'wprentals'); ?>
+                <?= esc_html__('Profile', 'wprentals'); ?>
             </a>
             <?php
         }
@@ -89,7 +89,7 @@ if (0 != $current_user->ID && is_user_logged_in()) {
         if ($home_url != $dash_link && wpestate_check_user_level()) { ?>
             <a href="<?= esc_url($dash_link); ?>">
                 <i class="fas fa-map-marker"></i>
-                <?= esc_html__('My Listings', 'wprentals'); ?>
+                <?= esc_html__('Listings', 'wprentals'); ?>
             </a>
             <?php
         }
@@ -110,7 +110,7 @@ if (0 != $current_user->ID && is_user_logged_in()) {
             <?php
         }
 
-        if ($home_url != $dash_reservation) { ?>
+        if ( ! current_user_is_admin() && $home_url != $dash_reservation) { ?>
             <a href="<?= esc_url($dash_reservation); ?>" class="active_fav">
                 <i class="fas fa-folder-open"></i>
                 <?= esc_html__('Reservations', 'wprentals'); ?>
