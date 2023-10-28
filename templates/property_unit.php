@@ -25,11 +25,11 @@ if ($wpestate_listing_type == 3) {
     return true;
 }
 
-$col_class = 'col-md-6';
+$col_class = 'col-md-4';
 $col_org   = 4;
 $title     = get_the_title($post->ID);
 
-if (is_front_page()) {
+if (is_front_page() || is_tax()) {
     if (isset($is_shortcode) && $is_shortcode == 1) {
         $col_class = 'col-md-' . esc_attr($wpestate_row_number_col) . ' shortcode-col';
     }
