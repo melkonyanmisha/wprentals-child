@@ -56,3 +56,11 @@
     width: auto;
     margin-right: 10px;
 }
+
+.user_dashboard_panel{
+    min-width: 98% !important;
+}
+
+.booking-calendar-wrapper-in-wrapper{
+    max-width: none;
+}
