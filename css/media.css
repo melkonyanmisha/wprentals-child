@@ -1,0 +1,9 @@
+@media only screen and (max-width: 768px) {
+    #adv-search-mobile {
+        display: block;
+    }
+
+    #search_locationmobile_autointernal {
+        display: none;
+    }
+}

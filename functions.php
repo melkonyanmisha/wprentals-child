@@ -91,6 +91,7 @@ function wprentals_child_enques(): void
         wp_get_theme()->get('Version')
     );
     wp_enqueue_style('wpestate-child-style', WPRENTALS_CHILD_THEME_URL . 'css/style.css');
+    wp_enqueue_style('wpestate-child-media-style', WPRENTALS_CHILD_THEME_URL . 'css/media.css');
 
     ####### JS #######
     wp_enqueue_script(
