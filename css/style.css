@@ -29,6 +29,10 @@
     clear: right;
 }
 
+.header-language-switcher-mobile {
+    text-align: center;
+}
+
 .user_loged .header-language-switcher {
     margin-left: 15px;
 }
