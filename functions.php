@@ -1,45 +1,48 @@
 <?php
 
 // Exit if accessed directly
-if ( ! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
-if ( ! defined('WPRENTALS_THEME_URL')) {
+if (!defined('WPRENTALS_THEME_URL')) {
     define('WPRENTALS_THEME_URL', trailingslashit(get_template_directory_uri()));
 }
 
-if ( ! defined('WPRENTALS_CHILD_THEME_PATH')) {
+if (!defined('WPRENTALS_CHILD_THEME_PATH')) {
     define('WPRENTALS_CHILD_THEME_PATH', trailingslashit(get_stylesheet_directory()));
 }
 
-if ( ! defined('WPRENTALS_CHILD_THEME_URL')) {
+if (!defined('WPRENTALS_CHILD_THEME_URL')) {
     define('WPRENTALS_CHILD_THEME_URL', trailingslashit(get_stylesheet_directory_uri()));
 }
 
-if ( ! defined('TIMESHARE_PRICE_CALC_DATA')) {
+if (!defined('TIMESHARE_PRICE_CALC_DATA')) {
     define('TIMESHARE_PRICE_CALC_DATA', 'timeshare_price_calc_data');
 }
 
 // The meta_key for save room Group order in wp_termmeta
-if ( ! defined('ROOM_GROUP_ORDER')) {
+if (!defined('ROOM_GROUP_ORDER')) {
     define('ROOM_GROUP_ORDER', 'room_group_order');
 }
 
 // Meta Key
-if ( ! defined('TIMESHARE_USER_DATA')) {
+if (!defined('TIMESHARE_USER_DATA')) {
     define('TIMESHARE_USER_DATA', 'timeshare_user_data');
 }
 
 // The Timeshare user package duration
-if ( ! defined('TIMESHARE_PACKAGE_DURATION')) {
+if (!defined('TIMESHARE_PACKAGE_DURATION')) {
     define('TIMESHARE_PACKAGE_DURATION', 'timeshare_package_duration');
 }
 
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/utils.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/hooks.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/plugins/wprentals-core/post-types/property.php';
+// Customize wp-content/themes/wprentals/libs/help_functions.php
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.php';
+// Customize wp-content/themes/wprentals/libs/listing_functions.php
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_listing_functions.php';
 
 // Booking Process
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/utils.php';
@@ -105,8 +108,8 @@ function wprentals_child_enques(): void
         'wprentals-child-main',
         'wprentalsChildData',
         [
-            'currentUserRole' => ! empty(wp_get_current_user()->roles) ? wp_get_current_user()->roles[0] : 'guest',
-            'isHomePage'      => is_front_page() || is_home()
+            'currentUserRole' => !empty(wp_get_current_user()->roles) ? wp_get_current_user()->roles[0] : 'guest',
+            'isHomePage' => is_front_page() || is_home()
         ]
     );
 }
@@ -140,7 +143,7 @@ function wprentals_parent_enqueues_overwrite(): void
 
         $reservation_grouped_data = [];
         if (check_is_listing_page(get_the_ID())) {
-            $listing_id                = get_the_ID();
+            $listing_id = get_the_ID();
             $all_listings_ids_in_group = current_user_is_timeshare() && check_has_room_group(
                 $listing_id
             ) ? get_all_listings_ids_in_group($listing_id) : [];
@@ -154,16 +157,16 @@ function wprentals_parent_enqueues_overwrite(): void
             $logged_in = "no";
         }
 
-        $early_discount             = '';
+        $early_discount = '';
         $include_children_as_guests = '';
-        $include_booking_type       = '';
+        $include_booking_type = '';
         if (isset($post->ID)) {
-            $early_discount             = floatval(get_post_meta($post->ID, 'early_bird_percent', true));
-            $include_booking_type       = wprentals_return_booking_type($post->ID);
+            $early_discount = floatval(get_post_meta($post->ID, 'early_bird_percent', true));
+            $include_booking_type = wprentals_return_booking_type($post->ID);
             $include_children_as_guests = get_post_meta($post->ID, 'children_as_guests', true);
         }
 
-        $book_type            = intval(wprentals_get_option('wp_estate_booking_type'));
+        $book_type = intval(wprentals_get_option('wp_estate_booking_type'));
         $property_js_required = ['jquery', 'wpestate_control', 'fancybox'];
         if ($book_type == 2 || $book_type == 3) {
             $property_js_required = ['jquery', 'wpestate_control', 'fullcalendar', 'fancybox'];
@@ -180,36 +183,36 @@ function wprentals_parent_enqueues_overwrite(): void
         wp_localize_script(
             'wprentals-child-property', 'property_vars',
             [
-                'plsfill'                => esc_html__('Please fill all the forms!', 'wprentals'),
-                'sending'                => esc_html__('Sending Request...', 'wprentals'),
-                'logged_in'              => $logged_in,
-                'notlog'                 => esc_html__('You need to log in order to book a listing!', 'wprentals'),
-                'viewless'               => esc_html__('View less', 'wprentals'),
-                'viewmore'               => esc_html__('View more', 'wprentals'),
-                'nostart'                => esc_html__(
+                'plsfill' => esc_html__('Please fill all the forms!', 'wprentals'),
+                'sending' => esc_html__('Sending Request...', 'wprentals'),
+                'logged_in' => $logged_in,
+                'notlog' => esc_html__('You need to log in order to book a listing!', 'wprentals'),
+                'viewless' => esc_html__('View less', 'wprentals'),
+                'viewmore' => esc_html__('View more', 'wprentals'),
+                'nostart' => esc_html__(
                     'Check-in date cannot be bigger than Check-out date',
                     'wprentals'
                 ),
-                'noguest'                => esc_html__('Please select the number of guests', 'wprentals'),
-                'guestoverload'          => esc_html__(
+                'noguest' => esc_html__('Please select the number of guests', 'wprentals'),
+                'guestoverload' => esc_html__(
                     'The number of guests is greater than the the maximum allowed - ',
                     'wprentals'
                 ),
-                'guests'                 => esc_html__('guests', 'wprentals'),
-                'early_discount'         => $early_discount,
-                'rental_type'            => wprentals_get_option('wp_estate_item_rental_type'),
-                'book_type'              => $include_booking_type,
-                'reserved'               => esc_html__('reserved', 'wprentals'),
-                'use_gdpr'               => wprentals_get_option('wp_estate_use_gdpr'),
-                'gdpr_terms'             => esc_html__('You must agree to GDPR Terms', 'wprentals'),
-                'is_woo'                 => wprentals_get_option('wp_estate_enable_woo', ''),
-                'allDayText'             => esc_html__('hours', 'wprentals'),
-                'clickandragtext'        => esc_html__('click and drag to select the hours', 'wprentals'),
-                'processing'             => esc_html__('Processing..', 'wprentals'),
-                'book_now'               => esc_html__('Book Now', 'wprentals'),
-                'instant_booking'        => esc_html__('Instant Booking', 'wprentals'),
-                'send_mess'              => esc_html__('Send Message', 'wprentals'),
-                'children_as_guests'     => $include_children_as_guests,
+                'guests' => esc_html__('guests', 'wprentals'),
+                'early_discount' => $early_discount,
+                'rental_type' => wprentals_get_option('wp_estate_item_rental_type'),
+                'book_type' => $include_booking_type,
+                'reserved' => esc_html__('reserved', 'wprentals'),
+                'use_gdpr' => wprentals_get_option('wp_estate_use_gdpr'),
+                'gdpr_terms' => esc_html__('You must agree to GDPR Terms', 'wprentals'),
+                'is_woo' => wprentals_get_option('wp_estate_enable_woo', ''),
+                'allDayText' => esc_html__('hours', 'wprentals'),
+                'clickandragtext' => esc_html__('click and drag to select the hours', 'wprentals'),
+                'processing' => esc_html__('Processing..', 'wprentals'),
+                'book_now' => esc_html__('Book Now', 'wprentals'),
+                'instant_booking' => esc_html__('Instant Booking', 'wprentals'),
+                'send_mess' => esc_html__('Send Message', 'wprentals'),
+                'children_as_guests' => $include_children_as_guests,
                 'reservationGroupedData' => $reservation_grouped_data // Custom data
             ]
         );
@@ -230,7 +233,7 @@ function add_custom_user_role(): void
 {
     //Add Timeshare User like as Subscriber
     add_role('timeshare_user', 'Timeshare User', [
-        'read'    => true,
+        'read' => true,
         'level_0' => true,
     ]);
 }
@@ -267,7 +270,7 @@ add_filter('term_links-property_action_category', 'extract_text_from_link');
 function restrict_page_access(WP_Query $query): void
 {
     // Check if this is a Rooms Group taxonomy page. The page can only be accessed by the administrator user
-    if ( ! current_user_is_admin() && is_tax('property_action_category')) {
+    if (!current_user_is_admin() && is_tax('property_action_category')) {
         wp_redirect(home_url(), '302');
     }
 }

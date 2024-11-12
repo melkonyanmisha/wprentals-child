@@ -21,7 +21,7 @@ function wpestate_check_user_level(): bool
  *
  * @return string
  */
-function wpestate_dropdown_fee_select(string $name, float $selected, int $rental_type, int $booking_type): string
+function wpestate_dropdown_fee_select(string $name, $selected, int $rental_type, int $booking_type): string
 {
     $options_array = [
         0 => esc_html__('Single Fee', 'wprentals'),
