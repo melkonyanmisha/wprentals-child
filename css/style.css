@@ -72,3 +72,16 @@
 .otgs-development-site-front-end{
     display: none;
 }
+
+.wpcf7-form-control-wrap input[type="text"],
+.wpcf7-form-control-wrap input[type="password"],
+.wpcf7-form-control-wrap input[type="email"],
+.wpcf7-form-control-wrap input[type="url"],
+.wpcf7-form-control-wrap input[type="number"],
+.wpcf7-form-control-wrap textarea {
+    height: unset;
+}
+
+.wpcf7 button, html input[type="button"], .wpcf7 input[type="reset"], .wpcf7 input[type="submit"] {
+    width: 20%;
+}
