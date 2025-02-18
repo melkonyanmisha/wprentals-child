@@ -53,44 +53,6 @@ function wpestate_build_terms_array()
     return $parsed_features;
 }
 
-function estate_listing_features($post_id)
-{
-    $single_return_string   =   '';
-    $multi_return_string    =   '';
-    $show_no_features       =   esc_html(wprentals_get_option('wp_estate_show_no_features', ''));
-    $property_features      =   get_the_terms($post_id, 'property_features');
-    $parsed_features        =   wpestate_build_terms_array();
-
-    if (is_array($parsed_features)) {
-        foreach ($parsed_features as $key => $item) {
-            if (count($item['childs']) >0) {
-                $multi_return_string_part=  '<div class="listing_detail col-md-12 feature_block_'.$item['name'].' ">';
-                $multi_return_string_part.=  '<div class="feature_chapter_name col-md-12">'.$item['name'].'</div>';
-
-                $multi_return_string_part_check='';
-                if (is_array($item['childs'])) {
-                    foreach ($item['childs'] as $key_ch=>$child) {
-                        $temp   = wpestate_display_feature($show_no_features, $child, $post_id, $property_features);
-                        $multi_return_string_part .=$temp;
-                        $multi_return_string_part_check.=$temp;
-                    }
-                }
-                $multi_return_string_part.=  '</div>';
-
-                if ($multi_return_string_part_check!='') {
-                    $multi_return_string.=$multi_return_string_part;
-                }
-            } else {
-                $single_return_string .= wpestate_display_feature($show_no_features, $item['name'], $post_id, $property_features);
-            }
-        }
-    }
-    if (trim($single_return_string)!='') {
-        $multi_return_string= $multi_return_string.'<div class="listing_detail col-md-12 feature_block_others ">'.$single_return_string.'</div>';
-    }
-    return $multi_return_string;
-}
-
 function estate_listing_details($post_id)
 {
     $wpestate_currency          =   esc_html(wprentals_get_option('wp_estate_currency_label_main', ''));
