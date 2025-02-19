@@ -44,6 +44,8 @@ require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_help_functions.p
 // Customize wp-content/themes/wprentals/libs/listing_functions.php
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/custom_listing_functions.php';
 
+require_once WPRENTALS_CHILD_THEME_PATH . 'includes/libs/listing-page-functions/features-ammenties-functions.php';
+
 // Booking Process
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/utils.php';
 require_once WPRENTALS_CHILD_THEME_PATH . 'includes/custom-book/hooks.php';
