@@ -2,12 +2,18 @@
 
 /**
  * Original function location is wp-content/themes/wprentals/functions.php => wpestate_check_user_level()
- * Only administrators have access to all pages in the dashboard
+ * Users which has access to all pages in the dashboard
  *
  * @return bool
  */
 function wpestate_check_user_level(): bool
 {
+    $current_user                   =   wp_get_current_user();
+    $userID                         =   $current_user->ID;
+    if( wprentals_core_user_has_role($userID, 'editor')){ // user can book and rent
+        return true;
+    }
+
     return current_user_is_admin();
 }
 
